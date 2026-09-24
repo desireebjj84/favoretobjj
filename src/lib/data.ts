@@ -159,16 +159,60 @@ export async function fetchAttendance(sessionIds: string[]): Promise<AttendanceR
   return (data ?? []) as AttendanceRow[];
 }
 
-export async function fetchStudentAttendance(studentId: string) {
+export type HistoryRow = {
+  id: string;
+  status: "present" | "absent" | "late";
+  session_date: string;
+  class_id: string | null;
+};
+
+export async function fetchStudentAttendance(
+  studentId: string,
+  from: string,
+  to: string,
+): Promise<HistoryRow[]> {
   const { data, error } = await supabase
     .from("attendance")
-    .select("id, status, checked_in_at, session_id, class_sessions(session_date, classes(name, location_id))")
+    .select("id, status, session_id, class_sessions!inner(session_date, class_id)")
     .eq("student_id", studentId)
-    .order("checked_in_at", { ascending: false })
-    .limit(200);
+    .gte("class_sessions.session_date", from)
+    .lte("class_sessions.session_date", to)
+    .limit(300);
   if (error) throw error;
-  return data ?? [];
+  const rows = (data ?? []) as unknown as {
+    id: string;
+    status: "present" | "absent" | "late";
+    class_sessions: { session_date: string; class_id: string } | null;
+  }[];
+  return rows
+    .map((r) => ({
+      id: r.id,
+      status: r.status,
+      session_date: r.class_sessions?.session_date ?? "",
+      class_id: r.class_sessions?.class_id ?? null,
+    }))
+    .sort((a, b) => (a.session_date < b.session_date ? 1 : -1));
 }
+
+export async function createStudent(input: {
+  full_name: string;
+  birth_date: string | null;
+  is_minor: boolean;
+  belt: string;
+  location_id: string;
+  guardian_id?: string | null;
+}) {
+  const { error } = await supabase.from("students").insert({
+    full_name: input.full_name,
+    birth_date: input.birth_date,
+    is_minor: input.is_minor,
+    belt: input.belt as Belt,
+    location_id: input.location_id,
+    guardian_id: input.guardian_id ?? null,
+  });
+  if (error) throw error;
+}
+
 
 /** Creates (if needed) and returns the session row for a class on a date. */
 export async function getOrCreateSession(classId: string, date: string): Promise<SessionRow> {
