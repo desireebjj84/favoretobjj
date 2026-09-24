@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedCalendarRouteImport } from './routes/_authenticated/calendar'
 import { Route as AuthenticatedCheckinRouteImport } from './routes/_authenticated/checkin'
+import { Route as AuthenticatedClassesRouteImport } from './routes/_authenticated/classes'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTodayRouteImport } from './routes/_authenticated/today'
@@ -42,6 +43,11 @@ const AuthenticatedCalendarRoute = AuthenticatedCalendarRouteImport.update({
 const AuthenticatedCheckinRoute = AuthenticatedCheckinRouteImport.update({
   id: '/checkin',
   path: '/checkin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedClassesRoute = AuthenticatedClassesRouteImport.update({
+  id: '/classes',
+  path: '/classes',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/calendar': typeof AuthenticatedCalendarRoute
   '/checkin': typeof AuthenticatedCheckinRoute
+  '/classes': typeof AuthenticatedClassesRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/today': typeof AuthenticatedTodayRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/calendar': typeof AuthenticatedCalendarRoute
   '/checkin': typeof AuthenticatedCheckinRoute
+  '/classes': typeof AuthenticatedClassesRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/today': typeof AuthenticatedTodayRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/calendar': typeof AuthenticatedCalendarRoute
   '/_authenticated/checkin': typeof AuthenticatedCheckinRoute
+  '/_authenticated/classes': typeof AuthenticatedClassesRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/today': typeof AuthenticatedTodayRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/calendar'
     | '/checkin'
+    | '/classes'
     | '/reports'
     | '/settings'
     | '/today'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/calendar'
     | '/checkin'
+    | '/classes'
     | '/reports'
     | '/settings'
     | '/today'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/calendar'
     | '/_authenticated/checkin'
+    | '/_authenticated/classes'
     | '/_authenticated/reports'
     | '/_authenticated/settings'
     | '/_authenticated/today'
@@ -186,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCheckinRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/classes': {
+      id: '/_authenticated/classes'
+      path: '/classes'
+      fullPath: '/classes'
+      preLoaderRoute: typeof AuthenticatedClassesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/reports': {
       id: '/_authenticated/reports'
       path: '/reports'
@@ -227,6 +246,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedCalendarRoute: typeof AuthenticatedCalendarRoute
   AuthenticatedCheckinRoute: typeof AuthenticatedCheckinRoute
+  AuthenticatedClassesRoute: typeof AuthenticatedClassesRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTodayRoute: typeof AuthenticatedTodayRoute
@@ -237,6 +257,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCalendarRoute: AuthenticatedCalendarRoute,
   AuthenticatedCheckinRoute: AuthenticatedCheckinRoute,
+  AuthenticatedClassesRoute: AuthenticatedClassesRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTodayRoute: AuthenticatedTodayRoute,
