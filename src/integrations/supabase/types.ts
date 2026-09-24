@@ -14,16 +14,350 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      attendance: {
+        Row: {
+          checked_in_at: string
+          id: string
+          method: string
+          recorded_by: string | null
+          session_id: string
+          status: Database["public"]["Enums"]["attendance_status"]
+          student_id: string
+        }
+        Insert: {
+          checked_in_at?: string
+          id?: string
+          method?: string
+          recorded_by?: string | null
+          session_id: string
+          status?: Database["public"]["Enums"]["attendance_status"]
+          student_id: string
+        }
+        Update: {
+          checked_in_at?: string
+          id?: string
+          method?: string
+          recorded_by?: string | null
+          session_id?: string
+          status?: Database["public"]["Enums"]["attendance_status"]
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "class_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      class_sessions: {
+        Row: {
+          class_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          session_date: string
+        }
+        Insert: {
+          class_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          session_date: string
+        }
+        Update: {
+          class_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          session_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_sessions_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      classes: {
+        Row: {
+          active: boolean
+          capacity: number
+          created_at: string
+          end_time: string
+          id: string
+          instructor_id: string | null
+          instructor_name: string | null
+          kind: Database["public"]["Enums"]["class_kind"]
+          location_id: string
+          name: string
+          start_time: string
+          updated_at: string
+          weekday: number
+        }
+        Insert: {
+          active?: boolean
+          capacity?: number
+          created_at?: string
+          end_time: string
+          id?: string
+          instructor_id?: string | null
+          instructor_name?: string | null
+          kind?: Database["public"]["Enums"]["class_kind"]
+          location_id: string
+          name: string
+          start_time: string
+          updated_at?: string
+          weekday: number
+        }
+        Update: {
+          active?: boolean
+          capacity?: number
+          created_at?: string
+          end_time?: string
+          id?: string
+          instructor_id?: string | null
+          instructor_name?: string | null
+          kind?: Database["public"]["Enums"]["class_kind"]
+          location_id?: string
+          name?: string
+          start_time?: string
+          updated_at?: string
+          weekday?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "classes_instructor_id_fkey"
+            columns: ["instructor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "classes_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      locations: {
+        Row: {
+          city: string
+          created_at: string
+          id: string
+          name: string
+          short_name: string
+          sort_order: number
+        }
+        Insert: {
+          city?: string
+          created_at?: string
+          id?: string
+          name: string
+          short_name: string
+          sort_order?: number
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          id?: string
+          name?: string
+          short_name?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      org_settings: {
+        Row: {
+          absence_threshold: number
+          accent_color: string
+          default_language: string
+          id: number
+          logo_url: string | null
+          org_name: string
+          updated_at: string
+        }
+        Insert: {
+          absence_threshold?: number
+          accent_color?: string
+          default_language?: string
+          id?: number
+          logo_url?: string | null
+          org_name?: string
+          updated_at?: string
+        }
+        Update: {
+          absence_threshold?: number
+          accent_color?: string
+          default_language?: string
+          id?: number
+          logo_url?: string | null
+          org_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          language: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id: string
+          language?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          language?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          active: boolean
+          belt: Database["public"]["Enums"]["belt_color"]
+          birth_date: string | null
+          created_at: string
+          full_name: string
+          guardian_id: string | null
+          id: string
+          is_minor: boolean
+          location_id: string
+          photo_url: string | null
+          qr_code: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          active?: boolean
+          belt?: Database["public"]["Enums"]["belt_color"]
+          birth_date?: string | null
+          created_at?: string
+          full_name: string
+          guardian_id?: string | null
+          id?: string
+          is_minor?: boolean
+          location_id: string
+          photo_url?: string | null
+          qr_code?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          active?: boolean
+          belt?: Database["public"]["Enums"]["belt_color"]
+          birth_date?: string | null
+          created_at?: string
+          full_name?: string
+          guardian_id?: string | null
+          id?: string
+          is_minor?: boolean
+          location_id?: string
+          photo_url?: string | null
+          qr_code?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "students_guardian_id_fkey"
+            columns: ["guardian_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "students_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_view_student: { Args: { _student_id: string }; Returns: boolean }
+      ensure_sessions: {
+        Args: { _from: string; _to: string }
+        Returns: undefined
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "instructor" | "parent"
+      attendance_status: "present" | "absent" | "late"
+      belt_color:
+        | "white"
+        | "grey"
+        | "yellow"
+        | "orange"
+        | "green"
+        | "blue"
+        | "purple"
+        | "brown"
+        | "black"
+      class_kind: "adult" | "kids"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +484,21 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "instructor", "parent"],
+      attendance_status: ["present", "absent", "late"],
+      belt_color: [
+        "white",
+        "grey",
+        "yellow",
+        "orange",
+        "green",
+        "blue",
+        "purple",
+        "brown",
+        "black",
+      ],
+      class_kind: ["adult", "kids"],
+    },
   },
 } as const
