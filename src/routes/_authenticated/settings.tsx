@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
@@ -54,6 +54,15 @@ function SettingsPage() {
   return (
     <div className="space-y-4">
       <SectionTitle>{t("settings.title")}</SectionTitle>
+      <Link to="/classes" className="block">
+        <Card className="flex items-center justify-between">
+          <div>
+            <p className="font-display text-lg uppercase tracking-wide">{t("classes.title")}</p>
+            <p className="text-xs text-muted-foreground">{t("classes.manage")}</p>
+          </div>
+          <span className="label-mono">›</span>
+        </Card>
+      </Link>
       <Card>
         <form onSubmit={save} className="space-y-3">
           <Field label={t("settings.orgName")}>

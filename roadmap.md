@@ -3,13 +3,10 @@
 ## Done
 - Lovable Cloud enabled: locations, students, classes, sessions, attendance, roles, branding
 - Seed: 3 units + sample class grid + sample students
+- Design system, auth (email + Google), role-aware screens
+- Screens: Today, Calendar, Students + history, QR check-in, Reports (full/low/demand/alerts), Settings
+- i18n EN / PT / ES, Favoreto logo + favicon
+- Class manager screen: admin adds/edits/removes classes per academy
 
-## In progress
-- Design system from "Mat Command Center" direction
-- Auth (email + Google), role gate (admin / instructor / parent)
-- Screens: Today, Calendar, Students + history, QR check-in, Reports, Admin demand panel, Settings
-- i18n EN / PT / ES
-- Use uploaded Favoreto logo as brand + favicon
-
-## Blocked / waiting on user
-- Real class schedule (user will send times) -> replace seeded class grid
+## Waiting on user
+- Real class schedule (user can enter it in the class manager, or send it to be loaded)
