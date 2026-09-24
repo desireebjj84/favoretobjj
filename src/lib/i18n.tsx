@@ -170,6 +170,17 @@ const en: Dict = {
   "students.noHistory": "No attendance yet",
   "students.qrHint": "Show at the door",
   "students.search": "Search students",
+  "classes.title": "Classes",
+  "classes.manage": "Manage classes by academy",
+  "classes.add": "Class",
+  "classes.name": "Class name",
+  "classes.day": "Day",
+  "classes.type": "Type",
+  "classes.start": "Start",
+  "classes.end": "End",
+  "classes.instructor": "Instructor",
+  "classes.remove": "Remove",
+  "classes.confirmRemove": "Remove this class from the schedule?",
 };
 
 const pt: Dict = {
@@ -332,6 +343,17 @@ const pt: Dict = {
   "students.noHistory": "Ainda sem presenças",
   "students.qrHint": "Mostre na entrada",
   "students.search": "Buscar alunos",
+  "classes.title": "Aulas",
+  "classes.manage": "Gerenciar aulas por academia",
+  "classes.add": "Aula",
+  "classes.name": "Nome da aula",
+  "classes.day": "Dia",
+  "classes.type": "Tipo",
+  "classes.start": "Início",
+  "classes.end": "Fim",
+  "classes.instructor": "Professor",
+  "classes.remove": "Remover",
+  "classes.confirmRemove": "Remover esta aula da grade?",
 };
 
 const es: Dict = {
@@ -494,6 +516,17 @@ const es: Dict = {
   "students.noHistory": "Aún sin asistencias",
   "students.qrHint": "Muéstralo en la entrada",
   "students.search": "Buscar alumnos",
+  "classes.title": "Clases",
+  "classes.manage": "Gestionar clases por academia",
+  "classes.add": "Clase",
+  "classes.name": "Nombre de la clase",
+  "classes.day": "Día",
+  "classes.type": "Tipo",
+  "classes.start": "Inicio",
+  "classes.end": "Fin",
+  "classes.instructor": "Profesor",
+  "classes.remove": "Eliminar",
+  "classes.confirmRemove": "¿Eliminar esta clase del horario?",
 };
 
 const DICTS: Record<Lang, Dict> = { en, pt, es };
