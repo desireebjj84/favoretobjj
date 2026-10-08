@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Bar, Button, Card, Empty, SectionTitle } from "@/components/ui-kit";
@@ -11,6 +12,7 @@ import {
   fetchAttendance,
   fetchClasses,
   fetchSessions,
+  fetchStudents,
   fmtTime,
   isoDate,
   occupancyTone,
@@ -165,14 +167,47 @@ function CalendarPage() {
                       </p>
                     </div>
                     <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
+                    {s && (bookCountQ.data?.get(s.id) ?? 0) > 0 ? (
+                      <p className="mt-1 font-mono text-[10px] text-muted-foreground">
+                        {bookCountQ.data?.get(s.id)} {L.reserved}
+                      </p>
+                    ) : null}
                   </>
                 );
+                const booked = s ? (bookCountQ.data?.get(s.id) ?? 0) : 0;
+                const bookable = !isStaff && s && dateStr >= todayStr && myStudents.length > 0;
                 return isStaff && dateStr === todayStr ? (
                   <Link key={c.id} to="/checkin" search={{ classId: c.id }} className="block">
                     {body}
                   </Link>
                 ) : (
-                  <div key={c.id}>{body}</div>
+                  <div key={c.id}>
+                    {body}
+                    {bookable ? (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {myStudents
+                          .filter((st) => st.location_id === c.location_id)
+                          .map((st) => {
+                            const mine = (myBookingsQ.data ?? []).some(
+                              (b) => b.session_id === s!.id && b.student_id === st.id,
+                            );
+                            const full = !mine && booked >= c.capacity;
+                            return (
+                              <Button
+                                key={st.id}
+                                size="sm"
+                                variant={mine ? "accent" : "outline"}
+                                disabled={full || busy === s!.id + st.id}
+                                onClick={() => void toggle(s!.id, st.id)}
+                              >
+                                {mine ? `✓ ${L.booked}` : full ? L.full : L.book}
+                                {myStudents.length > 1 ? ` · ${st.full_name.split(" ")[0]}` : ""}
+                              </Button>
+                            );
+                          })}
+                      </div>
+                    ) : null}
+                  </div>
                 );
               })}
             </div>
