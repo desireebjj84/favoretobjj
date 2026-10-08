@@ -59,6 +59,45 @@ export type Database = {
           },
         ]
       }
+      bookings: {
+        Row: {
+          booked_by: string | null
+          created_at: string
+          id: string
+          session_id: string
+          student_id: string
+        }
+        Insert: {
+          booked_by?: string | null
+          created_at?: string
+          id?: string
+          session_id: string
+          student_id: string
+        }
+        Update: {
+          booked_by?: string | null
+          created_at?: string
+          id?: string
+          session_id?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "class_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       class_sessions: {
         Row: {
           class_id: string
@@ -343,6 +382,13 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      session_booking_count: {
+        Args: { _session_ids: string[] }
+        Returns: {
+          n: number
+          session_id: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "instructor" | "parent"
