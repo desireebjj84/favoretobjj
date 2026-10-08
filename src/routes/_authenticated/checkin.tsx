@@ -160,19 +160,25 @@ function CheckinPage() {
 
   return (
     <div className="space-y-5">
-      <SectionTitle right={dateStr}>{t("checkin.title")}</SectionTitle>
+      <SectionTitle right={dateLabel}>{t("checkin.title")}</SectionTitle>
 
       <Card>
-        <Field label={t("checkin.chooseClass")}>
-          <Select value={classId ?? ""} onChange={(e) => setClassId(e.target.value)}>
-            {todayClasses.length === 0 ? <option value="">{t("today.noClasses")}</option> : null}
-            {todayClasses.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name} · {fmtTime(c.start_time)}
-              </option>
-            ))}
-          </Select>
+        <Field label={t("checkin.date")}>
+          <Input type="date" value={dateStr} onChange={(e) => e.target.value && setDateStr(e.target.value)} />
         </Field>
+
+        <div className="mt-3">
+          <Field label={t("checkin.chooseClass")}>
+            <Select value={classId ?? ""} onChange={(e) => setClassId(e.target.value)}>
+              {todayClasses.length === 0 ? <option value="">{t("today.noClasses")}</option> : null}
+              {todayClasses.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {dateLabel} · {c.name} · {fmtTime(c.start_time)}
+                </option>
+              ))}
+            </Select>
+          </Field>
+        </div>
 
         <div className="mt-3 flex gap-2">
           {scanning ? (
