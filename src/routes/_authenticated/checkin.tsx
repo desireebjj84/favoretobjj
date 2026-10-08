@@ -32,14 +32,17 @@ export const Route = createFileRoute("/_authenticated/checkin")({
 });
 
 function CheckinPage() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { locationId, isStaff } = useApp();
   const search = Route.useSearch();
   const queryClient = useQueryClient();
 
-  const today = new Date();
-  const dateStr = isoDate(today);
-  const dow = today.getDay();
+  const todayStr = isoDate(new Date());
+  const [dateStr, setDateStr] = useState<string>(todayStr);
+  const dateObj = useMemo(() => new Date(dateStr + "T12:00:00"), [dateStr]);
+  const dow = dateObj.getDay();
+  const locale = lang === "pt" ? "pt-BR" : lang === "es" ? "es-ES" : "en-US";
+  const dateLabel = `${t(`day.${dow}`)} · ${dateObj.toLocaleDateString(locale, { day: "numeric", month: "short" })}`;
 
   const classesQ = useQuery({ queryKey: ["classes"], queryFn: fetchClasses });
   const studentsQ = useQuery({ queryKey: ["students"], queryFn: fetchStudents });
@@ -51,6 +54,11 @@ function CheckinPage() {
   const [classId, setClassId] = useState<string>(search.classId);
   useEffect(() => {
     if (!classId && todayClasses[0]) setClassId(todayClasses[0].id);
+  }, [classId, todayClasses]);
+  useEffect(() => {
+    if (classId && todayClasses.length > 0 && !todayClasses.some((c) => c.id === classId)) {
+      setClassId(todayClasses[0]!.id);
+    }
   }, [classId, todayClasses]);
 
   const selected = todayClasses.find((c) => c.id === classId) ?? null;
@@ -152,19 +160,25 @@ function CheckinPage() {
 
   return (
     <div className="space-y-5">
-      <SectionTitle right={dateStr}>{t("checkin.title")}</SectionTitle>
+      <SectionTitle right={dateLabel}>{t("checkin.title")}</SectionTitle>
 
       <Card>
-        <Field label={t("checkin.chooseClass")}>
-          <Select value={classId ?? ""} onChange={(e) => setClassId(e.target.value)}>
-            {todayClasses.length === 0 ? <option value="">{t("today.noClasses")}</option> : null}
-            {todayClasses.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name} · {fmtTime(c.start_time)}
-              </option>
-            ))}
-          </Select>
+        <Field label={t("checkin.date")}>
+          <Input type="date" value={dateStr} onChange={(e) => e.target.value && setDateStr(e.target.value)} />
         </Field>
+
+        <div className="mt-3">
+          <Field label={t("checkin.chooseClass")}>
+            <Select value={classId ?? ""} onChange={(e) => setClassId(e.target.value)}>
+              {todayClasses.length === 0 ? <option value="">{t("today.noClasses")}</option> : null}
+              {todayClasses.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {dateLabel} · {c.name} · {fmtTime(c.start_time)}
+                </option>
+              ))}
+            </Select>
+          </Field>
+        </div>
 
         <div className="mt-3 flex gap-2">
           {scanning ? (

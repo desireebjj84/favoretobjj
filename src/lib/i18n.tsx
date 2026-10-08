@@ -60,6 +60,7 @@ const en: Dict = {
 
   "checkin.title": "Check-in",
   "checkin.chooseClass": "Choose the class",
+  "checkin.date": "Date",
   "checkin.startCamera": "Start camera",
   "checkin.stopCamera": "Stop camera",
   "checkin.manual": "Type the code",
@@ -233,6 +234,7 @@ const pt: Dict = {
 
   "checkin.title": "Check-in",
   "checkin.chooseClass": "Escolha a aula",
+  "checkin.date": "Data",
   "checkin.startCamera": "Abrir câmera",
   "checkin.stopCamera": "Fechar câmera",
   "checkin.manual": "Digitar o código",
@@ -406,6 +408,7 @@ const es: Dict = {
 
   "checkin.title": "Check-in",
   "checkin.chooseClass": "Elige la clase",
+  "checkin.date": "Fecha",
   "checkin.startCamera": "Abrir cámara",
   "checkin.stopCamera": "Cerrar cámara",
   "checkin.manual": "Escribir el código",
