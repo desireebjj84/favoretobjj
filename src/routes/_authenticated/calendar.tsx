@@ -32,18 +32,31 @@ export const Route = createFileRoute("/_authenticated/calendar")({
   component: CalendarPage,
 });
 
+const BOOK_L = {
+  en: { book: "Book", booked: "Booked", full: "Full", reserved: "booked" },
+  pt: { book: "Reservar", booked: "Reservado", full: "Lotada", reserved: "reservas" },
+  es: { book: "Reservar", booked: "Reservado", full: "Llena", reserved: "reservas" },
+} as const;
+
 function CalendarPage() {
   const { t, lang } = useI18n();
   const { locationId, isStaff } = useApp();
+  const qc = useQueryClient();
   const [offset, setOffset] = useState(0);
+  const [busy, setBusy] = useState<string | null>(null);
+  const L = BOOK_L[(lang as keyof typeof BOOK_L) in BOOK_L ? (lang as keyof typeof BOOK_L) : "en"];
 
   const weekStart = addDays(startOfWeek(new Date()), offset * 7);
   const from = isoDate(weekStart);
   const to = isoDate(addDays(weekStart, 6));
 
+  const [ready, setReady] = useState(0);
   useEffect(() => {
-    void ensureSessions(from, to);
-  }, [from, to]);
+    void ensureSessions(from, to).then(() => {
+      setReady((n) => n + 1);
+      void qc.invalidateQueries({ queryKey: ["sessions", from, to] });
+    });
+  }, [from, to, qc]);
 
   const classesQ = useQuery({ queryKey: ["classes"], queryFn: fetchClasses });
   const sessionsQ = useQuery({ queryKey: ["sessions", from, to], queryFn: () => fetchSessions(from, to) });
@@ -53,6 +66,37 @@ function CalendarPage() {
     enabled: ids.length > 0,
     queryFn: () => fetchAttendance(ids),
   });
+  const studentsQ = useQuery({ queryKey: ["students"], queryFn: fetchStudents, enabled: !isStaff });
+  const bookCountQ = useQuery({
+    queryKey: ["booking-counts", from, to, ids.length, ready],
+    enabled: ids.length > 0,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("session_booking_count", { _session_ids: ids });
+      if (error) throw error;
+      return new Map((data ?? []).map((r) => [r.session_id, Number(r.n)]));
+    },
+  });
+  const myBookingsQ = useQuery({
+    queryKey: ["my-bookings", from, to, ids.length],
+    enabled: ids.length > 0 && !isStaff,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("bookings").select("id, session_id, student_id").in("session_id", ids);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  async function toggle(sessionId: string, studentId: string) {
+    setBusy(sessionId + studentId);
+    const existing = (myBookingsQ.data ?? []).find((b) => b.session_id === sessionId && b.student_id === studentId);
+    const { error } = existing
+      ? await supabase.from("bookings").delete().eq("id", existing.id)
+      : await supabase.from("bookings").insert({ session_id: sessionId, student_id: studentId });
+    setBusy(null);
+    if (error) alert(error.message);
+    await qc.invalidateQueries({ queryKey: ["my-bookings"] });
+    await qc.invalidateQueries({ queryKey: ["booking-counts"] });
+  }
 
   const counts = useMemo(() => {
     const m = new Map<string, number>();
@@ -65,8 +109,10 @@ function CalendarPage() {
 
   const classes = (classesQ.data ?? []).filter((c) => !locationId || c.location_id === locationId);
   const sessions = sessionsQ.data ?? [];
+  const myStudents = studentsQ.data ?? [];
   const locale = lang === "pt" ? "pt-BR" : lang === "es" ? "es-ES" : "en-US";
   const todayStr = isoDate(new Date());
+
 
   return (
     <div className="space-y-4">
