@@ -8,6 +8,13 @@
       "when": 1791500108426,
       "tag": "0000_bookings",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791509671642,
+      "tag": "0001_guardian_self_register_students",
+      "breakpoints": true
     }
   ]
 }
