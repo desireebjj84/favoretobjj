@@ -12,6 +12,7 @@ const NAV = [
   { to: "/today", key: "nav.today" },
   { to: "/calendar", key: "nav.calendar" },
   { to: "/students", key: "nav.students" },
+  { to: "/my-students", key: "nav.myStudents" },
   { to: "/reports", key: "nav.reports" },
 ] as const;
 
@@ -24,7 +25,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const { data: locations = [] } = useQuery({ queryKey: ["locations"], queryFn: fetchLocations });
 
-  const nav = NAV.filter((n) => n.to !== "/reports" || isStaff);
+  const nav = NAV.filter(
+    (n) =>
+      (n.to !== "/reports" || isStaff) &&
+      (n.to !== "/students" || isStaff) &&
+      (n.to !== "/my-students" || !isStaff),
+  );
 
   async function signOut() {
     await queryClient.cancelQueries();

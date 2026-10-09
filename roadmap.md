@@ -10,3 +10,4 @@
 
 ## Waiting on user
 - Real class schedule (user can enter it in the class manager, or send it to be loaded)
+- [x] Tela de auto-cadastro de alunos (/my-students) com vínculo automático à conta
