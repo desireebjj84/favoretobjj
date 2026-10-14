@@ -283,6 +283,7 @@ export type Database = {
       students: {
         Row: {
           active: boolean
+          approved: boolean
           belt: Database["public"]["Enums"]["belt_color"]
           birth_date: string | null
           created_at: string
@@ -298,6 +299,7 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          approved?: boolean
           belt?: Database["public"]["Enums"]["belt_color"]
           birth_date?: string | null
           created_at?: string
@@ -313,6 +315,7 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          approved?: boolean
           belt?: Database["public"]["Enums"]["belt_color"]
           birth_date?: string | null
           created_at?: string
