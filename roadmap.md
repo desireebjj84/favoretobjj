@@ -9,6 +9,7 @@
 - Class manager screen: admin adds/edits/removes classes per academy
 - Installable on phones: web app manifest + logo icons (192/512/maskable/apple-touch), theme color
 - Embeddable student portal: iframe detection, email-first sign-in note + "open in new tab", ?lang= URL param, camera hint
+- Portal in Portuguese on the academy site: ?lang=pt in the embedded link (en / es available), plus in-app EN/PT/ES switch
 
 ## Waiting on user
 - Real class schedule (user can enter it in the class manager, or send it to be loaded)
