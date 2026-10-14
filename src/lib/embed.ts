@@ -26,7 +26,5 @@ export function useEmbedded(): boolean {
 /** Open the portal in its own browser tab (needed for Google sign-in and the camera). */
 export function openInNewTab() {
   if (typeof window === "undefined") return;
-  const url = new URL(window.location.href);
-  url.searchParams.set("standalone", "1");
-  window.open(url.toString(), "_blank", "noopener");
+  window.open(window.location.href, "_blank", "noopener");
 }
