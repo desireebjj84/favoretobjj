@@ -17,7 +17,7 @@ export function BeltProgress({ student }: { student: StudentRow }) {
   const isBlack = student.belt === "black";
   const left = Math.max(0, per - done);
   const idx = BELT_ORDER.indexOf(student.belt);
-  const nextBelt = BELT_ORDER[Math.min(idx + 1, BELT_ORDER.length - 1)];
+  const nextBelt = BELT_ORDER[Math.min(idx + 1, BELT_ORDER.length - 1)] ?? student.belt;
   const nextLabel = student.stripes < 4 ? `${student.stripes + 1}º ${t("belt.stripes")}` : t(`belt.${nextBelt}`);
 
   async function change(belt: typeof student.belt, stripes: number) {
