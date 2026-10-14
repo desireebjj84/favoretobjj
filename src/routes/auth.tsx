@@ -26,7 +26,7 @@ function AuthPage() {
   const { session } = useApp();
   const embedded = useEmbedded();
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -42,9 +42,15 @@ function AuthPage() {
     setBusy(true);
     setMsg(null);
     try {
-      if (mode === "signup") {
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        setMsg(t("auth.resetSent"));
+      } else if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({
-          email,
+          email: email.trim(),
           password,
           options: {
             emailRedirectTo: window.location.origin,
@@ -54,11 +60,14 @@ function AuthPage() {
         if (error) throw error;
         if (!data.session) setMsg(t("auth.checkEmail"));
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
         if (error) throw error;
       }
     } catch (err) {
-      setMsg(err instanceof Error ? err.message : String(err));
+      const raw = err instanceof Error ? err.message : String(err);
+      if (/invalid login credentials/i.test(raw)) setMsg(t("auth.invalid"));
+      else if (/email not confirmed/i.test(raw)) setMsg(t("auth.notConfirmed"));
+      else setMsg(raw);
     } finally {
       setBusy(false);
     }
@@ -102,22 +111,40 @@ function AuthPage() {
                 autoComplete="email"
               />
             </Field>
-            <Field label={t("common.password")}>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                autoComplete={mode === "signup" ? "new-password" : "current-password"}
-              />
-            </Field>
+            {mode !== "forgot" ? (
+              <Field label={t("common.password")}>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                />
+              </Field>
+            ) : null}
+            {mode === "signin" ? (
+              <button
+                type="button"
+                className="block w-full text-right text-xs font-medium text-clay underline-offset-2 hover:underline"
+                onClick={() => {
+                  setMode("forgot");
+                  setMsg(null);
+                }}
+              >
+                {t("auth.forgot")}
+              </button>
+            ) : null}
             <Button type="submit" variant="accent" className="w-full" disabled={busy}>
-              {mode === "signup" ? t("common.signUp") : t("common.signIn")}
+              {mode === "signup"
+                ? t("common.signUp")
+                : mode === "forgot"
+                  ? t("auth.sendReset")
+                  : t("common.signIn")}
             </Button>
           </form>
 
-          {embedded ? (
+          {mode === "forgot" ? null : embedded ? (
             <>
               <p className="mt-3 rounded-lg bg-foreground/5 px-3 py-2 text-center text-[11px] leading-relaxed text-muted-foreground">
                 {t("auth.embedNote")}
@@ -136,9 +163,16 @@ function AuthPage() {
 
           <button
             className="mt-4 w-full text-center text-xs font-medium text-muted-foreground"
-            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            onClick={() => {
+              setMode(mode === "signin" ? "signup" : "signin");
+              setMsg(null);
+            }}
           >
-            {mode === "signin" ? t("auth.noAccount") : t("auth.haveAccount")}
+            {mode === "signin"
+              ? t("auth.noAccount")
+              : mode === "forgot"
+                ? t("auth.backToSignin")
+                : t("auth.haveAccount")}
           </button>
         </div>
       </div>
