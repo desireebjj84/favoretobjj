@@ -5,6 +5,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Button, Field, Input } from "@/components/ui-kit";
+import { openInNewTab, useEmbedded } from "@/lib/embed";
 import logoAsset from "@/assets/favoreto-logo.jpg.asset.json";
 
 export const Route = createFileRoute("/auth")({
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const { t } = useI18n();
   const { session } = useApp();
+  const embedded = useEmbedded();
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
@@ -115,9 +117,20 @@ function AuthPage() {
             </Button>
           </form>
 
-          <Button variant="outline" className="mt-3 w-full" onClick={google}>
-            {t("auth.google")}
-          </Button>
+          {embedded ? (
+            <>
+              <p className="mt-3 rounded-lg bg-foreground/5 px-3 py-2 text-center text-[11px] leading-relaxed text-muted-foreground">
+                {t("auth.embedNote")}
+              </p>
+              <Button variant="outline" className="mt-2 w-full" onClick={openInNewTab}>
+                {t("auth.openTab")}
+              </Button>
+            </>
+          ) : (
+            <Button variant="outline" className="mt-3 w-full" onClick={google}>
+              {t("auth.google")}
+            </Button>
+          )}
 
           {msg ? <p className="mt-3 text-center text-xs text-clay">{msg}</p> : null}
 
