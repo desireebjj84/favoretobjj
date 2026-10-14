@@ -24,6 +24,7 @@ function SettingsPage() {
   const [accent, setAccent] = useState(settings.accent_color);
   const [language, setLanguage] = useState(settings.default_language);
   const [threshold, setThreshold] = useState(String(settings.absence_threshold));
+  const [perStripe, setPerStripe] = useState(String(settings.classes_per_stripe));
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -40,6 +41,7 @@ function SettingsPage() {
         accent_color: accent,
         default_language: language,
         absence_threshold: Number(threshold) || 1,
+        classes_per_stripe: Number(perStripe) || 1,
       })
       .eq("id", 1);
     setBusy(false);
@@ -95,6 +97,9 @@ function SettingsPage() {
               value={threshold}
               onChange={(e) => setThreshold(e.target.value)}
             />
+          </Field>
+          <Field label={t("belt.perStripe")}>
+            <Input type="number" min={1} value={perStripe} onChange={(e) => setPerStripe(e.target.value)} />
           </Field>
           <Button type="submit" variant="accent" className="w-full" disabled={busy}>
             {t("common.save")}
