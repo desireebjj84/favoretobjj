@@ -16,3 +16,4 @@
 - [x] Tela de auto-cadastro de alunos (/my-students) com vínculo automático à conta
 
 - [ ] Belt progress: apply belt sequence + classes required per belt (waiting on Desirèe)
+- [ ] My Profile area: belt/stripes display + editable name/phone/address (in progress)

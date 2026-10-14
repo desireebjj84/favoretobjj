@@ -14,6 +14,7 @@ const NAV = [
   { to: "/calendar", key: "nav.calendar" },
   { to: "/students", key: "nav.students" },
   { to: "/my-students", key: "nav.myStudents" },
+  { to: "/profile", key: "nav.profile" },
   { to: "/reports", key: "nav.reports" },
 ] as const;
 
