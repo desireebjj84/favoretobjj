@@ -11,6 +11,7 @@ export type OrgSettings = {
   logo_url: string | null;
   default_language: string;
   absence_threshold: number;
+  classes_per_stripe: number;
 };
 
 type AppValue = {
@@ -31,6 +32,7 @@ const DEFAULT_SETTINGS: OrgSettings = {
   logo_url: null,
   default_language: "en",
   absence_threshold: 2,
+  classes_per_stripe: 20,
 };
 
 const AppContext = createContext<AppValue>({
@@ -80,7 +82,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("org_settings")
-        .select("org_name, accent_color, logo_url, default_language, absence_threshold")
+        .select("org_name, accent_color, logo_url, default_language, absence_threshold, classes_per_stripe")
         .eq("id", 1)
         .maybeSingle();
       if (error) throw error;

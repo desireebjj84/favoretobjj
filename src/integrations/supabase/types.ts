@@ -224,6 +224,7 @@ export type Database = {
         Row: {
           absence_threshold: number
           accent_color: string
+          classes_per_stripe: number
           default_language: string
           id: number
           logo_url: string | null
@@ -233,6 +234,7 @@ export type Database = {
         Insert: {
           absence_threshold?: number
           accent_color?: string
+          classes_per_stripe?: number
           default_language?: string
           id?: number
           logo_url?: string | null
@@ -242,6 +244,7 @@ export type Database = {
         Update: {
           absence_threshold?: number
           accent_color?: string
+          classes_per_stripe?: number
           default_language?: string
           id?: number
           logo_url?: string | null
@@ -294,6 +297,8 @@ export type Database = {
           location_id: string
           photo_url: string | null
           qr_code: string
+          rank_since: string
+          stripes: number
           updated_at: string
           user_id: string | null
         }
@@ -310,6 +315,8 @@ export type Database = {
           location_id: string
           photo_url?: string | null
           qr_code?: string
+          rank_since?: string
+          stripes?: number
           updated_at?: string
           user_id?: string | null
         }
@@ -326,6 +333,8 @@ export type Database = {
           location_id?: string
           photo_url?: string | null
           qr_code?: string
+          rank_since?: string
+          stripes?: number
           updated_at?: string
           user_id?: string | null
         }

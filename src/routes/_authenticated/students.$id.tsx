@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { BeltProgress } from "@/components/BeltProgress";
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { useApp } from "@/lib/app-context";
@@ -91,6 +92,8 @@ function StudentDetail() {
           </p>
         ) : null}
       </Card>
+
+      <BeltProgress student={student} />
 
       <Card>
         <SectionTitle right={t("students.qrHint")}>{t("students.qr")}</SectionTitle>
