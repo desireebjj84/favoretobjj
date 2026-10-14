@@ -606,6 +606,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get("lang");
+    if (param === "en" || param === "pt" || param === "es") {
+      setLangState(param);
+      window.localStorage.setItem("favoreto-lang", param);
+      return;
+    }
     const stored = window.localStorage.getItem("favoreto-lang") as Lang | null;
     if (stored && stored in DICTS) {
       setLangState(stored);
