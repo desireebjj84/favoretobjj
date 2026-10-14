@@ -6,6 +6,7 @@ import { useApp } from "@/lib/app-context";
 import { LANGS, useI18n } from "@/lib/i18n";
 import { fetchLocations } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import { openInNewTab, useEmbedded } from "@/lib/embed";
 import logoAsset from "@/assets/favoreto-logo.jpg.asset.json";
 
 const NAV = [
@@ -19,6 +20,7 @@ const NAV = [
 export function AppShell({ children }: { children: ReactNode }) {
   const { t, lang, setLang } = useI18n();
   const { settings, locationId, setLocationId, isStaff, isAdmin } = useApp();
+  const embedded = useEmbedded();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -71,6 +73,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                 </button>
               ))}
             </div>
+            {embedded ? (
+              <button
+                onClick={openInNewTab}
+                className="grid size-9 place-items-center rounded-md border border-border bg-card font-mono text-[11px] text-muted-foreground"
+                aria-label={t("common.openPortal")}
+                title={t("common.openPortal")}
+              >
+                ↗
+              </button>
+            ) : null}
             {isAdmin ? (
               <Link
                 to="/settings"

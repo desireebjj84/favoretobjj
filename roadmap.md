@@ -8,6 +8,7 @@
 - i18n EN / PT / ES, Favoreto logo + favicon
 - Class manager screen: admin adds/edits/removes classes per academy
 - Installable on phones: web app manifest + logo icons (192/512/maskable/apple-touch), theme color
+- Embeddable student portal: iframe detection, email-first sign-in note + "open in new tab", ?lang= URL param, camera hint
 
 ## Waiting on user
 - Real class schedule (user can enter it in the class manager, or send it to be loaded)

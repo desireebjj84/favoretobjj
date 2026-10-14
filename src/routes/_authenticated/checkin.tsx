@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Button, Card, Empty, Field, Input, SectionTitle, Select, Tag } from "@/components/ui-kit";
+import { useEmbedded } from "@/lib/embed";
 import {
   BELT_DOT,
   fetchAttendance,
@@ -34,6 +35,7 @@ export const Route = createFileRoute("/_authenticated/checkin")({
 function CheckinPage() {
   const { t, lang } = useI18n();
   const { locationId, isStaff } = useApp();
+  const embedded = useEmbedded();
   const search = Route.useSearch();
   const queryClient = useQueryClient();
 
@@ -191,6 +193,12 @@ function CheckinPage() {
             </Button>
           )}
         </div>
+
+        {embedded ? (
+          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+            {t("checkin.embedHint")}
+          </p>
+        ) : null}
 
         <div id="qr-reader" className={scanning ? "mt-3 overflow-hidden rounded-xl" : "hidden"} />
 

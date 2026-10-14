@@ -196,6 +196,12 @@ const en: Dict = {
   "classes.instructor": "Instructor",
   "classes.remove": "Remove",
   "classes.confirmRemove": "Remove this class from the schedule?",
+
+  "auth.embedNote":
+    "You are on the academy website. Sign in here with email and password — to use Google, open the portal in a new tab.",
+  "auth.openTab": "Open portal in a new tab",
+  "checkin.embedHint": "If the camera doesn't start, open the portal in a new tab and scan there.",
+  "common.openPortal": "Open portal in a new tab",
 };
 
 const pt: Dict = {
@@ -384,6 +390,12 @@ const pt: Dict = {
   "classes.instructor": "Professor",
   "classes.remove": "Remover",
   "classes.confirmRemove": "Remover esta aula da grade?",
+
+  "auth.embedNote":
+    "Você está no site da academia. Entre aqui com e-mail e senha — para usar o Google, abra o portal em nova aba.",
+  "auth.openTab": "Abrir portal em nova aba",
+  "checkin.embedHint": "Se a câmera não abrir, abra o portal em nova aba e escaneie lá.",
+  "common.openPortal": "Abrir portal em nova aba",
 };
 
 const es: Dict = {
@@ -572,6 +584,12 @@ const es: Dict = {
   "classes.instructor": "Profesor",
   "classes.remove": "Eliminar",
   "classes.confirmRemove": "¿Eliminar esta clase del horario?",
+
+  "auth.embedNote":
+    "Está en el sitio de la academia. Inicie sesión aquí con correo y contraseña — para usar Google, abra el portal en una pestaña nueva.",
+  "auth.openTab": "Abrir portal en una pestaña nueva",
+  "checkin.embedHint": "Si la cámara no se abre, abra el portal en una pestaña nueva y escanee allí.",
+  "common.openPortal": "Abrir portal en una pestaña nueva",
 };
 
 const DICTS: Record<Lang, Dict> = { en, pt, es };
@@ -588,6 +606,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get("lang");
+    if (param === "en" || param === "pt" || param === "es") {
+      setLangState(param);
+      window.localStorage.setItem("favoreto-lang", param);
+      return;
+    }
     const stored = window.localStorage.getItem("favoreto-lang") as Lang | null;
     if (stored && stored in DICTS) {
       setLangState(stored);
