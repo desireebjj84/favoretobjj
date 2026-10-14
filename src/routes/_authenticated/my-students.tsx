@@ -72,6 +72,7 @@ function MyStudentsPage() {
               <span className={`size-2 shrink-0 rounded-full ${BELT_DOT[s.belt]}`} />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold">{s.full_name}</p>
+                {!s.approved ? <p className="text-[11px] font-semibold text-clay">{t("students.awaiting")}</p> : null}
                 <p className="text-[11px] text-muted-foreground">
                   {t(`belt.${s.belt}`)} · {t(s.is_minor ? "common.kids" : "common.adult")}
                   {s.user_id === uid ? ` · ${t("myStudents.me")}` : ""}
