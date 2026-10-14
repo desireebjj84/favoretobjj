@@ -69,6 +69,7 @@ export type StudentRow = {
   user_id: string | null;
   qr_code: string;
   active: boolean;
+  approved: boolean;
 };
 
 export type SessionRow = {
@@ -260,3 +261,10 @@ export const TONE_BAR: Record<string, string> = {
   blue: "bg-blue",
   green: "bg-green",
 };
+
+export async function setStudentApproval(id: string, approved: boolean) {
+  const { error } = approved
+    ? await supabase.from("students").update({ approved: true }).eq("id", id)
+    : await supabase.from("students").update({ active: false }).eq("id", id);
+  if (error) throw error;
+}

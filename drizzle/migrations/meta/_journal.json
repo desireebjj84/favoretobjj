@@ -15,6 +15,13 @@
       "when": 1791509671642,
       "tag": "0001_guardian_self_register_students",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792016030020,
+      "tag": "0002_student_approval",
+      "breakpoints": true
     }
   ]
 }

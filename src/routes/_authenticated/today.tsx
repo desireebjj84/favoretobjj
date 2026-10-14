@@ -103,6 +103,17 @@ function TodayPage() {
   const locale = lang === "pt" ? "pt-BR" : lang === "es" ? "es-ES" : "en-US";
   const dateLabel = today.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" });
 
+  const todaySessionIds = new Map(todaySessions.map((s) => [s.id, s.class_id]));
+  const todayCheckins = attendance
+    .filter((a) => a.status !== "absent" && todaySessionIds.has(a.session_id))
+    .map((a) => ({
+      a,
+      st: students.find((x) => x.id === a.student_id),
+      cls: classes.find((c) => c.id === todaySessionIds.get(a.session_id)),
+    }))
+    .filter((x) => x.cls)
+    .sort((x, y) => y.a.checked_in_at.localeCompare(x.a.checked_in_at));
+
   if (!isStaff) return <GuardianToday />;
 
   return (
@@ -162,6 +173,24 @@ function TodayPage() {
           })}
         </div>
       </section>
+
+      <Card>
+        <SectionTitle right={`${todayCheckins.length}`}>{t("today.whoChecked")}</SectionTitle>
+        <div className="mt-3 space-y-2">
+          {todayCheckins.length === 0 ? <Empty label={t("today.noCheckins")} /> : null}
+          {todayCheckins.map(({ a, st, cls }) => (
+            <div key={a.id} className="flex items-center gap-3">
+              <span className="font-mono text-[11px] text-muted-foreground">
+                {new Date(a.checked_in_at).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
+              </span>
+              <span className="min-w-0 flex-1 truncate text-sm font-semibold">{st?.full_name ?? "—"}</span>
+              <span className="truncate text-[11px] text-muted-foreground">
+                {cls?.name} {cls ? fmtTime(cls.start_time) : ""}
+              </span>
+            </div>
+          ))}
+        </div>
+      </Card>
 
       <Card>
         <SectionTitle right={t("common.capacity")}>{t("today.thisWeek")}</SectionTitle>

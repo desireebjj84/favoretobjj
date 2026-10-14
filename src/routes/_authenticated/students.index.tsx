@@ -10,6 +10,7 @@ import {
   createStudent,
   fetchLocations,
   fetchStudents,
+  setStudentApproval,
 } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/students/")({
@@ -38,8 +39,18 @@ function StudentsPage() {
     const q = query.trim().toLowerCase();
     return (studentsQ.data ?? [])
       .filter((s) => !locationId || s.location_id === locationId)
+      .filter((s) => s.approved || !s.active)
       .filter((s) => !q || s.full_name.toLowerCase().includes(q));
   }, [studentsQ.data, query, locationId]);
+
+  const pending = (studentsQ.data ?? []).filter(
+    (s) => !s.approved && s.active && (!locationId || s.location_id === locationId),
+  );
+
+  async function decide(id: string, ok: boolean) {
+    await setStudentApproval(id, ok);
+    await queryClient.invalidateQueries({ queryKey: ["students"] });
+  }
 
   return (
     <div className="space-y-4">
@@ -67,6 +78,25 @@ function StudentsPage() {
             />
           ) : null}
         </>
+      ) : null}
+
+      {isStaff && pending.length > 0 ? (
+        <Card className="space-y-2 border-accent">
+          <SectionTitle right={`${pending.length}`}>{t("students.pending")}</SectionTitle>
+          {pending.map((s) => (
+            <div key={s.id} className="flex items-center gap-2">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold">{s.full_name}</p>
+                <p className="text-[11px] text-muted-foreground">
+                  {(locationsQ.data ?? []).find((l) => l.id === s.location_id)?.short_name} ·{" "}
+                  {t(s.is_minor ? "common.kids" : "common.adult")}
+                </p>
+              </div>
+              <Button variant="accent" onClick={() => decide(s.id, true)}>{t("students.approve")}</Button>
+              <Button variant="outline" onClick={() => decide(s.id, false)}>{t("students.reject")}</Button>
+            </div>
+          ))}
+        </Card>
       ) : null}
 
       <div className="space-y-2">
