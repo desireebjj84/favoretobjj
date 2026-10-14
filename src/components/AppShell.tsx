@@ -73,6 +73,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                 </button>
               ))}
             </div>
+            {embedded ? (
+              <button
+                onClick={openInNewTab}
+                className="grid size-9 place-items-center rounded-md border border-border bg-card font-mono text-[11px] text-muted-foreground"
+                aria-label={t("common.openPortal")}
+                title={t("common.openPortal")}
+              >
+                ↗
+              </button>
+            ) : null}
             {isAdmin ? (
               <Link
                 to="/settings"

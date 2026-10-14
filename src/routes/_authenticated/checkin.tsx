@@ -194,6 +194,12 @@ function CheckinPage() {
           )}
         </div>
 
+        {embedded ? (
+          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+            {t("checkin.embedHint")}
+          </p>
+        ) : null}
+
         <div id="qr-reader" className={scanning ? "mt-3 overflow-hidden rounded-xl" : "hidden"} />
 
         <form
