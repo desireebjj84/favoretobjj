@@ -53,7 +53,7 @@ function ClassesPage() {
       weekday: 1,
       start_time: "19:00",
       end_time: "20:00",
-      capacity: 20,
+      capacity: 15,
       instructor_name: "",
     };
   }
