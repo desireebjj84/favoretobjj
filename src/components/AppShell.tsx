@@ -14,6 +14,7 @@ const NAV = [
   { to: "/calendar", key: "nav.calendar" },
   { to: "/students", key: "nav.students" },
   { to: "/my-students", key: "nav.myStudents" },
+  { to: "/profile", key: "nav.profile" },
   { to: "/reports", key: "nav.reports" },
 ] as const;
 
@@ -120,7 +121,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main className="mx-auto max-w-3xl px-4 pb-28 pt-3">{children}</main>
 
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card/85 backdrop-blur-md">
-        <div className={cn("mx-auto grid max-w-3xl", nav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
+        <div className={cn("mx-auto grid max-w-3xl", nav.length === 5 ? "grid-cols-5" : nav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
           {nav.map((item) => {
             const active = pathname.startsWith(item.to);
             return (
