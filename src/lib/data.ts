@@ -70,6 +70,8 @@ export type StudentRow = {
   qr_code: string;
   active: boolean;
   approved: boolean;
+  stripes: number;
+  rank_since: string;
 };
 
 export type SessionRow = {
@@ -266,5 +268,21 @@ export async function setStudentApproval(id: string, approved: boolean) {
   const { error } = approved
     ? await supabase.from("students").update({ approved: true }).eq("id", id)
     : await supabase.from("students").update({ active: false }).eq("id", id);
+  if (error) throw error;
+}
+
+export const BELT_ORDER: Belt[] = ["white","grey","yellow","orange","green","blue","purple","brown","black"];
+export async function countClassesSince(studentId: string, since: string): Promise<number> {
+  const { count, error } = await supabase
+    .from("attendance")
+    .select("id", { count: "exact", head: true })
+    .eq("student_id", studentId)
+    .neq("status", "absent")
+    .gte("checked_in_at", since);
+  if (error) throw error;
+  return count ?? 0;
+}
+export async function setRank(studentId: string, belt: Belt, stripes: number) {
+  const { error } = await supabase.from("students").update({ belt, stripes }).eq("id", studentId);
   if (error) throw error;
 }
