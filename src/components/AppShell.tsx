@@ -117,9 +117,36 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-4 pb-28 pt-3">{children}</main>
+      <main className="mx-auto max-w-3xl px-4 pb-28 pt-3 md:ml-56 md:max-w-4xl md:pb-8">{children}</main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card/85 backdrop-blur-md">
+      {/* Desktop: menu lateral esquerdo */}
+      <nav className="fixed inset-y-0 left-0 z-10 hidden w-56 flex-col border-r border-border bg-card/85 pt-40 backdrop-blur-md md:flex">
+        <div className="flex flex-col gap-1 px-3">
+          {nav.map((item) => {
+            const active = pathname.startsWith(item.to);
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm",
+                  active
+                    ? "bg-primary/15 font-semibold text-foreground"
+                    : "font-medium text-muted-foreground hover:bg-foreground/5",
+                )}
+              >
+                <span
+                  className={cn("size-1.5 rounded-full", active ? "bg-accent" : "bg-foreground/25")}
+                />
+                {t(item.key)}
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* Celular: menu no rodapé */}
+      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card/85 backdrop-blur-md md:hidden">
         <div className={cn("mx-auto grid max-w-3xl", nav.length === 6 ? "grid-cols-6" : nav.length === 5 ? "grid-cols-5" : nav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
           {nav.map((item) => {
             const active = pathname.startsWith(item.to);
