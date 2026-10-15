@@ -134,7 +134,7 @@
   font-size: 0.625rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: color-mix(in oklab, var(--paper) 62%, transparent);
+  color: color-mix(in oklab, var(--paper) 80%, transparent);
 }
 
 @keyframes rise {

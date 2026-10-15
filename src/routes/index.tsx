@@ -45,7 +45,7 @@ function Landing() {
               onClick={() => setLang(l.code)}
               className={cn(
                 "px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider",
-                lang === l.code ? "bg-gold text-noir" : "text-paper/60",
+                lang === l.code ? "bg-gold text-noir" : "text-paper/80",
               )}
             >
               {l.label}

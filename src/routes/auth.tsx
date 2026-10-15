@@ -128,7 +128,7 @@ function AuthPage() {
             {mode === "signin" ? (
               <button
                 type="button"
-                className="block w-full text-right text-xs font-medium text-clay underline-offset-2 hover:underline"
+                className="block w-full text-right text-xs font-medium text-gold underline-offset-2 hover:underline"
                 onClick={() => {
                   setMode("forgot");
                   setMsg(null);
@@ -161,7 +161,11 @@ function AuthPage() {
             </Button>
           )}
 
-          {msg ? <p className="mt-3 text-center text-xs text-clay">{msg}</p> : null}
+          {msg ? (
+            <p className="mt-3 rounded-lg border border-clay/40 bg-clay/10 px-3 py-2 text-center text-xs text-paper">
+              {msg}
+            </p>
+          ) : null}
 
           <button
             className="mt-4 w-full text-center text-xs font-medium text-paper/60 hover:text-paper"
