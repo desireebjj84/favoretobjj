@@ -166,17 +166,15 @@ function CalendarPage() {
                       </p>
                     ) : null}
                     <div className="flex items-baseline justify-between gap-2">
-                      <p className="truncate text-sm font-semibold">
-                        {c.name}
-                        <span className="ml-1.5 font-mono text-[10px] text-muted-foreground">
-                          {fmtTime(c.start_time)}–{fmtTime(c.end_time)}
-                        </span>
-                      </p>
+                      <p className="min-w-0 truncate text-sm font-semibold">{c.name}</p>
                       <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                         {count}
                         <span className="opacity-40">/{c.capacity}</span>
                       </p>
                     </div>
+                    <p className="mt-1 font-mono text-[11px] text-muted-foreground">
+                      {fmtTime(c.start_time)}–{fmtTime(c.end_time)}
+                    </p>
                     <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
                     {s && (bookCountQ.data?.get(s.id) ?? 0) > 0 ? (
                       <p className="mt-1 font-mono text-[10px] text-muted-foreground">
