@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Bar, Card, Empty, SectionTitle, Tag } from "@/components/ui-kit";
@@ -56,6 +57,18 @@ function TodayPage() {
     queryKey: ["attendance", weekFrom, weekTo, sessionIds.length],
     enabled: sessionIds.length > 0,
     queryFn: () => fetchAttendance(sessionIds),
+  });
+  const bookingsQ = useQuery({
+    queryKey: ["week-bookings", weekFrom, weekTo, sessionIds.length],
+    enabled: sessionIds.length > 0 && isStaff,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("id, session_id, student_id")
+        .in("session_id", sessionIds);
+      if (error) throw error;
+      return data ?? [];
+    },
   });
 
   const classes = (classesQ.data ?? []).filter((c) => !locationId || c.location_id === locationId);
