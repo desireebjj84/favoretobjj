@@ -60,6 +60,13 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setDrawerOpen(true)}
+              className="grid size-9 place-items-center rounded-md border border-border bg-card text-sm md:hidden"
+              aria-label="Menu"
+            >
+              ☰
+            </button>
             <div className="flex overflow-hidden rounded-md bg-foreground/5">
               {LANGS.map((l) => (
                 <button
