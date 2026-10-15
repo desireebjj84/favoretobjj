@@ -20,4 +20,4 @@
 - [x] Apagar os 16 alunos de exemplo do seed (keep: Frederico da cunha, real)
 - [x] Menu lateral: mover barra de botões do rodapé para a lateral (desktop), manter rodapé no celular
 - [x] Faixa por idade: 16+ segue sequência adulta (branca→azul); cinza/amarela/laranja/verde só <16
-- [ ] Publicar correção da aba "Meus alunos" + demais mudanças (usuária confirmou)
+- [x] Publicar correção da aba "Meus alunos" + demais mudanças (publicado 15/10)
