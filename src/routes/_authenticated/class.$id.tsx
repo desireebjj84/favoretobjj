@@ -85,7 +85,7 @@ function ClassPage() {
   const qc = useQueryClient();
   const [busy, setBusy] = useState<string | null>(null);
   const decide = async (ids: string[], attended: boolean) => {
-    setBusy(ids.length > 1 ? "all" : ids[0]);
+    setBusy(ids.length > 1 ? "all" : (ids[0] ?? null));
     try {
       for (const x of ids) await confirmAttendance(x, attended);
       await qc.invalidateQueries({ queryKey: ["class-day-attendance", sid] });

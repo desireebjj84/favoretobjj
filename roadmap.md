@@ -31,3 +31,5 @@
 - [x] Página da aula: clicar numa aula abre quem fez check-in (nome, faixa, horário), quem reservou sem entrar e as faltas
 - [x] Lista de presença: mostrar somente nome e faixa (sem horário)
 - [x] Contador de vagas: cada aula mostra reservas/vagas restantes (ex. 2/13) no calendário, hoje e reservas
+- [x] Confirmar presença após check-in (Veio/Não veio); só confirmadas contam para a faixa
+- [ ] Aulas por faixa (adulto/criança) — aguardando tabela da Desirèe
