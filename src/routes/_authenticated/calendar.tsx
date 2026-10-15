@@ -193,7 +193,6 @@ function CalendarPage() {
                     {bookable ? (
                       <div className="flex shrink-0 flex-wrap gap-3">
                         {myStudents
-                          .filter((st) => st.location_id === c.location_id)
                           .map((st) => {
                             const mine = (myBookingsQ.data ?? []).some(
                               (b) => b.session_id === s!.id && b.student_id === st.id,
