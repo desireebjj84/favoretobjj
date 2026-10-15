@@ -5,13 +5,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
-import { Bar, Button, Card, Empty, SectionTitle } from "@/components/ui-kit";
+import { Bar, Button, Card, Empty, SectionTitle, Tag } from "@/components/ui-kit";
 import {
   TONE_BAR,
   addDays,
   ensureSessions,
   fetchAttendance,
   fetchClasses,
+  fetchLocations,
   fetchSessions,
   fetchStudents,
   fmtTime,
@@ -62,6 +63,7 @@ function CalendarPage() {
   }, [from, to, qc]);
 
   const classesQ = useQuery({ queryKey: ["classes"], queryFn: fetchClasses });
+  const locationsQ = useQuery({ queryKey: ["locations"], queryFn: fetchLocations });
   const sessionsQ = useQuery({ queryKey: ["sessions", from, to], queryFn: () => fetchSessions(from, to) });
   const ids = useMemo(() => (sessionsQ.data ?? []).map((s) => s.id), [sessionsQ.data]);
   const attQ = useQuery({
@@ -153,8 +155,16 @@ function CalendarPage() {
                 const s = sessions.find((x) => x.class_id === c.id && x.session_date === dateStr);
                 const count = s ? (counts.get(s.id) ?? 0) : 0;
                 const ratio = c.capacity ? count / c.capacity : 0;
+                const locName = locationId
+                  ? null
+                  : ((locationsQ.data ?? []).find((l) => l.id === c.location_id)?.short_name ?? null);
                 const body = (
                   <>
+                    {locName ? (
+                      <p className="mb-1.5">
+                        <Tag tone="clay">{locName}</Tag>
+                      </p>
+                    ) : null}
                     <div className="flex items-baseline justify-between gap-2">
                       <p className="truncate text-sm font-semibold">
                         {c.name}
