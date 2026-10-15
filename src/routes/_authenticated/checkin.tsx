@@ -90,8 +90,10 @@ function CheckinPage() {
     return m;
   }, [attendance]);
 
+  const bookedIds = useMemo(() => new Set(bookedQ.data ?? []), [bookedQ.data]);
+  // Alunos de outra unidade que reservaram esta aula também aparecem na lista.
   const roster: StudentRow[] = (studentsQ.data ?? []).filter(
-    (s) => !selected || s.location_id === selected.location_id,
+    (s) => !selected || s.location_id === selected.location_id || bookedIds.has(s.id),
   );
 
   const [feedback, setFeedback] = useState<{ tone: "ok" | "err"; text: string } | null>(null);
