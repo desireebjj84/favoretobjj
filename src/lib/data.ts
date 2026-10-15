@@ -285,6 +285,18 @@ export function nextBeltFor(student: { belt: Belt; birth_date: string | null; is
   if (idx === -1) return "blue"; // adult currently on a kids belt
   return order[Math.min(idx + 1, order.length - 1)] ?? student.belt;
 }
+
+/** Previous belt in the same age-appropriate sequence (for correcting mistakes). */
+export function prevBeltFor(student: { belt: Belt; birth_date: string | null; is_minor: boolean }): Belt {
+  const age = student.birth_date
+    ? (Date.now() - new Date(student.birth_date).getTime()) / (365.25 * 24 * 3600 * 1000)
+    : null;
+  const isKid = age !== null ? age < 16 : student.is_minor;
+  const order = isKid ? BELT_ORDER : ADULT_BELT_ORDER;
+  const idx = order.indexOf(student.belt);
+  if (idx <= 0) return order[0] ?? student.belt;
+  return order[idx - 1] ?? student.belt;
+}
 export async function countClassesSince(studentId: string, since: string): Promise<number> {
   const { count, error } = await supabase
     .from("attendance")

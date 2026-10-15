@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Bar, Button, Card, SectionTitle } from "@/components/ui-kit";
-import { BELT_DOT, countClassesSince, nextBeltFor, setRank, type StudentRow } from "@/lib/data";
+import { BELT_DOT, countClassesSince, nextBeltFor, prevBeltFor, setRank, type StudentRow } from "@/lib/data";
 
 export function BeltProgress({ student }: { student: StudentRow }) {
   const { t } = useI18n();
@@ -52,13 +52,23 @@ export function BeltProgress({ student }: { student: StudentRow }) {
         </>
       )}
       {isStaff ? (
-        <div className="mt-3 flex gap-2">
-          <Button type="button" className="flex-1" disabled={student.stripes >= 4} onClick={() => change(student.belt, student.stripes + 1)}>
-            {t("belt.addStripe")}
-          </Button>
-          <Button type="button" variant="accent" className="flex-1" disabled={isBlack} onClick={() => change(nextBelt, 0)}>
-            {t("belt.promote")}
-          </Button>
+        <div className="mt-3 space-y-2">
+          <div className="flex gap-2">
+            <Button type="button" className="flex-1" disabled={student.stripes >= 4} onClick={() => change(student.belt, student.stripes + 1)}>
+              {t("belt.addStripe")}
+            </Button>
+            <Button type="button" variant="accent" className="flex-1" disabled={isBlack} onClick={() => change(nextBelt, 0)}>
+              {t("belt.promote")}
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" className="flex-1" disabled={student.stripes <= 0} onClick={() => change(student.belt, student.stripes - 1)}>
+              {t("belt.removeStripe")}
+            </Button>
+            <Button type="button" variant="outline" className="flex-1" disabled={student.belt === "white"} onClick={() => change(prevBeltFor(student), 4)}>
+              {t("belt.demote")}
+            </Button>
+          </div>
         </div>
       ) : null}
     </Card>
