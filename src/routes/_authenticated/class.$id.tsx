@@ -34,9 +34,10 @@ export const Route = createFileRoute("/_authenticated/class/$id")({
       },
     ],
   }),
-  validateSearch: (search: Record<string, unknown>): { date?: string } => ({
-    date: typeof search.date === "string" ? search.date : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { date?: string } => {
+    const raw = search["date"];
+    return typeof raw === "string" ? { date: raw } : {};
+  },
   component: ClassPage,
 });
 
