@@ -166,7 +166,7 @@ function CalendarPage() {
                       </p>
                     ) : null}
                     <div className="flex items-baseline justify-between gap-2">
-                      <p className="min-w-0 truncate text-sm font-semibold">{c.name}</p>
+                      <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                       <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                         {count}
                         <span className="opacity-40">/{c.capacity}</span>
