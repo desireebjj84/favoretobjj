@@ -88,6 +88,22 @@ function TodayPage() {
   const todaySessions = sessions.filter((s) => s.session_date === dateStr);
   const sessionByClassToday = new Map(todaySessions.map((s) => [s.class_id, s]));
 
+  const tomorrow = addDays(today, 1);
+  const tomorrowStr = isoDate(tomorrow);
+  const tomorrowSessions = sessions.filter((s) => s.session_date === tomorrowStr);
+  const sessionByClassTomorrow = new Map(tomorrowSessions.map((s) => [s.class_id, s]));
+  const tomorrowClasses = classes.filter((c) => c.weekday === tomorrow.getDay());
+  const bookings = bookingsQ.data ?? [];
+  const bookingsBySession = useMemo(() => {
+    const map = new Map<string, string[]>();
+    for (const b of bookings) {
+      const arr = map.get(b.session_id) ?? [];
+      arr.push(b.student_id);
+      map.set(b.session_id, arr);
+    }
+    return map;
+  }, [bookings]);
+
   const dow = today.getDay();
   const todayClasses = classes.filter((c) => c.weekday === dow);
 
