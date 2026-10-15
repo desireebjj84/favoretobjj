@@ -238,17 +238,15 @@ function TodayPage() {
             return (
               <div key={c.id}>
                 <div className="flex items-baseline justify-between gap-2">
-                  <p className="truncate text-sm font-semibold">
-                    {c.name}
-                    <span className="ml-1.5 font-mono text-[10px] text-muted-foreground">
-                      {fmtTime(c.start_time)}
-                    </span>
-                  </p>
+                  <p className="min-w-0 truncate text-sm font-semibold">{c.name}</p>
                   <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                     {bookedIds.length}
                     <span className="opacity-40">/{c.capacity}</span> {t("today.booked")}
                   </p>
                 </div>
+                <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                  {fmtTime(c.start_time)}
+                </p>
                 {names.length > 0 ? (
                   <p className="mt-0.5 text-[11px] text-muted-foreground">{names.join(", ")}</p>
                 ) : null}

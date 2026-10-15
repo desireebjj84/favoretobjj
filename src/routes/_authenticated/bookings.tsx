@@ -131,7 +131,7 @@ function BookingsPage() {
                     </span>
                   </span>
                   <Tag tone="clay">
-                    {list.length} {t("today.booked")}
+                    {list.length} {list.length === 1 ? t("bookings.slot") : t("bookings.slots")}
                   </Tag>
                   <span className="font-mono text-xs text-muted-foreground">{isOpen ? "▾" : "▸"}</span>
                 </button>
