@@ -272,6 +272,19 @@ export async function setStudentApproval(id: string, approved: boolean) {
 }
 
 export const BELT_ORDER: Belt[] = ["white","grey","yellow","orange","green","blue","purple","brown","black"];
+export const ADULT_BELT_ORDER: Belt[] = ["white","blue","purple","brown","black"];
+
+/** Next belt by age: 16+ follows the adult sequence (white→blue…); kids belts (grey…green) only under 16. */
+export function nextBeltFor(student: { belt: Belt; birth_date: string | null; is_minor: boolean }): Belt {
+  const age = student.birth_date
+    ? (Date.now() - new Date(student.birth_date).getTime()) / (365.25 * 24 * 3600 * 1000)
+    : null;
+  const isKid = age !== null ? age < 16 : student.is_minor;
+  const order = isKid ? BELT_ORDER : ADULT_BELT_ORDER;
+  const idx = order.indexOf(student.belt);
+  if (idx === -1) return "blue"; // adult currently on a kids belt
+  return order[Math.min(idx + 1, order.length - 1)] ?? student.belt;
+}
 export async function countClassesSince(studentId: string, since: string): Promise<number> {
   const { count, error } = await supabase
     .from("attendance")
