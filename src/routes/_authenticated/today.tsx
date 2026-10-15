@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Bar, Card, Empty, SectionTitle, Tag } from "@/components/ui-kit";
@@ -57,6 +58,18 @@ function TodayPage() {
     enabled: sessionIds.length > 0,
     queryFn: () => fetchAttendance(sessionIds),
   });
+  const bookingsQ = useQuery({
+    queryKey: ["week-bookings", weekFrom, weekTo, sessionIds.length],
+    enabled: sessionIds.length > 0 && isStaff,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("id, session_id, student_id")
+        .in("session_id", sessionIds);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
 
   const classes = (classesQ.data ?? []).filter((c) => !locationId || c.location_id === locationId);
   const sessions = sessionsQ.data ?? [];
@@ -74,6 +87,22 @@ function TodayPage() {
 
   const todaySessions = sessions.filter((s) => s.session_date === dateStr);
   const sessionByClassToday = new Map(todaySessions.map((s) => [s.class_id, s]));
+
+  const tomorrow = addDays(today, 1);
+  const tomorrowStr = isoDate(tomorrow);
+  const tomorrowSessions = sessions.filter((s) => s.session_date === tomorrowStr);
+  const sessionByClassTomorrow = new Map(tomorrowSessions.map((s) => [s.class_id, s]));
+  const tomorrowClasses = classes.filter((c) => c.weekday === tomorrow.getDay());
+  const bookings = bookingsQ.data ?? [];
+  const bookingsBySession = useMemo(() => {
+    const map = new Map<string, string[]>();
+    for (const b of bookings) {
+      const arr = map.get(b.session_id) ?? [];
+      arr.push(b.student_id);
+      map.set(b.session_id, arr);
+    }
+    return map;
+  }, [bookings]);
 
   const dow = today.getDay();
   const todayClasses = classes.filter((c) => c.weekday === dow);
@@ -189,6 +218,43 @@ function TodayPage() {
               </span>
             </div>
           ))}
+        </div>
+      </Card>
+
+      <Card>
+        <SectionTitle
+          right={tomorrow.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" })}
+        >
+          {t("today.tomorrow")}
+        </SectionTitle>
+        <div className="mt-3 space-y-3">
+          {tomorrowClasses.length === 0 ? <Empty label={t("today.noTomorrow")} /> : null}
+          {tomorrowClasses.map((c) => {
+            const s = sessionByClassTomorrow.get(c.id);
+            const bookedIds = s ? (bookingsBySession.get(s.id) ?? []) : [];
+            const names = bookedIds
+              .map((id) => students.find((x) => x.id === id)?.full_name)
+              .filter(Boolean) as string[];
+            return (
+              <div key={c.id}>
+                <div className="flex items-baseline justify-between gap-2">
+                  <p className="truncate text-sm font-semibold">
+                    {c.name}
+                    <span className="ml-1.5 font-mono text-[10px] text-muted-foreground">
+                      {fmtTime(c.start_time)}
+                    </span>
+                  </p>
+                  <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                    {bookedIds.length}
+                    <span className="opacity-40">/{c.capacity}</span> {t("today.booked")}
+                  </p>
+                </div>
+                {names.length > 0 ? (
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">{names.join(", ")}</p>
+                ) : null}
+              </div>
+            );
+          })}
         </div>
       </Card>
 

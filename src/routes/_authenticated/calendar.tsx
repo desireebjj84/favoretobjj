@@ -181,10 +181,10 @@ function CalendarPage() {
                     {body}
                   </Link>
                 ) : (
-                  <div key={c.id}>
-                    {body}
+                  <div key={c.id} className={bookable ? "flex flex-wrap items-center gap-3" : ""}>
+                    <div className="min-w-0 flex-1">{body}</div>
                     {bookable ? (
-                      <div className="mt-2 flex flex-wrap gap-2">
+                      <div className="flex shrink-0 flex-wrap gap-2">
                         {myStudents
                           .filter((st) => st.location_id === c.location_id)
                           .map((st) => {
