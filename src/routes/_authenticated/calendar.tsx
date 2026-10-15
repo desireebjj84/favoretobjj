@@ -10,7 +10,6 @@ import {
   TONE_BAR,
   addDays,
   ensureSessions,
-  fetchAttendance,
   fetchClasses,
   fetchLocations,
   fetchSessions,
@@ -66,11 +65,6 @@ function CalendarPage() {
   const locationsQ = useQuery({ queryKey: ["locations"], queryFn: fetchLocations });
   const sessionsQ = useQuery({ queryKey: ["sessions", from, to], queryFn: () => fetchSessions(from, to) });
   const ids = useMemo(() => (sessionsQ.data ?? []).map((s) => s.id), [sessionsQ.data]);
-  const attQ = useQuery({
-    queryKey: ["attendance", from, to, ids.length],
-    enabled: ids.length > 0,
-    queryFn: () => fetchAttendance(ids),
-  });
   const studentsQ = useQuery({ queryKey: ["students"], queryFn: fetchStudents, enabled: !isStaff });
   const bookCountQ = useQuery({
     queryKey: ["booking-counts", from, to, ids.length, ready],
@@ -102,15 +96,6 @@ function CalendarPage() {
     await qc.invalidateQueries({ queryKey: ["my-bookings"] });
     await qc.invalidateQueries({ queryKey: ["booking-counts"] });
   }
-
-  const counts = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const a of attQ.data ?? []) {
-      if (a.status === "absent") continue;
-      m.set(a.session_id, (m.get(a.session_id) ?? 0) + 1);
-    }
-    return m;
-  }, [attQ.data]);
 
   const classes = (classesQ.data ?? []).filter((c) => !locationId || c.location_id === locationId);
   const sessions = sessionsQ.data ?? [];
@@ -153,8 +138,9 @@ function CalendarPage() {
             <div className="mt-4 space-y-4">
               {dayClasses.map((c) => {
                 const s = sessions.find((x) => x.class_id === c.id && x.session_date === dateStr);
-                const count = s ? (counts.get(s.id) ?? 0) : 0;
-                const ratio = c.capacity ? count / c.capacity : 0;
+                const booked = s ? (bookCountQ.data?.get(s.id) ?? 0) : 0;
+                const left = Math.max(0, c.capacity - booked);
+                const ratio = c.capacity ? booked / c.capacity : 0;
                 const locName = locationId
                   ? null
                   : ((locationsQ.data ?? []).find((l) => l.id === c.location_id)?.short_name ?? null);
@@ -168,22 +154,21 @@ function CalendarPage() {
                     <div className="flex items-baseline justify-between gap-2">
                       <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                       <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
-                        {count}
-                        <span className="opacity-40">/{c.capacity}</span>
+                        {booked}
+                        <span className=\"opacity-40\">/{left}</span>
                       </p>
                     </div>
                     <p className="mt-1 font-mono text-[11px] text-muted-foreground">
                       {fmtTime(c.start_time)}–{fmtTime(c.end_time)}
                     </p>
                     <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
-                    {s && (bookCountQ.data?.get(s.id) ?? 0) > 0 ? (
-                      <p className="mt-1 font-mono text-[10px] text-muted-foreground">
-                        {bookCountQ.data?.get(s.id)} {L.reserved}
+                    {booked > 0 ? (
+                      <p className={cn("mt-1 font-mono text-[10px]", left === 0 ? "text-clay" : "text-muted-foreground")}>
+                        {left === 0 ? L.full : `${left} ${t("common.left")}`}
                       </p>
                     ) : null}
                   </>
                 );
-                const booked = s ? (bookCountQ.data?.get(s.id) ?? 0) : 0;
                 const bookable = !isStaff && s && dateStr >= todayStr && myStudents.length > 0;
                 const tile = "rounded-xl border border-border/70 bg-card/60 p-4 transition-colors hover:border-accent/40";
                 return isStaff ? (
