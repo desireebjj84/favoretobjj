@@ -153,6 +153,52 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </nav>
 
+      {/* Celular: menu lateral deslizante (todos os usuários) */}
+      {drawerOpen ? (
+        <div className="fixed inset-0 z-30 md:hidden">
+          <button
+            className="absolute inset-0 bg-background/70 backdrop-blur-sm"
+            onClick={() => setDrawerOpen(false)}
+            aria-label="Fechar menu"
+          />
+          <nav className="absolute inset-y-0 left-0 flex w-64 flex-col border-r border-border bg-card pt-4">
+            <div className="flex items-center justify-between px-4 pb-3">
+              <span className="font-display text-sm uppercase tracking-wide">{settings.org_name}</span>
+              <button
+                onClick={() => setDrawerOpen(false)}
+                className="grid size-8 place-items-center rounded-md border border-border text-xs"
+                aria-label="Fechar menu"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="flex flex-col gap-1 px-3">
+              {nav.map((item) => {
+                const active = pathname.startsWith(item.to);
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setDrawerOpen(false)}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm",
+                      active
+                        ? "bg-primary/15 font-semibold text-foreground"
+                        : "font-medium text-muted-foreground hover:bg-foreground/5",
+                    )}
+                  >
+                    <span
+                      className={cn("size-1.5 rounded-full", active ? "bg-accent" : "bg-foreground/25")}
+                    />
+                    {t(item.key)}
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+        </div>
+      ) : null}
+
       {/* Celular: menu no rodapé */}
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card/85 backdrop-blur-md md:hidden">
         <div className={cn("mx-auto grid max-w-3xl", nav.length === 6 ? "grid-cols-6" : nav.length === 5 ? "grid-cols-5" : nav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
