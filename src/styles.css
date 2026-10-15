@@ -48,6 +48,8 @@
   --color-blue: var(--blue);
   --color-purple: var(--purple);
   --color-green: var(--green);
+  --color-gold: var(--gold);
+  --color-noir: var(--noir);
 
   --color-belt-white: var(--belt-white);
   --color-belt-grey: var(--belt-grey);
@@ -68,6 +70,9 @@
   --paper: oklch(1 0 0);
   /* --clay is the customizable brand accent, overridden at runtime */
   --clay: oklch(0.606 0.199 30);
+  /* gold and noir: the entry screens (landing + sign in) */
+  --gold: oklch(0.79 0.135 85);
+  --noir: oklch(0.13 0.012 250);
   --brown: oklch(0.632 0.114 70);
   --blue: oklch(0.567 0.115 245);
   --purple: oklch(0.489 0.147 283);
@@ -122,6 +127,14 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: color-mix(in oklab, var(--ink) 50%, transparent);
+}
+
+@utility label-mono-light {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in oklab, var(--paper) 80%, transparent);
 }
 
 @keyframes rise {

@@ -24,3 +24,9 @@
 - [x] Calendário: cada aula virou um cartão espaçado, botão de reserva maior (44px de toque)
 - [x] Booking em todas as unidades: aluno pode reservar em qualquer unidade (etiqueta da unidade quando vê "Todas")
 - [x] Check-in mostra aluno de outra unidade que reservou aquela aula (testado com reserva real de Gael em Hialeah, depois apagada)
+- [ ] Primeira tela (login/entrada): fundo preto, escrita em dourado-ouro e branco, logo no topo sem fundo branco
+- [x] Tela de reservas (staff): hoje + próximos dias (passadas só sob demanda), com nome e faixa de quem reservou; entrar na aula e ver alunos com suas faixas
+- [x] Menu principal: "Favoreto" em amarelo-ouro e "BJJ" em branco
+- [x] Horário da aula embaixo do nome (calendário, hoje, reservas)
+- [x] Página da aula: clicar numa aula abre quem fez check-in (nome, faixa, horário), quem reservou sem entrar e as faltas
+- [x] Lista de presença: mostrar somente nome e faixa (sem horário)

@@ -183,15 +183,18 @@ function TodayPage() {
             const count = s ? (presentBySession.get(s.id) ?? 0) : 0;
             const ratio = c.capacity ? count / c.capacity : 0;
             return (
-              <Link key={c.id} to="/checkin" search={{ classId: c.id }} className="block">
+              <Link key={c.id} to="/class/$id" params={{ id: c.id }} search={{ date: isoDate(today) }} className="block">
                 <Card className="p-3">
                   <div className="flex items-baseline justify-between gap-2">
-                    <p className="truncate text-sm font-semibold">{c.name}</p>
+                    <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                     <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
-                      {fmtTime(c.start_time)} · {count}
+                      {count}
                       <span className="opacity-40">/{c.capacity}</span>
                     </p>
                   </div>
+                  <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                    {fmtTime(c.start_time)}–{fmtTime(c.end_time)}
+                  </p>
                   <p className="text-[11px] text-muted-foreground">
                     {c.instructor_name ?? ""} · {t(c.kind === "kids" ? "common.kids" : "common.adult")}
                   </p>
@@ -238,17 +241,15 @@ function TodayPage() {
             return (
               <div key={c.id}>
                 <div className="flex items-baseline justify-between gap-2">
-                  <p className="truncate text-sm font-semibold">
-                    {c.name}
-                    <span className="ml-1.5 font-mono text-[10px] text-muted-foreground">
-                      {fmtTime(c.start_time)}
-                    </span>
-                  </p>
+                  <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                   <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                     {bookedIds.length}
                     <span className="opacity-40">/{c.capacity}</span> {t("today.booked")}
                   </p>
                 </div>
+                <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                  {fmtTime(c.start_time)}
+                </p>
                 {names.length > 0 ? (
                   <p className="mt-0.5 text-[11px] text-muted-foreground">{names.join(", ")}</p>
                 ) : null}
@@ -265,17 +266,15 @@ function TodayPage() {
           {weekly.map(({ cls, avg, ratio }) => (
             <div key={cls.id}>
               <div className="flex items-baseline justify-between gap-2">
-                <p className="truncate text-sm font-semibold">
-                  {cls.name}
-                  <span className="ml-1.5 font-mono text-[10px] text-muted-foreground">
-                    {t(`day.${cls.weekday}`)} {fmtTime(cls.start_time)}
-                  </span>
-                </p>
+                <p className="min-w-0 text-sm font-semibold">{cls.name}</p>
                 <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                   {avg.toFixed(0)}
                   <span className="opacity-40">/{cls.capacity}</span>
                 </p>
               </div>
+              <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                {t(`day.${cls.weekday}`)} {fmtTime(cls.start_time)}
+              </p>
               <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
             </div>
           ))}

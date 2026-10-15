@@ -6,7 +6,7 @@ import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Button, Field, Input } from "@/components/ui-kit";
 import { openInNewTab, useEmbedded } from "@/lib/embed";
-import logoAsset from "@/assets/favoreto-logo.jpg.asset.json";
+import logoUrl from "@/assets/favoreto-logo.png";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -87,22 +87,24 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
+    <div className="flex min-h-screen items-center justify-center bg-noir px-4 py-10">
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center text-center">
-          <img src={logoAsset.url} alt="Favoreto BJJ" className="size-20 rounded-xl object-contain" />
-          <h1 className="mt-4 font-display text-2xl uppercase tracking-wide">{t("auth.title")}</h1>
-          <p className="label-mono mt-1">{t("auth.subtitle")}</p>
+          <img src={logoUrl} alt="Favoreto BJJ" className="size-24 object-contain drop-shadow-2xl" />
+          <h1 className="mt-3 font-display text-2xl uppercase tracking-wide text-gold">
+            {t("auth.title")}
+          </h1>
+          <p className="label-mono-light mt-1">{t("auth.subtitle")}</p>
         </div>
 
-        <div className="surface mt-6 rounded-2xl p-4">
+        <div className="mt-6 rounded-2xl border border-gold/25 bg-paper/5 p-4">
           <form onSubmit={submit} className="space-y-3">
             {mode === "signup" ? (
-              <Field label={t("common.fullName")}>
+              <Field label={t("common.fullName")} dark>
                 <Input value={fullName} onChange={(e) => setFullName(e.target.value)} required />
               </Field>
             ) : null}
-            <Field label={t("common.email")}>
+            <Field label={t("common.email")} dark>
               <Input
                 type="email"
                 value={email}
@@ -112,7 +114,7 @@ function AuthPage() {
               />
             </Field>
             {mode !== "forgot" ? (
-              <Field label={t("common.password")}>
+              <Field label={t("common.password")} dark>
                 <Input
                   type="password"
                   value={password}
@@ -126,7 +128,7 @@ function AuthPage() {
             {mode === "signin" ? (
               <button
                 type="button"
-                className="block w-full text-right text-xs font-medium text-clay underline-offset-2 hover:underline"
+                className="block w-full text-right text-xs font-medium text-gold underline-offset-2 hover:underline"
                 onClick={() => {
                   setMode("forgot");
                   setMsg(null);
@@ -135,7 +137,7 @@ function AuthPage() {
                 {t("auth.forgot")}
               </button>
             ) : null}
-            <Button type="submit" variant="accent" className="w-full" disabled={busy}>
+            <Button type="submit" variant="gold" className="w-full" disabled={busy}>
               {mode === "signup"
                 ? t("common.signUp")
                 : mode === "forgot"
@@ -146,23 +148,27 @@ function AuthPage() {
 
           {mode === "forgot" ? null : embedded ? (
             <>
-              <p className="mt-3 rounded-lg bg-foreground/5 px-3 py-2 text-center text-[11px] leading-relaxed text-muted-foreground">
+              <p className="mt-3 rounded-lg bg-noir/70 px-3 py-2 text-center text-[11px] leading-relaxed text-paper/60">
                 {t("auth.embedNote")}
               </p>
-              <Button variant="outline" className="mt-2 w-full" onClick={openInNewTab}>
+              <Button variant="outlineNoir" className="mt-2 w-full" onClick={openInNewTab}>
                 {t("auth.openTab")}
               </Button>
             </>
           ) : (
-            <Button variant="outline" className="mt-3 w-full" onClick={google}>
+            <Button variant="outlineNoir" className="mt-3 w-full" onClick={google}>
               {t("auth.google")}
             </Button>
           )}
 
-          {msg ? <p className="mt-3 text-center text-xs text-clay">{msg}</p> : null}
+          {msg ? (
+            <p className="mt-3 rounded-lg border border-clay/40 bg-clay/10 px-3 py-2 text-center text-xs text-paper">
+              {msg}
+            </p>
+          ) : null}
 
           <button
-            className="mt-4 w-full text-center text-xs font-medium text-muted-foreground"
+            className="mt-4 w-full text-center text-xs font-medium text-paper/60 hover:text-paper"
             onClick={() => {
               setMode(mode === "signin" ? "signup" : "signin");
               setMsg(null);

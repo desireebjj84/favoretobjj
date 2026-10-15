@@ -15,7 +15,7 @@ export function SectionTitle({ children, right }: { children: ReactNode; right?:
 }
 
 type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "accent" | "ghost" | "outline";
+  variant?: "primary" | "accent" | "ghost" | "outline" | "gold" | "outlineNoir";
   size?: "sm" | "md";
 };
 
@@ -29,6 +29,8 @@ export function Button({ variant = "primary", size = "md", className, ...props }
         variant === "primary" && "bg-primary text-primary-foreground",
         variant === "accent" && "bg-accent text-accent-foreground",
         variant === "outline" && "border border-border bg-card text-foreground",
+        variant === "gold" && "bg-gold text-noir hover:brightness-110",
+        variant === "outlineNoir" && "border border-gold/30 bg-noir text-paper hover:border-gold/60",
         variant === "ghost" && "text-muted-foreground hover:text-foreground",
         className,
       )}
@@ -36,10 +38,18 @@ export function Button({ variant = "primary", size = "md", className, ...props }
   );
 }
 
-export function Field({ label, children }: { label: string; children: ReactNode }) {
+export function Field({
+  label,
+  children,
+  dark,
+}: {
+  label: string;
+  children: ReactNode;
+  dark?: boolean;
+}) {
   return (
     <label className="block">
-      <span className="label-mono">{label}</span>
+      <span className={dark ? "label-mono-light" : "label-mono"}>{label}</span>
       <div className="mt-1">{children}</div>
     </label>
   );

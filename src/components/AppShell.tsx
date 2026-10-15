@@ -7,11 +7,12 @@ import { LANGS, useI18n } from "@/lib/i18n";
 import { fetchLocations } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { openInNewTab, useEmbedded } from "@/lib/embed";
-import logoAsset from "@/assets/favoreto-logo.jpg.asset.json";
+import logoUrl from "@/assets/favoreto-logo.png";
 
 const NAV = [
   { to: "/today", key: "nav.today" },
   { to: "/calendar", key: "nav.calendar" },
+  { to: "/bookings", key: "nav.bookings" },
   { to: "/students", key: "nav.students" },
   { to: "/my-students", key: "nav.myStudents" },
   { to: "/profile", key: "nav.profile" },
@@ -32,8 +33,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   const nav = NAV.filter(
     (n) =>
       (n.to !== "/reports" || isStaff) &&
-      (n.to !== "/students" || isStaff),
+      (n.to !== "/students" || isStaff) &&
+      (n.to !== "/bookings" || isStaff),
   );
+
+  // No rodapé do celular a equipe não precisa de "Meus alunos" — já tem "Alunos".
+  const bottomNav = isStaff ? nav.filter((n) => n.to !== "/my-students") : nav;
 
   async function signOut() {
     await queryClient.cancelQueries();
@@ -44,37 +49,35 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-20 border-b border-border bg-card/75 backdrop-blur-md">
+      <header className="sticky top-0 z-20 border-b border-gold/20 bg-noir/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 pb-2 pt-3">
           <Link to="/today" className="flex items-center gap-2.5">
             <img
-              src={settings.logo_url || logoAsset.url}
+              src={settings.logo_url || logoUrl}
               alt={settings.org_name}
-              className="size-9 rounded-md object-cover"
+              className="size-9 object-contain"
             />
             <span className="leading-none">
-              <span className="block font-display text-lg uppercase tracking-wide">
-                {settings.org_name}
-              </span>
-              <span className="label-mono mt-0.5 block">Brazilian Jiu-Jitsu</span>
+              <BrandName name={settings.org_name} />
+              <span className="label-mono-light mt-0.5 block">Brazilian Jiu-Jitsu</span>
             </span>
           </Link>
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => setDrawerOpen(true)}
-              className="grid size-9 place-items-center rounded-md border border-border bg-card text-sm md:hidden"
+              className="grid size-9 place-items-center rounded-md border border-gold/30 bg-paper/10 text-sm text-paper md:hidden"
               aria-label="Menu"
             >
               ☰
             </button>
-            <div className="flex overflow-hidden rounded-md bg-foreground/5">
+            <div className="flex overflow-hidden rounded-md bg-paper/10">
               {LANGS.map((l) => (
                 <button
                   key={l.code}
                   onClick={() => setLang(l.code)}
                   className={cn(
                     "px-2 py-1 font-mono text-[10px] uppercase tracking-wider",
-                    lang === l.code ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+                    lang === l.code ? "bg-gold text-noir" : "text-paper/80",
                   )}
                 >
                   {l.label}
@@ -84,7 +87,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             {embedded ? (
               <button
                 onClick={openInNewTab}
-                className="grid size-9 place-items-center rounded-md border border-border bg-card font-mono text-[11px] text-muted-foreground"
+                className="grid size-9 place-items-center rounded-md border border-gold/30 bg-paper/10 font-mono text-[11px] text-paper/80"
                 aria-label={t("common.openPortal")}
                 title={t("common.openPortal")}
               >
@@ -94,7 +97,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             {isAdmin ? (
               <Link
                 to="/settings"
-                className="grid size-9 place-items-center rounded-md border border-border bg-card font-mono text-[11px]"
+                className="grid size-9 place-items-center rounded-md border border-gold/30 bg-paper/10 font-mono text-[11px] text-paper/80"
                 aria-label={t("nav.settings")}
               >
                 ⚙
@@ -102,14 +105,14 @@ export function AppShell({ children }: { children: ReactNode }) {
             ) : null}
             <button
               onClick={signOut}
-              className="grid size-9 place-items-center rounded-md bg-primary font-mono text-[11px] text-primary-foreground"
+              className="grid size-9 place-items-center rounded-md bg-gold font-mono text-[11px] text-noir"
               aria-label={t("common.signOut")}
             >
               ⏻
             </button>
           </div>
         </div>
-        <div className="mx-auto flex max-w-3xl gap-1 px-3 pb-2">
+        <div className="mx-auto flex max-w-3xl gap-1 overflow-x-auto px-3 pb-2">
           <LocationTab active={locationId === null} onClick={() => setLocationId(null)}>
             {t("common.all")}
           </LocationTab>
@@ -128,7 +131,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main className="mx-auto max-w-3xl px-4 pb-36 pt-3 md:ml-56 md:max-w-4xl md:pb-8">{children}</main>
 
       {/* Desktop: menu lateral esquerdo */}
-      <nav className="fixed inset-y-0 left-0 z-10 hidden w-56 flex-col border-r border-border bg-card/85 pt-40 backdrop-blur-md md:flex">
+      <nav className="fixed inset-y-0 left-0 z-10 hidden w-56 flex-col border-r border-gold/20 bg-noir/95 pt-40 backdrop-blur-md md:flex">
         <div className="flex flex-col gap-1 px-3">
           {nav.map((item) => {
             const active = pathname.startsWith(item.to);
@@ -139,12 +142,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm",
                   active
-                    ? "bg-primary/15 font-semibold text-foreground"
-                    : "font-medium text-muted-foreground hover:bg-foreground/5",
+                    ? "bg-gold/15 font-semibold text-paper"
+                    : "font-medium text-paper/65 hover:bg-paper/10",
                 )}
               >
                 <span
-                  className={cn("size-1.5 rounded-full", active ? "bg-accent" : "bg-foreground/25")}
+                  className={cn("size-1.5 rounded-full", active ? "bg-gold" : "bg-paper/25")}
                 />
                 {t(item.key)}
               </Link>
@@ -157,16 +160,16 @@ export function AppShell({ children }: { children: ReactNode }) {
       {drawerOpen ? (
         <div className="fixed inset-0 z-30 md:hidden">
           <button
-            className="absolute inset-0 bg-background/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-noir/70 backdrop-blur-sm"
             onClick={() => setDrawerOpen(false)}
             aria-label="Fechar menu"
           />
-          <nav className="absolute inset-y-0 left-0 flex w-64 flex-col border-r border-border bg-card pt-4">
+          <nav className="absolute inset-y-0 left-0 flex w-64 flex-col border-r border-gold/20 bg-noir pt-4">
             <div className="flex items-center justify-between px-4 pb-3">
-              <span className="font-display text-sm uppercase tracking-wide">{settings.org_name}</span>
+              <BrandName name={settings.org_name} />
               <button
                 onClick={() => setDrawerOpen(false)}
-                className="grid size-8 place-items-center rounded-md border border-border text-xs"
+                className="grid size-8 place-items-center rounded-md border border-gold/30 text-xs text-paper"
                 aria-label="Fechar menu"
               >
                 ✕
@@ -183,12 +186,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm",
                       active
-                        ? "bg-primary/15 font-semibold text-foreground"
-                        : "font-medium text-muted-foreground hover:bg-foreground/5",
+                        ? "bg-gold/15 font-semibold text-paper"
+                        : "font-medium text-paper/65 hover:bg-paper/10",
                     )}
                   >
                     <span
-                      className={cn("size-1.5 rounded-full", active ? "bg-accent" : "bg-foreground/25")}
+                      className={cn("size-1.5 rounded-full", active ? "bg-gold" : "bg-paper/25")}
                     />
                     {t(item.key)}
                   </Link>
@@ -200,9 +203,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       ) : null}
 
       {/* Celular: menu no rodapé */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card/85 backdrop-blur-md md:hidden">
-        <div className={cn("mx-auto grid max-w-3xl", nav.length === 6 ? "grid-cols-6" : nav.length === 5 ? "grid-cols-5" : nav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
-          {nav.map((item) => {
+      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-gold/20 bg-noir/95 backdrop-blur-md md:hidden">
+        <div className={cn("mx-auto grid max-w-3xl", bottomNav.length === 6 ? "grid-cols-6" : bottomNav.length === 5 ? "grid-cols-5" : bottomNav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
+          {bottomNav.map((item) => {
             const active = pathname.startsWith(item.to);
             return (
               <Link
@@ -211,12 +214,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                 className="flex flex-col items-center gap-1 py-3"
               >
                 <span
-                  className={cn("size-1.5 rounded-full", active ? "bg-accent" : "bg-foreground/25")}
+                  className={cn("size-1.5 rounded-full", active ? "bg-gold" : "bg-paper/25")}
                 />
                 <span
                   className={cn(
                     "text-[10px]",
-                    active ? "font-semibold text-foreground" : "font-medium text-muted-foreground",
+                    active ? "font-semibold text-paper" : "font-medium text-paper/60",
                   )}
                 >
                   {t(item.key)}
@@ -227,6 +230,19 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </nav>
     </div>
+  );
+}
+
+/** Nome da academia no menu: tudo dourado, menos a última palavra (ex.: "BJJ") em branco. */
+function BrandName({ name }: { name: string }) {
+  const parts = name.trim().split(/\s+/);
+  const last = parts.length > 1 ? (parts.pop() as string) : "";
+  const first = parts.join(" ");
+  return (
+    <span className="block font-display text-lg uppercase tracking-wide">
+      <span className="text-gold">{first}</span>
+      {last ? <span className="text-paper"> {last}</span> : null}
+    </span>
   );
 }
 
@@ -243,8 +259,10 @@ function LocationTab({
     <button
       onClick={onClick}
       className={cn(
-        "flex-1 truncate rounded-lg py-2 text-xs",
-        active ? "bg-primary font-semibold text-primary-foreground" : "bg-card/60 font-medium text-muted-foreground",
+        "shrink-0 rounded-lg px-3 py-2 text-xs",
+        active
+          ? "bg-gold font-semibold text-noir"
+          : "bg-paper/10 font-medium text-paper/70 hover:bg-paper/15",
       )}
     >
       {children}
