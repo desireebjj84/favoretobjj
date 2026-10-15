@@ -18,4 +18,5 @@
 - [ ] Belt progress: apply belt sequence + classes required per belt (waiting on Desirèe)
 - [x] My Profile area: belt/stripes display + editable name/phone/address (done, verified)
 - [x] Apagar os 16 alunos de exemplo do seed (keep: Frederico da cunha, real)
+- [ ] Menu lateral: mover barra de botões do rodapé para a lateral (desktop), manter rodapé no celular
 - [ ] Publicar correção da aba "Meus alunos" + demais mudanças (usuária confirmou)
