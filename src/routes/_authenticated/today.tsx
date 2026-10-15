@@ -266,17 +266,15 @@ function TodayPage() {
           {weekly.map(({ cls, avg, ratio }) => (
             <div key={cls.id}>
               <div className="flex items-baseline justify-between gap-2">
-                <p className="truncate text-sm font-semibold">
-                  {cls.name}
-                  <span className="ml-1.5 font-mono text-[10px] text-muted-foreground">
-                    {t(`day.${cls.weekday}`)} {fmtTime(cls.start_time)}
-                  </span>
-                </p>
+                <p className="min-w-0 truncate text-sm font-semibold">{cls.name}</p>
                 <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                   {avg.toFixed(0)}
                   <span className="opacity-40">/{cls.capacity}</span>
                 </p>
               </div>
+              <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                {t(`day.${cls.weekday}`)} {fmtTime(cls.start_time)}
+              </p>
               <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
             </div>
           ))}
