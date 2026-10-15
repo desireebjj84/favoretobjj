@@ -183,7 +183,7 @@ function TodayPage() {
             const count = s ? (presentBySession.get(s.id) ?? 0) : 0;
             const ratio = c.capacity ? count / c.capacity : 0;
             return (
-              <Link key={c.id} to="/checkin" search={{ classId: c.id }} className="block">
+              <Link key={c.id} to="/class/$id" params={{ id: c.id }} search={{ date: isoDate(today) }} className="block">
                 <Card className="p-3">
                   <div className="flex items-baseline justify-between gap-2">
                     <p className="min-w-0 text-sm font-semibold">{c.name}</p>

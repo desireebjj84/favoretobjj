@@ -186,11 +186,12 @@ function CalendarPage() {
                 const booked = s ? (bookCountQ.data?.get(s.id) ?? 0) : 0;
                 const bookable = !isStaff && s && dateStr >= todayStr && myStudents.length > 0;
                 const tile = "rounded-xl border border-border/70 bg-card/60 p-4 transition-colors hover:border-accent/40";
-                return isStaff && dateStr === todayStr ? (
+                return isStaff ? (
                   <Link
                     key={c.id}
-                    to="/checkin"
-                    search={{ classId: c.id }}
+                    to="/class/$id"
+                    params={{ id: c.id }}
+                    search={{ date: dateStr }}
                     className={cn(tile, "block active:scale-[0.99]")}
                   >
                     {body}

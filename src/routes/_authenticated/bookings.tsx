@@ -150,13 +150,20 @@ function BookingsPage() {
                         </li>
                       ))}
                     </ul>
-                    {date === today ? (
-                      <Link to="/checkin" search={{ classId }} className="mt-3 block">
+                    <div className="mt-3 flex gap-2">
+                      <Link to="/class/$id" params={{ id: classId }} search={{ date }} className="flex-1">
                         <Button size="sm" variant="outline" className="w-full">
-                          {t("nav.checkin")}
+                          {t("class.whoIn")}
                         </Button>
                       </Link>
-                    ) : null}
+                      {date === today ? (
+                        <Link to="/checkin" search={{ classId }} className="flex-1">
+                          <Button size="sm" className="w-full">
+                            {t("nav.checkin")}
+                          </Button>
+                        </Link>
+                      ) : null}
+                    </div>
                   </div>
                 ) : null}
               </Card>
