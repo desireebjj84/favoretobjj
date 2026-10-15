@@ -213,7 +213,7 @@ function ClassPage() {
                   <Person sid2={a.student_id} />
                   {a.confirmed ? (
                     <div className="mt-2 flex items-center justify-between">
-                      <Tag tone="ok">{t("class.confirmed")}</Tag>
+                      <Tag tone="green">{t("class.confirmed")}</Tag>
                       <button
                         className="font-mono text-[10px] uppercase text-muted-foreground underline"
                         disabled={busy !== null}
