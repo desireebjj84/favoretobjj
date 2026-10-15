@@ -191,7 +191,7 @@ function CalendarPage() {
                   <div key={c.id} className={cn(tile, bookable && "flex flex-wrap items-center gap-4")}>
                     <div className="min-w-0 flex-1">{body}</div>
                     {bookable ? (
-                      <div className="flex shrink-0 flex-wrap gap-2">
+                      <div className="flex shrink-0 flex-wrap gap-3">
                         {myStudents
                           .filter((st) => st.location_id === c.location_id)
                           .map((st) => {
@@ -204,6 +204,7 @@ function CalendarPage() {
                                 key={st.id}
                                 size="sm"
                                 variant={mine ? "accent" : "outline"}
+                                className="min-h-[44px] min-w-[92px] px-4 text-sm"
                                 disabled={full || busy === s!.id + st.id}
                                 onClick={() => void toggle(s!.id, st.id)}
                               >
