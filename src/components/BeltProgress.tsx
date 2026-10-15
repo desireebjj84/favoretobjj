@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Bar, Button, Card, SectionTitle } from "@/components/ui-kit";
-import { BELT_DOT, countClassesSince, nextBeltFor, setRank, type StudentRow } from "@/lib/data";
+import { BELT_DOT, countClassesSince, nextBeltFor, prevBeltFor, setRank, type StudentRow } from "@/lib/data";
 
 export function BeltProgress({ student }: { student: StudentRow }) {
   const { t } = useI18n();
