@@ -43,6 +43,13 @@
       "when": 1792026749247,
       "tag": "0005_harden_ensure_sessions",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792027160589,
+      "tag": "0006_attendance_confirmed",
+      "breakpoints": true
     }
   ]
 }

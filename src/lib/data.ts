@@ -87,6 +87,7 @@ export type AttendanceRow = {
   status: "present" | "absent" | "late";
   method: string;
   checked_in_at: string;
+  confirmed: boolean;
 };
 
 export function isoDate(d: Date) {
@@ -216,7 +217,7 @@ export async function fetchAttendance(sessionIds: string[]): Promise<AttendanceR
   if (sessionIds.length === 0) return [];
   const { data, error } = await supabase
     .from("attendance")
-    .select("id, session_id, student_id, status, method, checked_in_at")
+    .select("id, session_id, student_id, status, method, checked_in_at, confirmed")
     .in("session_id", sessionIds);
   if (error) throw error;
   return (data ?? []) as AttendanceRow[];
@@ -373,11 +374,25 @@ export async function countClassesSince(studentId: string, since: string): Promi
     .select("id", { count: "exact", head: true })
     .eq("student_id", studentId)
     .neq("status", "absent")
+    .eq("confirmed", true)
     .gte("checked_in_at", since);
   if (error) throw error;
   return count ?? 0;
 }
 export async function setRank(studentId: string, belt: Belt, stripes: number) {
   const { error } = await supabase.from("students").update({ belt, stripes }).eq("id", studentId);
+  if (error) throw error;
+}
+
+/** Professor confirma (true) ou marca falta (false) para um check-in. */
+export async function confirmAttendance(id: string, attended: boolean) {
+  const { error } = await supabase
+    .from("attendance")
+    .update(
+      attended
+        ? { confirmed: true, status: "present", confirmed_at: new Date().toISOString() }
+        : { confirmed: true, status: "absent", confirmed_at: new Date().toISOString() },
+    )
+    .eq("id", id);
   if (error) throw error;
 }
