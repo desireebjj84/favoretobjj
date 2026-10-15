@@ -155,7 +155,7 @@ function CalendarPage() {
                       <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                       <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                         {booked}
-                        <span className=\"opacity-40\">/{left}</span>
+                        <span className="opacity-40">/{left}</span>
                       </p>
                     </div>
                     <p className="mt-1 font-mono text-[11px] text-muted-foreground">
