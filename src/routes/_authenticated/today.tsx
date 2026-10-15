@@ -186,7 +186,7 @@ function TodayPage() {
               <Link key={c.id} to="/checkin" search={{ classId: c.id }} className="block">
                 <Card className="p-3">
                   <div className="flex items-baseline justify-between gap-2">
-                    <p className="min-w-0 truncate text-sm font-semibold">{c.name}</p>
+                    <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                     <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                       {count}
                       <span className="opacity-40">/{c.capacity}</span>
@@ -241,7 +241,7 @@ function TodayPage() {
             return (
               <div key={c.id}>
                 <div className="flex items-baseline justify-between gap-2">
-                  <p className="min-w-0 truncate text-sm font-semibold">{c.name}</p>
+                  <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                   <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                     {bookedIds.length}
                     <span className="opacity-40">/{c.capacity}</span> {t("today.booked")}
@@ -266,7 +266,7 @@ function TodayPage() {
           {weekly.map(({ cls, avg, ratio }) => (
             <div key={cls.id}>
               <div className="flex items-baseline justify-between gap-2">
-                <p className="min-w-0 truncate text-sm font-semibold">{cls.name}</p>
+                <p className="min-w-0 text-sm font-semibold">{cls.name}</p>
                 <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                   {avg.toFixed(0)}
                   <span className="opacity-40">/{cls.capacity}</span>
