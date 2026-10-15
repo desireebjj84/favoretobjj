@@ -17,6 +17,8 @@ export type Database = {
       attendance: {
         Row: {
           checked_in_at: string
+          confirmed: boolean
+          confirmed_at: string | null
           id: string
           method: string
           recorded_by: string | null
@@ -26,6 +28,8 @@ export type Database = {
         }
         Insert: {
           checked_in_at?: string
+          confirmed?: boolean
+          confirmed_at?: string | null
           id?: string
           method?: string
           recorded_by?: string | null
@@ -35,6 +39,8 @@ export type Database = {
         }
         Update: {
           checked_in_at?: string
+          confirmed?: boolean
+          confirmed_at?: string | null
           id?: string
           method?: string
           recorded_by?: string | null
