@@ -98,18 +98,13 @@ function ClassPage() {
   })}`;
   const unit = (locationsQ.data ?? []).find((l) => l.id === cls?.location_id)?.short_name ?? "";
 
-  const Person = ({ sid2, time }: { sid2: string; time?: string | null }) => {
+  const Person = ({ sid2 }: { sid2: string }) => {
     const st = byId.get(sid2);
     const belt = (st?.belt ?? "white") as Belt;
     return (
       <div className="flex items-center gap-2.5">
         <span className={cn("size-3 shrink-0 rounded-full", BELT_DOT[belt])} />
         <span className="min-w-0 flex-1 truncate text-sm">{st?.full_name ?? "—"}</span>
-        {time ? (
-          <span className="shrink-0 font-mono text-[10px] text-muted-foreground">
-            {new Date(time).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
-          </span>
-        ) : null}
         <span className="shrink-0 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
           {t(`belt.${belt}`)}
         </span>
@@ -191,7 +186,7 @@ function ClassPage() {
             <div className="mt-3 space-y-2">
               {checkedIn.length === 0 ? <Empty label={t("class.noCheckins")} /> : null}
               {checkedIn.map((a) => (
-                <Person key={a.id} sid2={a.student_id} time={a.checked_in_at} />
+                <Person key={a.id} sid2={a.student_id} />
               ))}
             </div>
           </Card>
