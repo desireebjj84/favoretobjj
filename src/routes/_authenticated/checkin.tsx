@@ -78,6 +78,11 @@ function CheckinPage() {
     enabled: !!sessionId,
     queryFn: () => fetchAttendance([sessionId!]),
   });
+  const bookedQ = useQuery({
+    queryKey: ["booked-students", sessionId],
+    enabled: !!sessionId,
+    queryFn: () => fetchBookedStudentIds(sessionId!),
+  });
   const attendance = attQ.data ?? [];
   const statusByStudent = useMemo(() => {
     const m = new Map<string, string>();
