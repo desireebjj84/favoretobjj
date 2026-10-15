@@ -1,14 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
-import { Bar, Card, Empty, SectionTitle, Tag } from "@/components/ui-kit";
+import { Bar, Button, Card, Empty, SectionTitle, Tag } from "@/components/ui-kit";
 import {
   BELT_DOT,
   TONE_BAR,
   addDays,
+  confirmAttendance,
   ensureSessions,
   fetchAttendance,
   fetchClasses,
@@ -134,7 +135,7 @@ function TodayPage() {
 
   const todaySessionIds = new Map(todaySessions.map((s) => [s.id, s.class_id]));
   const todayCheckins = attendance
-    .filter((a) => a.status !== "absent" && todaySessionIds.has(a.session_id))
+    .filter((a) => todaySessionIds.has(a.session_id) && (a.status !== "absent" || !!a.confirmed))
     .map((a) => ({
       a,
       st: students.find((x) => x.id === a.student_id),
@@ -217,14 +218,46 @@ function TodayPage() {
         <div className="mt-3 space-y-2">
           {todayCheckins.length === 0 ? <Empty label={t("today.noCheckins")} /> : null}
           {todayCheckins.map(({ a, st, cls }) => (
-            <div key={a.id} className="flex items-center gap-3">
-              <span className="font-mono text-[11px] text-muted-foreground">
-                {new Date(a.checked_in_at).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
-              </span>
-              <span className="min-w-0 flex-1 truncate text-sm font-semibold">{st?.full_name ?? "—"}</span>
-              <span className="truncate text-[11px] text-muted-foreground">
-                {cls?.name} {cls ? fmtTime(cls.start_time) : ""}
-              </span>
+            <div key={a.id} className="rounded-lg border border-border/70 p-2.5">
+              <div className="flex items-center gap-3">
+                <span className={`size-2.5 shrink-0 rounded-full ${BELT_DOT[st?.belt ?? "white"]}`} />
+                <span className="min-w-0 flex-1 truncate text-sm font-semibold">{st?.full_name ?? "—"}</span>
+                <span className="truncate text-[11px] text-muted-foreground">
+                  {cls?.name} {cls ? fmtTime(cls.start_time) : ""}
+                </span>
+              </div>
+              {a.confirmed ? (
+                <div className="mt-2 flex items-center justify-between">
+                  <Tag tone="green">{t("class.confirmed")}</Tag>
+                  <button
+                    className="font-mono text-[10px] uppercase text-muted-foreground underline"
+                    disabled={busyId !== null}
+                    onClick={() => void decide(a.id, false)}
+                  >
+                    {t("class.noShow")}
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-2 flex gap-2">
+                  <Button
+                    size="sm"
+                    className="min-h-[40px] flex-1"
+                    disabled={busyId !== null}
+                    onClick={() => void decide(a.id, true)}
+                  >
+                    {t("class.confirm")}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="min-h-[40px] flex-1"
+                    disabled={busyId !== null}
+                    onClick={() => void decide(a.id, false)}
+                  >
+                    {t("class.noShow")}
+                  </Button>
+                </div>
+              )}
             </div>
           ))}
         </div>
