@@ -22,6 +22,7 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTodayRouteImport } from './routes/_authenticated/today'
+import { Route as AuthenticatedClassIdRouteImport } from './routes/_authenticated/class.$id'
 import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authenticated/students.index'
 import { Route as AuthenticatedStudentsIdRouteImport } from './routes/_authenticated/students.$id'
 
@@ -89,6 +90,11 @@ const AuthenticatedTodayRoute = AuthenticatedTodayRouteImport.update({
   path: '/today',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedClassIdRoute = AuthenticatedClassIdRouteImport.update({
+  id: '/class/$id',
+  path: '/class/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedStudentsIndexRoute =
   AuthenticatedStudentsIndexRouteImport.update({
     id: '/students/',
@@ -114,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/today': typeof AuthenticatedTodayRoute
+  '/class/$id': typeof AuthenticatedClassIdRoute
   '/students/$id': typeof AuthenticatedStudentsIdRoute
   '/students/': typeof AuthenticatedStudentsIndexRoute
 }
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/today': typeof AuthenticatedTodayRoute
+  '/class/$id': typeof AuthenticatedClassIdRoute
   '/students/$id': typeof AuthenticatedStudentsIdRoute
   '/students': typeof AuthenticatedStudentsIndexRoute
 }
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/today': typeof AuthenticatedTodayRoute
+  '/_authenticated/class/$id': typeof AuthenticatedClassIdRoute
   '/_authenticated/students/$id': typeof AuthenticatedStudentsIdRoute
   '/_authenticated/students/': typeof AuthenticatedStudentsIndexRoute
 }
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/today'
+    | '/class/$id'
     | '/students/$id'
     | '/students/'
   fileRoutesByTo: FileRoutesByTo
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/today'
+    | '/class/$id'
     | '/students/$id'
     | '/students'
   id:
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reports'
     | '/_authenticated/settings'
     | '/_authenticated/today'
+    | '/_authenticated/class/$id'
     | '/_authenticated/students/$id'
     | '/_authenticated/students/'
   fileRoutesById: FileRoutesById
@@ -303,6 +315,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTodayRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/class/$id': {
+      id: '/_authenticated/class/$id'
+      path: '/class/$id'
+      fullPath: '/class/$id'
+      preLoaderRoute: typeof AuthenticatedClassIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/students/': {
       id: '/_authenticated/students/'
       path: '/students'
@@ -330,6 +349,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTodayRoute: typeof AuthenticatedTodayRoute
+  AuthenticatedClassIdRoute: typeof AuthenticatedClassIdRoute
   AuthenticatedStudentsIdRoute: typeof AuthenticatedStudentsIdRoute
   AuthenticatedStudentsIndexRoute: typeof AuthenticatedStudentsIndexRoute
 }
@@ -344,6 +364,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTodayRoute: AuthenticatedTodayRoute,
+  AuthenticatedClassIdRoute: AuthenticatedClassIdRoute,
   AuthenticatedStudentsIdRoute: AuthenticatedStudentsIdRoute,
   AuthenticatedStudentsIndexRoute: AuthenticatedStudentsIndexRoute,
 }
