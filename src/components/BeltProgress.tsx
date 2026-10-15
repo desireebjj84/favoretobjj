@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Bar, Button, Card, SectionTitle } from "@/components/ui-kit";
-import { BELT_DOT, BELT_ORDER, countClassesSince, setRank, type StudentRow } from "@/lib/data";
+import { BELT_DOT, countClassesSince, nextBeltFor, setRank, type StudentRow } from "@/lib/data";
 
 export function BeltProgress({ student }: { student: StudentRow }) {
   const { t } = useI18n();
@@ -16,8 +16,7 @@ export function BeltProgress({ student }: { student: StudentRow }) {
   const done = doneQ.data ?? 0;
   const isBlack = student.belt === "black";
   const left = Math.max(0, per - done);
-  const idx = BELT_ORDER.indexOf(student.belt);
-  const nextBelt = BELT_ORDER[Math.min(idx + 1, BELT_ORDER.length - 1)] ?? student.belt;
+  const nextBelt = nextBeltFor(student);
   const nextLabel = student.stripes < 4 ? `${student.stripes + 1}º ${t("belt.stripes")}` : t(`belt.${nextBelt}`);
 
   async function change(belt: typeof student.belt, stripes: number) {
