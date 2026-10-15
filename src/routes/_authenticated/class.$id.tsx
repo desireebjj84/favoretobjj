@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +9,7 @@ import { cn } from "@/lib/utils";
 import {
   BELT_DOT,
   addDays,
+  confirmAttendance,
   fetchAttendance,
   fetchBookedStudentIds,
   fetchLocations,
@@ -80,6 +82,17 @@ function ClassPage() {
   const studentsQ = useQuery({ queryKey: ["students"], queryFn: fetchStudents, enabled: isStaff });
   const locationsQ = useQuery({ queryKey: ["locations"], queryFn: fetchLocations });
 
+  const qc = useQueryClient();
+  const [busy, setBusy] = useState<string | null>(null);
+  const decide = async (ids: string[], attended: boolean) => {
+    setBusy(ids.length > 1 ? "all" : ids[0]);
+    try {
+      for (const x of ids) await confirmAttendance(x, attended);
+      await qc.invalidateQueries({ queryKey: ["class-day-attendance", sid] });
+    } finally {
+      setBusy(null);
+    }
+  };
   const students = studentsQ.data ?? [];
   const byId = new Map(students.map((s) => [s.id, s]));
   const att = attQ.data ?? [];
@@ -185,8 +198,41 @@ function ClassPage() {
             <SectionTitle right={`${checkedIn.length}`}>{t("class.whoIn")}</SectionTitle>
             <div className="mt-3 space-y-2">
               {checkedIn.length === 0 ? <Empty label={t("class.noCheckins")} /> : null}
+              {checkedIn.some((a) => !a.confirmed) ? (
+                <Button
+                  size="sm"
+                  className="w-full"
+                  disabled={busy !== null}
+                  onClick={() => decide(checkedIn.filter((a) => !a.confirmed).map((a) => a.id), true)}
+                >
+                  {t("class.confirmAll")}
+                </Button>
+              ) : null}
               {checkedIn.map((a) => (
-                <Person key={a.id} sid2={a.student_id} />
+                <div key={a.id} className="rounded-lg border border-border/70 p-2.5">
+                  <Person sid2={a.student_id} />
+                  {a.confirmed ? (
+                    <div className="mt-2 flex items-center justify-between">
+                      <Tag tone="ok">{t("class.confirmed")}</Tag>
+                      <button
+                        className="font-mono text-[10px] uppercase text-muted-foreground underline"
+                        disabled={busy !== null}
+                        onClick={() => decide([a.id], false)}
+                      >
+                        {t("class.noShow")}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mt-2 flex gap-2">
+                      <Button size="sm" className="min-h-[40px] flex-1" disabled={busy !== null} onClick={() => decide([a.id], true)}>
+                        {t("class.confirm")}
+                      </Button>
+                      <Button size="sm" variant="outline" className="min-h-[40px] flex-1" disabled={busy !== null} onClick={() => decide([a.id], false)}>
+                        {t("class.noShow")}
+                      </Button>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </Card>
