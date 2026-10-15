@@ -249,7 +249,12 @@ function CheckinPage() {
               <Card key={s.id} className="flex items-center gap-3 px-3 py-2.5">
                 <span className={`size-1.5 shrink-0 rounded-full ${BELT_DOT[s.belt]}`} />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold">{s.full_name}</p>
+                  <p className="truncate text-sm font-semibold">
+                    {s.full_name}
+                    <span className="ml-2 font-mono text-[10px] font-normal tracking-wider text-muted-foreground">
+                      {s.qr_code}
+                    </span>
+                  </p>
                   <p className="text-[11px] text-muted-foreground">{t(`belt.${s.belt}`)}</p>
                 </div>
                 {status ? (
