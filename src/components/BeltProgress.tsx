@@ -52,13 +52,23 @@ export function BeltProgress({ student }: { student: StudentRow }) {
         </>
       )}
       {isStaff ? (
-        <div className="mt-3 flex gap-2">
-          <Button type="button" className="flex-1" disabled={student.stripes >= 4} onClick={() => change(student.belt, student.stripes + 1)}>
-            {t("belt.addStripe")}
-          </Button>
-          <Button type="button" variant="accent" className="flex-1" disabled={isBlack} onClick={() => change(nextBelt, 0)}>
-            {t("belt.promote")}
-          </Button>
+        <div className="mt-3 space-y-2">
+          <div className="flex gap-2">
+            <Button type="button" className="flex-1" disabled={student.stripes >= 4} onClick={() => change(student.belt, student.stripes + 1)}>
+              {t("belt.addStripe")}
+            </Button>
+            <Button type="button" variant="accent" className="flex-1" disabled={isBlack} onClick={() => change(nextBelt, 0)}>
+              {t("belt.promote")}
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" className="flex-1" disabled={student.stripes <= 0} onClick={() => change(student.belt, student.stripes - 1)}>
+              {t("belt.removeStripe")}
+            </Button>
+            <Button type="button" variant="outline" className="flex-1" disabled={student.belt === "white"} onClick={() => change(prevBeltFor(student), 4)}>
+              {t("belt.demote")}
+            </Button>
+          </div>
         </div>
       ) : null}
     </Card>
