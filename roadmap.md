@@ -21,3 +21,6 @@
 - [x] Menu lateral: mover barra de botões do rodapé para a lateral (desktop), manter rodapé no celular
 - [x] Faixa por idade: 16+ segue sequência adulta (branca→azul); cinza/amarela/laranja/verde só <16
 - [x] Publicar correção da aba "Meus alunos" + demais mudanças (publicado 15/10)
+- [x] Calendário: cada aula virou um cartão espaçado, botão de reserva maior (44px de toque)
+- [x] Booking em todas as unidades: aluno pode reservar em qualquer unidade (etiqueta da unidade quando vê "Todas")
+- [x] Check-in mostra aluno de outra unidade que reservou aquela aula (testado com reserva real de Gael em Hialeah, depois apagada)

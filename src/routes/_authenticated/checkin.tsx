@@ -8,6 +8,7 @@ import { useEmbedded } from "@/lib/embed";
 import {
   BELT_DOT,
   fetchAttendance,
+  fetchBookedStudentIds,
   fetchClasses,
   fetchStudents,
   fmtTime,
@@ -77,6 +78,11 @@ function CheckinPage() {
     enabled: !!sessionId,
     queryFn: () => fetchAttendance([sessionId!]),
   });
+  const bookedQ = useQuery({
+    queryKey: ["booked-students", sessionId],
+    enabled: !!sessionId,
+    queryFn: () => fetchBookedStudentIds(sessionId!),
+  });
   const attendance = attQ.data ?? [];
   const statusByStudent = useMemo(() => {
     const m = new Map<string, string>();
@@ -84,8 +90,10 @@ function CheckinPage() {
     return m;
   }, [attendance]);
 
+  const bookedIds = useMemo(() => new Set(bookedQ.data ?? []), [bookedQ.data]);
+  // Alunos de outra unidade que reservaram esta aula também aparecem na lista.
   const roster: StudentRow[] = (studentsQ.data ?? []).filter(
-    (s) => !selected || s.location_id === selected.location_id,
+    (s) => !selected || s.location_id === selected.location_id || bookedIds.has(s.id),
   );
 
   const [feedback, setFeedback] = useState<{ tone: "ok" | "err"; text: string } | null>(null);

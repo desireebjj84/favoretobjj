@@ -2,15 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
-import { Bar, Button, Card, Empty, SectionTitle } from "@/components/ui-kit";
+import { Bar, Button, Card, Empty, SectionTitle, Tag } from "@/components/ui-kit";
 import {
   TONE_BAR,
   addDays,
   ensureSessions,
   fetchAttendance,
   fetchClasses,
+  fetchLocations,
   fetchSessions,
   fetchStudents,
   fmtTime,
@@ -61,6 +63,7 @@ function CalendarPage() {
   }, [from, to, qc]);
 
   const classesQ = useQuery({ queryKey: ["classes"], queryFn: fetchClasses });
+  const locationsQ = useQuery({ queryKey: ["locations"], queryFn: fetchLocations });
   const sessionsQ = useQuery({ queryKey: ["sessions", from, to], queryFn: () => fetchSessions(from, to) });
   const ids = useMemo(() => (sessionsQ.data ?? []).map((s) => s.id), [sessionsQ.data]);
   const attQ = useQuery({
@@ -147,13 +150,21 @@ function CalendarPage() {
               <h2 className="font-display text-base uppercase tracking-wide">{t(`day.${d}`)}</h2>
               <span className="label-mono">{date.toLocaleDateString(locale, { day: "numeric", month: "short" })}</span>
             </div>
-            <div className="mt-3 space-y-3">
+            <div className="mt-4 space-y-4">
               {dayClasses.map((c) => {
                 const s = sessions.find((x) => x.class_id === c.id && x.session_date === dateStr);
                 const count = s ? (counts.get(s.id) ?? 0) : 0;
                 const ratio = c.capacity ? count / c.capacity : 0;
+                const locName = locationId
+                  ? null
+                  : ((locationsQ.data ?? []).find((l) => l.id === c.location_id)?.short_name ?? null);
                 const body = (
                   <>
+                    {locName ? (
+                      <p className="mb-1.5">
+                        <Tag tone="clay">{locName}</Tag>
+                      </p>
+                    ) : null}
                     <div className="flex items-baseline justify-between gap-2">
                       <p className="truncate text-sm font-semibold">
                         {c.name}
@@ -176,17 +187,22 @@ function CalendarPage() {
                 );
                 const booked = s ? (bookCountQ.data?.get(s.id) ?? 0) : 0;
                 const bookable = !isStaff && s && dateStr >= todayStr && myStudents.length > 0;
+                const tile = "rounded-xl border border-border/70 bg-card/60 p-4 transition-colors hover:border-accent/40";
                 return isStaff && dateStr === todayStr ? (
-                  <Link key={c.id} to="/checkin" search={{ classId: c.id }} className="block">
+                  <Link
+                    key={c.id}
+                    to="/checkin"
+                    search={{ classId: c.id }}
+                    className={cn(tile, "block active:scale-[0.99]")}
+                  >
                     {body}
                   </Link>
                 ) : (
-                  <div key={c.id} className={bookable ? "flex flex-wrap items-center gap-3" : ""}>
+                  <div key={c.id} className={cn(tile, bookable && "flex flex-wrap items-center gap-4")}>
                     <div className="min-w-0 flex-1">{body}</div>
                     {bookable ? (
-                      <div className="flex shrink-0 flex-wrap gap-2">
+                      <div className="flex shrink-0 flex-wrap gap-3">
                         {myStudents
-                          .filter((st) => st.location_id === c.location_id)
                           .map((st) => {
                             const mine = (myBookingsQ.data ?? []).some(
                               (b) => b.session_id === s!.id && b.student_id === st.id,
@@ -197,6 +213,7 @@ function CalendarPage() {
                                 key={st.id}
                                 size="sm"
                                 variant={mine ? "accent" : "outline"}
+                                className="min-h-[44px] min-w-[92px] px-4 text-sm"
                                 disabled={full || busy === s!.id + st.id}
                                 onClick={() => void toggle(s!.id, st.id)}
                               >
