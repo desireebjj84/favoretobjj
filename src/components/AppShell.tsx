@@ -259,7 +259,7 @@ function LocationTab({
     <button
       onClick={onClick}
       className={cn(
-        "flex-1 truncate rounded-lg py-2 text-xs",
+        "shrink-0 rounded-lg px-3 py-2 text-xs",
         active
           ? "bg-gold font-semibold text-noir"
           : "bg-paper/10 font-medium text-paper/70 hover:bg-paper/15",
