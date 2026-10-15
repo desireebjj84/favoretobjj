@@ -12,6 +12,7 @@ import logoUrl from "@/assets/favoreto-logo.png";
 const NAV = [
   { to: "/today", key: "nav.today" },
   { to: "/calendar", key: "nav.calendar" },
+  { to: "/bookings", key: "nav.bookings" },
   { to: "/students", key: "nav.students" },
   { to: "/my-students", key: "nav.myStudents" },
   { to: "/profile", key: "nav.profile" },
@@ -32,8 +33,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   const nav = NAV.filter(
     (n) =>
       (n.to !== "/reports" || isStaff) &&
-      (n.to !== "/students" || isStaff),
+      (n.to !== "/students" || isStaff) &&
+      (n.to !== "/bookings" || isStaff),
   );
+
+  // No rodapé do celular a equipe não precisa de "Meus alunos" — já tem "Alunos".
+  const bottomNav = isStaff ? nav.filter((n) => n.to !== "/my-students") : nav;
 
   async function signOut() {
     await queryClient.cancelQueries();
@@ -199,8 +204,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Celular: menu no rodapé */}
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-gold/20 bg-noir/95 backdrop-blur-md md:hidden">
-        <div className={cn("mx-auto grid max-w-3xl", nav.length === 6 ? "grid-cols-6" : nav.length === 5 ? "grid-cols-5" : nav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
-          {nav.map((item) => {
+        <div className={cn("mx-auto grid max-w-3xl", bottomNav.length === 6 ? "grid-cols-6" : bottomNav.length === 5 ? "grid-cols-5" : bottomNav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
+          {bottomNav.map((item) => {
             const active = pathname.startsWith(item.to);
             return (
               <Link
