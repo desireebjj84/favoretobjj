@@ -188,44 +188,6 @@ function TodayPage() {
         </Card>
       </Link>
 
-      <section>
-        <SectionTitle right={settings.org_name}>{t("today.classes")}</SectionTitle>
-        <div className="mt-2 space-y-2">
-          {todayClasses.length === 0 ? <Empty label={t("today.noClasses")} /> : null}
-          {todayClasses.map((c) => {
-            const s = sessionByClassToday.get(c.id);
-            const booked = s ? (bookingsBySession.get(s.id)?.length ?? 0) : 0;
-            const left = Math.max(0, c.capacity - booked);
-            const ratio = c.capacity ? booked / c.capacity : 0;
-            return (
-              <Link key={c.id} to="/class/$id" params={{ id: c.id }} search={{ date: isoDate(today) }} className="block">
-                <Card className="p-3">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <p className="min-w-0 text-sm font-semibold">{c.name}</p>
-                    <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
-                      {booked}
-                      <span className="opacity-40">/{left}</span>
-                    </p>
-                  </div>
-                  <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
-                    {fmtTime(c.start_time)}–{fmtTime(c.end_time)}
-                  </p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {c.instructor_name ?? ""} · {t(c.kind === "kids" ? "common.kids" : "common.adult")}
-                  </p>
-                  <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
-                  {booked > 0 ? (
-                    <p className="mt-1 font-mono text-[10px] text-muted-foreground">
-                      {left} {t("common.left")}
-                    </p>
-                  ) : null}
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
       <Card>
         <SectionTitle right={`${todayCheckins.length}`}>{t("today.whoChecked")}</SectionTitle>
         <div className="mt-3 space-y-2">
@@ -275,6 +237,45 @@ function TodayPage() {
           ))}
         </div>
       </Card>
+
+      <section>
+        <SectionTitle right={settings.org_name}>{t("today.classes")}</SectionTitle>
+        <div className="mt-2 space-y-2">
+          {todayClasses.length === 0 ? <Empty label={t("today.noClasses")} /> : null}
+          {todayClasses.map((c) => {
+            const s = sessionByClassToday.get(c.id);
+            const booked = s ? (bookingsBySession.get(s.id)?.length ?? 0) : 0;
+            const left = Math.max(0, c.capacity - booked);
+            const ratio = c.capacity ? booked / c.capacity : 0;
+            return (
+              <Link key={c.id} to="/class/$id" params={{ id: c.id }} search={{ date: isoDate(today) }} className="block">
+                <Card className="p-3">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="min-w-0 text-sm font-semibold">{c.name}</p>
+                    <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                      {booked}
+                      <span className="opacity-40">/{left}</span>
+                    </p>
+                  </div>
+                  <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                    {fmtTime(c.start_time)}–{fmtTime(c.end_time)}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
+                    {c.instructor_name ?? ""} · {t(c.kind === "kids" ? "common.kids" : "common.adult")}
+                  </p>
+                  <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
+                  {booked > 0 ? (
+                    <p className="mt-1 font-mono text-[10px] text-muted-foreground">
+                      {left} {t("common.left")}
+                    </p>
+                  ) : null}
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
 
       <Card>
         <SectionTitle
