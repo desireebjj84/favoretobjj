@@ -112,7 +112,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </button>
           </div>
         </div>
-        <div className="mx-auto flex max-w-3xl gap-1 px-3 pb-2">
+        <div className="mx-auto flex max-w-3xl gap-1 overflow-x-auto px-3 pb-2">
           <LocationTab active={locationId === null} onClick={() => setLocationId(null)}>
             {t("common.all")}
           </LocationTab>
