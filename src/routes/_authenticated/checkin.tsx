@@ -8,6 +8,7 @@ import { useEmbedded } from "@/lib/embed";
 import {
   BELT_DOT,
   fetchAttendance,
+  fetchBookedStudentIds,
   fetchClasses,
   fetchStudents,
   fmtTime,

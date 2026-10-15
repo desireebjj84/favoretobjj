@@ -162,6 +162,16 @@ export async function fetchAttendance(sessionIds: string[]): Promise<AttendanceR
   return (data ?? []) as AttendanceRow[];
 }
 
+/** Alunos que reservaram uma aula (inclui visitantes de outras unidades). */
+export async function fetchBookedStudentIds(sessionId: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("student_id")
+    .eq("session_id", sessionId);
+  if (error) throw error;
+  return (data ?? []).map((r) => r.student_id as string);
+}
+
 export type HistoryRow = {
   id: string;
   status: "present" | "absent" | "late";
