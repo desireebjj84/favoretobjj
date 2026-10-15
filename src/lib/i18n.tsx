@@ -40,6 +40,7 @@ const en: Dict = {
   "common.adult": "Adults",
   "common.kids": "Kids",
   "common.capacity": "Capacity",
+  "common.left": "spots left",
   "common.of": "of",
 
   "role.admin": "Administrator",
@@ -285,6 +286,7 @@ const pt: Dict = {
   "common.adult": "Adultos",
   "common.kids": "Crianças",
   "common.capacity": "Capacidade",
+  "common.left": "vagas restantes",
   "common.of": "de",
 
   "role.admin": "Administrador",
@@ -530,6 +532,7 @@ const es: Dict = {
   "common.adult": "Adultos",
   "common.kids": "Niños",
   "common.capacity": "Capacidad",
+  "common.left": "vagas restantes",
   "common.of": "de",
 
   "role.admin": "Administrador",
