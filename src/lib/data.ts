@@ -127,6 +127,64 @@ export async function fetchClasses(): Promise<ClassRow[]> {
   return (data ?? []) as ClassRow[];
 }
 
+export type BookingRow = {
+  id: string;
+  session_id: string;
+  student_id: string;
+  session_date: string;
+  class_id: string;
+  class_name: string;
+  start_time: string;
+  end_time: string;
+  location_id: string;
+  full_name: string;
+  belt: Belt;
+};
+
+type BookingRaw = {
+  id: string;
+  session_id: string;
+  student_id: string;
+  class_sessions: {
+    session_date: string;
+    class_id: string;
+    classes: { name: string; start_time: string; end_time: string; location_id: string };
+  };
+  students: { full_name: string; belt: Belt };
+};
+
+/** Reservas de um intervalo de datas, já com nome e faixa de quem reservou. */
+export async function fetchBookings(from: string, to: string): Promise<BookingRow[]> {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select(
+      "id, session_id, student_id, class_sessions!inner(session_date, class_id, classes!inner(name, start_time, end_time, location_id)), students!inner(full_name, belt)",
+    )
+    .gte("class_sessions.session_date", from)
+    .lte("class_sessions.session_date", to);
+  if (error) throw error;
+  const rows = (data ?? []) as unknown as BookingRaw[];
+  return rows
+    .map((r) => ({
+      id: r.id,
+      session_id: r.session_id,
+      student_id: r.student_id,
+      session_date: r.class_sessions.session_date,
+      class_id: r.class_sessions.class_id,
+      class_name: r.class_sessions.classes.name,
+      start_time: r.class_sessions.classes.start_time,
+      end_time: r.class_sessions.classes.end_time,
+      location_id: r.class_sessions.classes.location_id,
+      full_name: r.students.full_name,
+      belt: r.students.belt,
+    }))
+    .sort((a, b) =>
+      a.session_date === b.session_date
+        ? a.start_time.localeCompare(b.start_time) || a.class_name.localeCompare(b.class_name)
+        : a.session_date.localeCompare(b.session_date),
+    );
+}
+
 export async function fetchStudents(): Promise<StudentRow[]> {
   const { data, error } = await supabase
     .from("students")
