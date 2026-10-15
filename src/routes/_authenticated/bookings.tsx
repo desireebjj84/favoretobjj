@@ -115,6 +115,7 @@ function BookingsPage() {
           <p className="label-mono px-0.5">{dayLabel(date)}</p>
           {[...byClass.entries()].map(([classId, list]) => {
             const first = list[0]!;
+            const left = Math.max(0, (first.capacity ?? 0) - list.length);
             const key = date + classId;
             const isOpen = open === key;
             return (
@@ -128,10 +129,11 @@ function BookingsPage() {
                     <span className="mt-0.5 block font-mono text-[11px] text-muted-foreground">
                       {fmtTime(first.start_time)}–{fmtTime(first.end_time)}
                       {locationId ? null : ` · ${unitName(first.location_id)}`}
+                      {` · ${left} ${t("common.left")}`}
                     </span>
                   </span>
                   <Tag tone="clay">
-                    {list.length} {list.length === 1 ? t("bookings.slot") : t("bookings.slots")}
+                    {list.length}/{left}
                   </Tag>
                   <span className="font-mono text-xs text-muted-foreground">{isOpen ? "▾" : "▸"}</span>
                 </button>

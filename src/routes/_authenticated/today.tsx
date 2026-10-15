@@ -180,16 +180,17 @@ function TodayPage() {
           {todayClasses.length === 0 ? <Empty label={t("today.noClasses")} /> : null}
           {todayClasses.map((c) => {
             const s = sessionByClassToday.get(c.id);
-            const count = s ? (presentBySession.get(s.id) ?? 0) : 0;
-            const ratio = c.capacity ? count / c.capacity : 0;
+            const booked = s ? (bookingsBySession.get(s.id)?.length ?? 0) : 0;
+            const left = Math.max(0, c.capacity - booked);
+            const ratio = c.capacity ? booked / c.capacity : 0;
             return (
               <Link key={c.id} to="/class/$id" params={{ id: c.id }} search={{ date: isoDate(today) }} className="block">
                 <Card className="p-3">
                   <div className="flex items-baseline justify-between gap-2">
                     <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                     <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
-                      {count}
-                      <span className="opacity-40">/{c.capacity}</span>
+                      {booked}
+                      <span className="opacity-40">/{left}</span>
                     </p>
                   </div>
                   <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
@@ -199,6 +200,11 @@ function TodayPage() {
                     {c.instructor_name ?? ""} · {t(c.kind === "kids" ? "common.kids" : "common.adult")}
                   </p>
                   <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
+                  {booked > 0 ? (
+                    <p className="mt-1 font-mono text-[10px] text-muted-foreground">
+                      {left} {t("common.left")}
+                    </p>
+                  ) : null}
                 </Card>
               </Link>
             );
@@ -235,6 +241,7 @@ function TodayPage() {
           {tomorrowClasses.map((c) => {
             const s = sessionByClassTomorrow.get(c.id);
             const bookedIds = s ? (bookingsBySession.get(s.id) ?? []) : [];
+            const left = Math.max(0, c.capacity - bookedIds.length);
             const names = bookedIds
               .map((id) => students.find((x) => x.id === id)?.full_name)
               .filter(Boolean) as string[];
@@ -244,11 +251,14 @@ function TodayPage() {
                   <p className="min-w-0 text-sm font-semibold">{c.name}</p>
                   <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
                     {bookedIds.length}
-                    <span className="opacity-40">/{c.capacity}</span> {t("today.booked")}
+                    <span className="opacity-40">/{left}</span>
                   </p>
                 </div>
                 <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
                   {fmtTime(c.start_time)}
+                </p>
+                <p className="mt-0.5 font-mono text-[10px] text-muted-foreground">
+                  {left} {t("common.left")}
                 </p>
                 {names.length > 0 ? (
                   <p className="mt-0.5 text-[11px] text-muted-foreground">{names.join(", ")}</p>
