@@ -129,6 +129,14 @@
   color: color-mix(in oklab, var(--ink) 50%, transparent);
 }
 
+@utility label-mono-light {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in oklab, var(--paper) 62%, transparent);
+}
+
 @keyframes rise {
   from {
     opacity: 0;
