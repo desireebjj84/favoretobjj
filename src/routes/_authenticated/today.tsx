@@ -72,6 +72,19 @@ function TodayPage() {
     },
   });
 
+  const qc = useQueryClient();
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const decide = async (attId: string, attended: boolean) => {
+    setBusyId(attId);
+    try {
+      await confirmAttendance(attId, attended);
+      await qc.invalidateQueries({ queryKey: ["attendance"] });
+      await qc.invalidateQueries({ queryKey: ["class-day-attendance"] });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   const classes = (classesQ.data ?? []).filter((c) => !locationId || c.location_id === locationId);
   const sessions = sessionsQ.data ?? [];
   const attendance = attendanceQ.data ?? [];
