@@ -222,6 +222,43 @@ function TodayPage() {
       </Card>
 
       <Card>
+        <SectionTitle
+          right={tomorrow.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" })}
+        >
+          {t("today.tomorrow")}
+        </SectionTitle>
+        <div className="mt-3 space-y-3">
+          {tomorrowClasses.length === 0 ? <Empty label={t("today.noTomorrow")} /> : null}
+          {tomorrowClasses.map((c) => {
+            const s = sessionByClassTomorrow.get(c.id);
+            const bookedIds = s ? (bookingsBySession.get(s.id) ?? []) : [];
+            const names = bookedIds
+              .map((id) => students.find((x) => x.id === id)?.full_name)
+              .filter(Boolean) as string[];
+            return (
+              <div key={c.id}>
+                <div className="flex items-baseline justify-between gap-2">
+                  <p className="truncate text-sm font-semibold">
+                    {c.name}
+                    <span className="ml-1.5 font-mono text-[10px] text-muted-foreground">
+                      {fmtTime(c.start_time)}
+                    </span>
+                  </p>
+                  <p className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                    {bookedIds.length}
+                    <span className="opacity-40">/{c.capacity}</span> {t("today.booked")}
+                  </p>
+                </div>
+                {names.length > 0 ? (
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">{names.join(", ")}</p>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+
+      <Card>
         <SectionTitle right={t("common.capacity")}>{t("today.thisWeek")}</SectionTitle>
         <div className="mt-3 space-y-3">
           {weekly.length === 0 ? <Empty label={t("common.none")} /> : null}
