@@ -7,7 +7,7 @@ import { LANGS, useI18n } from "@/lib/i18n";
 import { fetchLocations } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { openInNewTab, useEmbedded } from "@/lib/embed";
-import logoAsset from "@/assets/favoreto-logo.jpg.asset.json";
+import logoUrl from "@/assets/favoreto-logo.png";
 
 const NAV = [
   { to: "/today", key: "nav.today" },
@@ -48,9 +48,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 pb-2 pt-3">
           <Link to="/today" className="flex items-center gap-2.5">
             <img
-              src={settings.logo_url || logoAsset.url}
+              src={settings.logo_url || logoUrl}
               alt={settings.org_name}
-              className="size-9 rounded-md object-cover"
+              className="size-9 object-contain"
             />
             <span className="leading-none">
               <span className="block font-display text-lg uppercase tracking-wide">
