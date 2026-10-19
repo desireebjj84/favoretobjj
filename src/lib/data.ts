@@ -396,3 +396,34 @@ export async function confirmAttendance(id: string, attended: boolean) {
     .eq("id", id);
   if (error) throw error;
 }
+
+export type BeltRequirement = {
+  belt: Belt;
+  is_kids: boolean;
+  classes_per_stripe: number;
+};
+
+/** Quantas aulas cada faixa exige por grau (adulto e criança podem diferir). */
+export async function fetchBeltRequirements(): Promise<BeltRequirement[]> {
+  const { data, error } = await supabase
+    .from("belt_requirements")
+    .select("belt, is_kids, classes_per_stripe");
+  if (error) throw error;
+  return (data ?? []) as BeltRequirement[];
+}
+
+/** Aulas por grau para a faixa do aluno; cai no padrão das configurações se não houver regra. */
+export function classesPerStripeFor(
+  student: { belt: Belt; birth_date: string | null; is_minor: boolean },
+  reqs: BeltRequirement[],
+  fallback: number,
+): number {
+  const age = student.birth_date
+    ? (Date.now() - new Date(student.birth_date).getTime()) / (365.25 * 24 * 3600 * 1000)
+    : null;
+  const isKid = age !== null ? age < 16 : student.is_minor;
+  const req =
+    reqs.find((r) => r.belt === student.belt && r.is_kids === isKid) ??
+    reqs.find((r) => r.belt === student.belt);
+  return req?.classes_per_stripe ?? fallback;
+}

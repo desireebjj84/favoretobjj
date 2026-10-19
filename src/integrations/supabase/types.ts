@@ -65,6 +65,27 @@ export type Database = {
           },
         ]
       }
+      belt_requirements: {
+        Row: {
+          belt: Database["public"]["Enums"]["belt_color"]
+          classes_per_stripe: number
+          id: string
+          is_kids: boolean
+        }
+        Insert: {
+          belt: Database["public"]["Enums"]["belt_color"]
+          classes_per_stripe: number
+          id?: string
+          is_kids?: boolean
+        }
+        Update: {
+          belt?: Database["public"]["Enums"]["belt_color"]
+          classes_per_stripe?: number
+          id?: string
+          is_kids?: boolean
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           booked_by: string | null
