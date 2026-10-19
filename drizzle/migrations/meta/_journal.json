@@ -50,6 +50,13 @@
       "when": 1792027160589,
       "tag": "0006_attendance_confirmed",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792449063413,
+      "tag": "0007_belt_requirements",
+      "breakpoints": true
     }
   ]
 }
