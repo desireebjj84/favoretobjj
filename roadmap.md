@@ -32,4 +32,4 @@
 - [x] Lista de presença: mostrar somente nome e faixa (sem horário)
 - [x] Contador de vagas: cada aula mostra reservas/vagas restantes (ex. 2/13) no calendário, hoje e reservas
 - [x] Confirmar presença após check-in (Veio/Não veio); só confirmadas contam para a faixa
-- [ ] Aulas por faixa (adulto/criança) — aguardando tabela da Desirèe
+- [~] Aulas por faixa (adulto/criança): tabela belt_requirements criada; faixa azul adulto = 65 aulas/grau cadastrada — aguardando os números das demais faixas
