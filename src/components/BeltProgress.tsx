@@ -2,13 +2,23 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Bar, Button, Card, SectionTitle } from "@/components/ui-kit";
-import { BELT_DOT, countClassesSince, nextBeltFor, prevBeltFor, setRank, type StudentRow } from "@/lib/data";
+import {
+  BELT_DOT,
+  classesPerStripeFor,
+  countClassesSince,
+  fetchBeltRequirements,
+  nextBeltFor,
+  prevBeltFor,
+  setRank,
+  type StudentRow,
+} from "@/lib/data";
 
 export function BeltProgress({ student }: { student: StudentRow }) {
   const { t } = useI18n();
   const { settings, isStaff } = useApp();
   const qc = useQueryClient();
-  const per = settings.classes_per_stripe || 20;
+  const reqsQ = useQuery({ queryKey: ["belt-requirements"], queryFn: fetchBeltRequirements });
+  const per = classesPerStripeFor(student, reqsQ.data ?? [], settings.classes_per_stripe || 20);
   const doneQ = useQuery({
     queryKey: ["classes-since", student.id, student.rank_since],
     queryFn: () => countClassesSince(student.id, student.rank_since),
