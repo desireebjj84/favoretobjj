@@ -71,6 +71,13 @@
       "when": 1792455959974,
       "tag": "0009_colored_stripe_forms",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792466100742,
+      "tag": "0010_classes_age_and_push_tokens",
+      "breakpoints": true
     }
   ]
 }
