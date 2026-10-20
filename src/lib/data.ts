@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { validStripeColors, type StripeColor } from "./colored-stripes";
-import { under15StripeClasses } from "./belt-age-rule";
+import { under16StripeClasses } from "./belt-age-rule";
 
 export type Belt =
   | "white"
