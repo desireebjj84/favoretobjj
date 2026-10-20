@@ -88,6 +88,15 @@ export function BeltProgress({ student }: { student: StudentRow }) {
       <p className="mt-2 text-sm font-semibold">
         {t(`belt.${student.belt}`)} · {student.stripes} {t("belt.stripes")}
       </p>
+      <div className="mt-2">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <span>{t("belt.overallProgress")}</span>
+          <span>{Math.round(overall * 100)}%</span>
+        </div>
+        <div className="mt-1 h-2.5 w-full overflow-hidden rounded-full bg-foreground/10">
+          <div className="animate-fillbar h-full rounded-full bg-green" style={{ width: `${Math.round(overall * 100)}%` }} />
+        </div>
+      </div>
       {(kid || colors.length > 0) && (
         <section className="mt-3 border-t border-border pt-3">
           <p className="label-mono">{t("belt.coloredStripes")} · {colors.length}</p>
