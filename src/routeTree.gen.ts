@@ -21,6 +21,7 @@ import { Route as AuthenticatedMyStudentsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedStripeFormsRouteImport } from './routes/_authenticated/stripe-forms'
 import { Route as AuthenticatedTodayRouteImport } from './routes/_authenticated/today'
 import { Route as AuthenticatedClassIdRouteImport } from './routes/_authenticated/class.$id'
 import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authenticated/students.index'
@@ -85,6 +86,12 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStripeFormsRoute =
+  AuthenticatedStripeFormsRouteImport.update({
+    id: '/stripe-forms',
+    path: '/stripe-forms',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedTodayRoute = AuthenticatedTodayRouteImport.update({
   id: '/today',
   path: '/today',
@@ -119,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/stripe-forms': typeof AuthenticatedStripeFormsRoute
   '/today': typeof AuthenticatedTodayRoute
   '/class/$id': typeof AuthenticatedClassIdRoute
   '/students/$id': typeof AuthenticatedStudentsIdRoute
@@ -136,6 +144,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/stripe-forms': typeof AuthenticatedStripeFormsRoute
   '/today': typeof AuthenticatedTodayRoute
   '/class/$id': typeof AuthenticatedClassIdRoute
   '/students/$id': typeof AuthenticatedStudentsIdRoute
@@ -155,6 +164,7 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/stripe-forms': typeof AuthenticatedStripeFormsRoute
   '/_authenticated/today': typeof AuthenticatedTodayRoute
   '/_authenticated/class/$id': typeof AuthenticatedClassIdRoute
   '/_authenticated/students/$id': typeof AuthenticatedStudentsIdRoute
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reports'
     | '/settings'
+    | '/stripe-forms'
     | '/today'
     | '/class/$id'
     | '/students/$id'
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reports'
     | '/settings'
+    | '/stripe-forms'
     | '/today'
     | '/class/$id'
     | '/students/$id'
@@ -209,6 +221,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/reports'
     | '/_authenticated/settings'
+    | '/_authenticated/stripe-forms'
     | '/_authenticated/today'
     | '/_authenticated/class/$id'
     | '/_authenticated/students/$id'
@@ -308,6 +321,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/stripe-forms': {
+      id: '/_authenticated/stripe-forms'
+      path: '/stripe-forms'
+      fullPath: '/stripe-forms'
+      preLoaderRoute: typeof AuthenticatedStripeFormsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/today': {
       id: '/_authenticated/today'
       path: '/today'
@@ -348,6 +368,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedStripeFormsRoute: typeof AuthenticatedStripeFormsRoute
   AuthenticatedTodayRoute: typeof AuthenticatedTodayRoute
   AuthenticatedClassIdRoute: typeof AuthenticatedClassIdRoute
   AuthenticatedStudentsIdRoute: typeof AuthenticatedStudentsIdRoute
@@ -363,6 +384,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedStripeFormsRoute: AuthenticatedStripeFormsRoute,
   AuthenticatedTodayRoute: AuthenticatedTodayRoute,
   AuthenticatedClassIdRoute: AuthenticatedClassIdRoute,
   AuthenticatedStudentsIdRoute: AuthenticatedStudentsIdRoute,
