@@ -17,6 +17,7 @@ import {
   fmtTime,
   getOrCreateSession,
   isoDate,
+  setAttendance,
   type Belt,
   type ClassRow,
 } from "@/lib/data";
@@ -93,6 +94,17 @@ function ClassPage() {
       setBusy(null);
     }
   };
+  const markAllAbsent = async () => {
+    if (!sid) return;
+    setBusy("all");
+    try {
+      for (const x of bookedOnly) await setAttendance(sid, x, "absent", "manual");
+      await qc.invalidateQueries({ queryKey: ["class-day-attendance", sid] });
+      await qc.invalidateQueries({ queryKey: ["class-day-booked", sid] });
+    } finally {
+      setBusy(null);
+    }
+  };
   const students = studentsQ.data ?? [];
   const byId = new Map(students.map((s) => [s.id, s]));
   const att = attQ.data ?? [];
@@ -101,7 +113,12 @@ function ClassPage() {
     .sort((a, b) => (a.checked_in_at < b.checked_in_at ? -1 : 1));
   const absent = att.filter((a) => a.status === "absent");
   const inIds = new Set(checkedIn.map((a) => a.student_id));
-  const bookedOnly = (bookedQ.data ?? []).filter((x) => !inIds.has(x));
+  const absentIds = new Set(absent.map((a) => a.student_id));
+  const bookedOnly = (bookedQ.data ?? []).filter((x) => !inIds.has(x) && !absentIds.has(x));
+  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+  const endMin = cls ? Number(cls.end_time.slice(0, 2)) * 60 + Number(cls.end_time.slice(3, 5)) : 0;
+  const classEnded = date < isoDate(new Date()) || (date === isoDate(new Date()) && nowMin > endMin);
+  const adultEnded = !!cls && cls.kind === "adult" && classEnded;
 
   const locale = lang === "pt" ? "pt-BR" : lang === "es" ? "es-ES" : "en-US";
   const dayObj = new Date(date + "T12:00:00");
@@ -240,9 +257,22 @@ function ClassPage() {
           {bookedOnly.length > 0 ? (
             <Card>
               <SectionTitle right={`${bookedOnly.length}`}>{t("class.bookedNotIn")}</SectionTitle>
+              {adultEnded ? (
+                <div className="mt-2 space-y-2">
+                  <p className="text-[11px] text-muted-foreground">{t("adult.checkinNote")}</p>
+                  <Button size="sm" variant="outline" disabled={busy !== null} onClick={() => void markAllAbsent()}>
+                    {t("class.markAllAbsent")}
+                  </Button>
+                </div>
+              ) : null}
               <div className="mt-3 space-y-2">
                 {bookedOnly.map((x) => (
-                  <Person key={x} sid2={x} />
+                  <div key={x} className="flex items-center gap-2.5">
+                    <div className="min-w-0 flex-1">
+                      <Person sid2={x} />
+                    </div>
+                    {adultEnded ? <Tag tone="clay">{t("class.lostSpot")}</Tag> : null}
+                  </div>
                 ))}
               </div>
             </Card>
