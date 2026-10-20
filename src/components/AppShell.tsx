@@ -39,14 +39,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       (n.to !== "/stripe-forms" || !isStaff || isAdmin),
   );
 
-  // No rodapé do celular a equipe não precisa de "Meus alunos" — já tem "Alunos".
-  const bottomNav = isStaff ? nav.filter((n) => n.to !== "/my-students") : nav;
-  // Nomes longos demais para caber em uma linha no rodapé do celular: quebra controlada.
-  const bottomLines: Record<string, string[]> = {
-    "Color Stripe Forms": ["Color Stripe", "Forms"],
-    "Graus Coloridos": ["Graus", "Coloridos"],
-    "Grados de Color": ["Grados de", "Color"],
-  };
 
   async function signOut() {
     await queryClient.cancelQueries();
@@ -71,13 +63,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <div className="flex items-center gap-1.5">
-            <button
-              onClick={() => setDrawerOpen(true)}
-              className="grid size-9 place-items-center rounded-md border border-gold/30 bg-paper/10 text-sm text-paper md:hidden"
-              aria-label="Menu"
-            >
-              ☰
-            </button>
             <div className="flex overflow-hidden rounded-md bg-paper/10">
               {LANGS.map((l) => (
                 <button
@@ -136,7 +121,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-4 pb-36 pt-3 md:ml-56 md:max-w-4xl md:pb-8">{children}</main>
+      <main className="mx-auto max-w-3xl px-4 pb-28 pt-3 md:ml-56 md:max-w-4xl md:pb-8">{children}</main>
 
       {/* Desktop: menu lateral esquerdo */}
       <nav className="fixed inset-y-0 left-0 z-10 hidden w-56 flex-col border-r border-gold/20 bg-noir/95 pt-40 backdrop-blur-md md:flex">
@@ -210,37 +195,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       ) : null}
 
-      {/* Celular: menu no rodapé */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-gold/20 bg-noir/95 backdrop-blur-md md:hidden">
-        <div className="mx-auto flex max-w-3xl overflow-x-auto">
-          {bottomNav.map((item) => {
-            const active = pathname.startsWith(item.to);
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="flex flex-1 flex-col items-center gap-1 px-1 py-3"
-              >
-                <span
-                  className={cn("size-1.5 rounded-full", active ? "bg-gold" : "bg-paper/25")}
-                />
-                <span
-                  className={cn(
-                    "whitespace-nowrap text-center text-[10px] leading-tight",
-                    active ? "font-semibold text-paper" : "font-medium text-paper/60",
-                  )}
-                >
-                  {(bottomLines[t(item.key)] ?? [t(item.key)]).map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+      {/* Celular: botão flutuante que abre o menu lateral */}
+      <button
+        onClick={() => setDrawerOpen(true)}
+        className="fixed bottom-5 right-5 z-20 grid size-14 place-items-center rounded-full bg-gold text-2xl text-noir shadow-xl shadow-noir/60 md:hidden"
+        aria-label="Menu"
+      >
+        ☰
+      </button>
     </div>
   );
 }
