@@ -805,7 +805,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
-    window.localStorage.setItem("favoreto-lang", l);
+    try { window.localStorage.setItem("favoreto-lang", l); } catch { /* storage unavailable */ }
   }, []);
 
   const t = useCallback((key: string) => DICTS[lang][key] ?? en[key] ?? key, [lang]);
