@@ -1,8 +1,8 @@
 # Roadmap — Favoreto BJJ Attendance
 
 ## Done
-- [ ] Formulários vermelho, amarelo e verde: envio pelos responsáveis, revisão administrativa e grau após aprovação.
-- [ ] Branca e cinza: 15 aulas por grau para menores de 15 anos; preservar regras de 15+.
+- [x] Formulários vermelho, amarelo e verde: envio pelos responsáveis, revisão administrativa e grau após aprovação (testado; teste removido).
+- [x] Branca e cinza: 15 aulas por grau para menores de 15 anos; preservar regras de 15+.
 - [x] Graus coloridos extras no perfil infantil, com escolha e remoção de cada cor pela equipe, sem alterar os graus brancos.
 - Lovable Cloud enabled: locations, students, classes, sessions, attendance, roles, branding
 - Seed: 3 units + sample class grid + sample students
