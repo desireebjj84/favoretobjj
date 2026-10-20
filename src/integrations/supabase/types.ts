@@ -313,6 +313,59 @@ export type Database = {
         }
         Relationships: []
       }
+      stripe_submissions: {
+        Row: {
+          answers: Json
+          color: string
+          id: string
+          review_note: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          student_id: string
+          student_snapshot: Json
+          submitted_at: string
+          submitted_by: string
+          version: number
+        }
+        Insert: {
+          answers: Json
+          color: string
+          id?: string
+          review_note?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          student_id: string
+          student_snapshot: Json
+          submitted_at?: string
+          submitted_by: string
+          version?: number
+        }
+        Update: {
+          answers?: Json
+          color?: string
+          id?: string
+          review_note?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          student_id?: string
+          student_snapshot?: Json
+          submitted_at?: string
+          submitted_by?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stripe_submissions_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       students: {
         Row: {
           active: boolean
@@ -427,12 +480,24 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      review_stripe_form: {
+        Args: { _approve: boolean; _id: string; _note?: string }
+        Returns: undefined
+      }
       session_booking_count: {
         Args: { _session_ids: string[] }
         Returns: {
           n: number
           session_id: string
         }[]
+      }
+      submit_stripe_form: {
+        Args: { _answers: Json; _color: string; _student_id: string }
+        Returns: string
+      }
+      validate_stripe_answers: {
+        Args: { _a: Json; _color: string }
+        Returns: undefined
       }
     }
     Enums: {
