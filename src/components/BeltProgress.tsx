@@ -14,6 +14,7 @@ import {
   prevBeltFor,
   setRank,
   setColoredStripes,
+  yearsPerStripeFor,
   type StudentRow,
 } from "@/lib/data";
 
