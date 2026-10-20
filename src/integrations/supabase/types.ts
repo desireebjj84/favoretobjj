@@ -494,6 +494,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_manage_student_photo: { Args: { _name: string }; Returns: boolean }
       can_view_student: { Args: { _student_id: string }; Returns: boolean }
       ensure_sessions: {
         Args: { _from: string; _to: string }
