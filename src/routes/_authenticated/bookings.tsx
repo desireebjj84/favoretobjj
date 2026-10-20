@@ -131,6 +131,11 @@ function BookingsPage() {
                       {locationId ? null : ` · ${unitName(first.location_id)}`}
                       {` · ${left} ${t("common.left")}`}
                     </span>
+                    {first.kind === "adult" ? (
+                      <span className="mt-0.5 block text-[10px] leading-snug text-clay">
+                        {t("bookings.adultNote")}
+                      </span>
+                    ) : null}
                   </span>
                   <Tag tone="clay">
                     {list.length}/{left}
