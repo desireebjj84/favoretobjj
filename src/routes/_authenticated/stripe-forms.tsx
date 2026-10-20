@@ -11,7 +11,7 @@ import { STRIPE_TONE } from "@/lib/colored-stripes";
 
 export const Route = createFileRoute("/_authenticated/stripe-forms")({
  loader: async ({context}) => { await Promise.all([context.queryClient.ensureQueryData(stripeFormsOptions),context.queryClient.ensureQueryData(stripeChildrenOptions)]); },
- head: () => ({meta:[{title:"Colored Stripe Forms — Favoreto BJJ"},{name:"description",content:"Submit your child's colored stripe evaluations and review awards in the Favoreto BJJ portal."},{property:"og:title",content:"Colored Stripe Forms — Favoreto BJJ"},{property:"og:description",content:"Parent evaluations and administrator approval for colored stripes."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),
+ head: () => ({meta:[{title:"Color Stripe Forms — Favoreto BJJ"},{name:"description",content:"Submit your child's colored stripe evaluations and review awards in the Favoreto BJJ portal."},{property:"og:title",content:"Color Stripe Forms — Favoreto BJJ"},{property:"og:description",content:"Parent evaluations and administrator approval for colored stripes."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),
  component: StripeFormsPage,
 });
 
