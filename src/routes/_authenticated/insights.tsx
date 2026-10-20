@@ -115,8 +115,10 @@ function InsightsPage() {
                       {t(`day.${s.weekday}`)}
                     </span>
                     <span className="font-mono text-sm">{s.time}</span>
-                    <Tag tone={s.kind === "adult" ? "accent" : "info"}>{s.kind === "adult" ? t("insights.kind.adult") : t("insights.kind.kids")}</Tag>
-                    <Tag tone={s.expectedDemand === "high" ? "success" : s.expectedDemand === "medium" ? "info" : "muted"}>
+                    <Tag tone={s.kind === "adult" ? "clay" : "blue"}>
+                      {s.kind === "adult" ? t("insights.kind.adult") : t("insights.kind.kids")}
+                    </Tag>
+                    <Tag tone={s.expectedDemand === "high" ? "green" : s.expectedDemand === "medium" ? "blue" : "muted"}>
                       {t("insights.demand")}: {t(`insights.demand.${s.expectedDemand}`)}
                     </Tag>
                   </div>
