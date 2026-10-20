@@ -13,6 +13,7 @@ const NAV = [
   { to: "/today", key: "nav.today" },
   { to: "/calendar", key: "nav.calendar" },
   { to: "/bookings", key: "nav.bookings" },
+  { to: "/classes", key: "nav.admin" },
   { to: "/students", key: "nav.students" },
   { to: "/my-students", key: "nav.myStudents" },
   { to: "/profile", key: "nav.profile" },
@@ -38,6 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       (n.to !== "/insights" || isAdmin) &&
       (n.to !== "/students" || isStaff) &&
       (n.to !== "/bookings" || isStaff) &&
+      (n.to !== "/classes" || isAdmin) &&
       (n.to !== "/stripe-forms" || !isStaff || isAdmin),
   );
 

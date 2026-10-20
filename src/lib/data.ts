@@ -57,6 +57,8 @@ export type ClassRow = {
   capacity: number;
   instructor_id: string | null;
   instructor_name: string | null;
+  min_age: number | null;
+  max_age: number | null;
   active: boolean;
 };
 
@@ -70,6 +72,7 @@ export type StudentRow = {
   guardian_id: string | null;
   user_id: string | null;
   qr_code: string;
+  photo_url: string | null;
   active: boolean;
   approved: boolean;
   stripes: number;
