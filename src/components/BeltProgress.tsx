@@ -14,6 +14,7 @@ import {
   prevBeltFor,
   setRank,
   setColoredStripes,
+  yearsPerStripeFor,
   type StudentRow,
 } from "@/lib/data";
 
@@ -39,6 +40,7 @@ export function BeltProgress({ student }: { student: StudentRow }) {
   }
   const reqsQ = useQuery({ queryKey: ["belt-requirements"], queryFn: fetchBeltRequirements });
   const per = classesPerStripeFor(student, reqsQ.data ?? [], settings.classes_per_stripe || 20);
+  const yearsReq = yearsPerStripeFor(student, reqsQ.data ?? []);
   const doneQ = useQuery({
     queryKey: ["classes-since", student.id, student.rank_since],
     queryFn: () => countClassesSince(student.id, student.rank_since),
@@ -47,12 +49,24 @@ export function BeltProgress({ student }: { student: StudentRow }) {
   const isBlack = student.belt === "black";
   const left = Math.max(0, per - done);
   const nextBelt = nextBeltFor(student);
+  const yearsOn =
+    isBlack && yearsReq
+      ? (Date.now() - new Date(student.rank_since).getTime()) / (365.25 * 24 * 3600 * 1000)
+      : 0;
+  const yearsNeeded = yearsReq ? yearsReq * (student.stripes + 1) : 0;
+  const monthsLeft = Math.max(0, Math.round((yearsNeeded - yearsOn) * 12));
+  const timeLeft =
+    monthsLeft >= 12
+      ? `${(monthsLeft / 12).toFixed(1)} ${t("common.years")}`
+      : `${monthsLeft} ${t("belt.months")}`;
   const nextLabel = student.stripes < 4 ? `${student.stripes + 1}º ${t("belt.stripes")}` : t(`belt.${nextBelt}`);
 
   async function change(belt: typeof student.belt, stripes: number) {
     await setRank(student.id, belt, stripes);
     await qc.invalidateQueries({ queryKey: ["students"] });
   }
+
+  const timeBased = isBlack && !!yearsReq;
 
   return (
     <Card>
@@ -94,6 +108,15 @@ export function BeltProgress({ student }: { student: StudentRow }) {
       )}
       {isBlack && student.stripes >= 4 ? (
         <p className="mt-2 text-xs text-muted-foreground">{t("belt.blackNote")}</p>
+      ) : timeBased ? (
+        <>
+          <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div className="rounded-xl bg-foreground/5 p-2"><p className="label-mono">{t("belt.yearsOnBelt")}</p><p className="stat-num text-xl">{yearsOn.toFixed(1)}</p></div>
+            <div className="rounded-xl bg-foreground/5 p-2"><p className="label-mono">{t("belt.nextIn")}</p><p className="stat-num text-xl">{timeLeft}</p></div>
+            <div className="rounded-xl bg-foreground/5 p-2"><p className="label-mono">{t("belt.next")}</p><p className="text-sm font-semibold">{nextLabel}</p></div>
+          </div>
+          <Bar ratio={Math.min(1, yearsOn / yearsNeeded)} tone="bg-green" />
+        </>
       ) : (
         <>
           <div className="mt-3 grid grid-cols-3 gap-2 text-center">

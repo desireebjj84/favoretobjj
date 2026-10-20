@@ -71,18 +71,21 @@ export type Database = {
           classes_per_stripe: number
           id: string
           is_kids: boolean
+          years_per_degree: number | null
         }
         Insert: {
           belt: Database["public"]["Enums"]["belt_color"]
           classes_per_stripe: number
           id?: string
           is_kids?: boolean
+          years_per_degree?: number | null
         }
         Update: {
           belt?: Database["public"]["Enums"]["belt_color"]
           classes_per_stripe?: number
           id?: string
           is_kids?: boolean
+          years_per_degree?: number | null
         }
         Relationships: []
       }

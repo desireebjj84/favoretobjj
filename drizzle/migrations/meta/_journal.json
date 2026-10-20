@@ -85,6 +85,13 @@
       "when": 1792466115738,
       "tag": "0011_profile_photos_storage",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792497038896,
+      "tag": "0012_black_belt_time_rule",
+      "breakpoints": true
     }
   ]
 }
