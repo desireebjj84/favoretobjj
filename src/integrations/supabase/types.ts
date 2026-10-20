@@ -319,6 +319,7 @@ export type Database = {
           approved: boolean
           belt: Database["public"]["Enums"]["belt_color"]
           birth_date: string | null
+          colored_stripes: string[]
           created_at: string
           full_name: string
           guardian_id: string | null
@@ -337,6 +338,7 @@ export type Database = {
           approved?: boolean
           belt?: Database["public"]["Enums"]["belt_color"]
           birth_date?: string | null
+          colored_stripes?: string[]
           created_at?: string
           full_name: string
           guardian_id?: string | null
@@ -355,6 +357,7 @@ export type Database = {
           approved?: boolean
           belt?: Database["public"]["Enums"]["belt_color"]
           birth_date?: string | null
+          colored_stripes?: string[]
           created_at?: string
           full_name?: string
           guardian_id?: string | null
