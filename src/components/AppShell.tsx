@@ -63,7 +63,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <div className="flex items-center gap-1.5">
-            <div className="flex items-center gap-1.5">
             <div className="flex overflow-hidden rounded-md bg-paper/10">
               {LANGS.map((l) => (
                 <button
