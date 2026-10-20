@@ -39,14 +39,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       (n.to !== "/stripe-forms" || !isStaff || isAdmin),
   );
 
-  // No rodapé do celular a equipe não precisa de "Meus alunos" — já tem "Alunos".
-  const bottomNav = isStaff ? nav.filter((n) => n.to !== "/my-students") : nav;
-  // Nomes longos demais para caber em uma linha no rodapé do celular: quebra controlada.
-  const bottomLines: Record<string, string[]> = {
-    "Color Stripe Forms": ["Color Stripe", "Forms"],
-    "Graus Coloridos": ["Graus", "Coloridos"],
-    "Grados de Color": ["Grados de", "Color"],
-  };
 
   async function signOut() {
     await queryClient.cancelQueries();
