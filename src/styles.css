@@ -52,6 +52,7 @@
   --color-noir: var(--noir);
 
   --color-belt-white: var(--belt-white);
+  --color-stripe-red: var(--stripe-red);
   --color-belt-grey: var(--belt-grey);
   --color-belt-yellow: var(--belt-yellow);
   --color-belt-orange: var(--belt-orange);
@@ -79,6 +80,7 @@
   --green: oklch(0.587 0.132 155);
 
   --belt-white: oklch(0.88 0.005 190);
+  --stripe-red: oklch(0.60 0.23 27);
   --belt-grey: oklch(0.65 0.005 240);
   --belt-yellow: oklch(0.83 0.145 90);
   --belt-orange: oklch(0.71 0.165 55);

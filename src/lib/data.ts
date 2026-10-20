@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { validStripeColors, type StripeColor } from "./colored-stripes";
 
 export type Belt =
   | "white"
@@ -71,6 +72,7 @@ export type StudentRow = {
   active: boolean;
   approved: boolean;
   stripes: number;
+  colored_stripes: StripeColor[];
   rank_since: string;
 };
 
@@ -381,6 +383,12 @@ export async function countClassesSince(studentId: string, since: string): Promi
 }
 export async function setRank(studentId: string, belt: Belt, stripes: number) {
   const { error } = await supabase.from("students").update({ belt, stripes }).eq("id", studentId);
+  if (error) throw error;
+}
+
+export async function setColoredStripes(studentId: string, colors: StripeColor[]) {
+  if (!validStripeColors(colors)) throw new Error("Invalid stripe color");
+  const { error } = await supabase.from("students").update({ colored_stripes: colors }).eq("id", studentId);
   if (error) throw error;
 }
 

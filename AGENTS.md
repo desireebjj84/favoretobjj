@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+Colored stripes are stored separately on students, protected by a database trigger, and rendered through BeltProgress; changes never reset regular stripe attendance progress.

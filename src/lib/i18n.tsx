@@ -11,6 +11,8 @@ export const LANGS: { code: Lang; label: string }[] = [
 type Dict = Record<string, string>;
 
 const en: Dict = {
+  "belt.coloredStripes": "Colored stripes", "belt.colorError": "Couldn't save the stripe. Try again.",
+  "stripe.red": "Red", "stripe.blue": "Blue", "stripe.yellow": "Yellow", "stripe.green": "Green",
   "nav.today": "Today",
   "nav.calendar": "Calendar",
   "nav.students": "Students",
@@ -258,6 +260,8 @@ const en: Dict = {
 };
 
 const pt: Dict = {
+  "belt.coloredStripes": "Graus coloridos", "belt.colorError": "Não foi possível salvar o grau. Tente novamente.",
+  "stripe.red": "Vermelho", "stripe.blue": "Azul", "stripe.yellow": "Amarelo", "stripe.green": "Verde",
   "nav.today": "Hoje",
   "nav.calendar": "Calendário",
   "nav.students": "Alunos",
@@ -505,6 +509,8 @@ const pt: Dict = {
 };
 
 const es: Dict = {
+  "belt.coloredStripes": "Grados de colores", "belt.colorError": "No se pudo guardar el grado. Inténtalo de nuevo.",
+  "stripe.red": "Rojo", "stripe.blue": "Azul", "stripe.yellow": "Amarillo", "stripe.green": "Verde",
   "nav.today": "Hoy",
   "nav.calendar": "Calendario",
   "nav.students": "Alumnos",
