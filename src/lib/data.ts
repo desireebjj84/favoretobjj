@@ -57,6 +57,8 @@ export type ClassRow = {
   capacity: number;
   instructor_id: string | null;
   instructor_name: string | null;
+  min_age: number | null;
+  max_age: number | null;
   active: boolean;
 };
 
@@ -70,6 +72,7 @@ export type StudentRow = {
   guardian_id: string | null;
   user_id: string | null;
   qr_code: string;
+  photo_url: string | null;
   active: boolean;
   approved: boolean;
   stripes: number;
@@ -112,6 +115,14 @@ export function addDays(d: Date, n: number) {
 
 export function fmtTime(t: string) {
   return t.slice(0, 5);
+}
+
+/** "5–8 anos", "18+ anos", "≤12 anos" — null when the class has no age range. */
+export function ageLabel(min: number | null, max: number | null, years: string): string | null {
+  if (min == null && max == null) return null;
+  if (min != null && max != null) return `${min}–${max} ${years}`;
+  if (min != null) return `${min}+ ${years}`;
+  return `≤${max} ${years}`;
 }
 
 export async function fetchLocations(): Promise<Location[]> {

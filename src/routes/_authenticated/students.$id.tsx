@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BeltProgress } from "@/components/BeltProgress";
+import { StudentPhoto, StudentPhotoControls } from "@/components/StudentPhoto";
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { useApp } from "@/lib/app-context";
@@ -31,7 +32,8 @@ export const Route = createFileRoute("/_authenticated/students/$id")({
 function StudentDetail() {
   const { id } = Route.useParams();
   const { t, lang } = useI18n();
-  const { settings } = useApp();
+  const { settings, session, isStaff } = useApp();
+  const qc = useQueryClient();
   const [qr, setQr] = useState<string | null>(null);
 
   const studentsQ = useQuery({ queryKey: ["students"], queryFn: fetchStudents });
@@ -69,6 +71,7 @@ function StudentDetail() {
 
       <Card>
         <div className="flex items-center gap-3">
+          <StudentPhoto studentId={student.id} path={student.photo_url} size={48} />
           <span className={`size-3 shrink-0 rounded-full ${BELT_DOT[student.belt]}`} />
           <div className="min-w-0 flex-1">
             <h1 className="truncate font-display text-xl uppercase tracking-wide">{student.full_name}</h1>
@@ -77,6 +80,16 @@ function StudentDetail() {
             </p>
           </div>
           <Tag>{student.active ? t("common.active") : t("common.inactive")}</Tag>
+          {isStaff ||
+          student.guardian_id === (session?.user.id ?? "") ||
+          student.user_id === (session?.user.id ?? "") ? (
+            <StudentPhotoControls
+              studentId={student.id}
+              path={student.photo_url}
+              compact
+              onChanged={() => void qc.invalidateQueries({ queryKey: ["students"] })}
+            />
+          ) : null}
         </div>
 
         <div className="mt-4 grid grid-cols-3 gap-2">

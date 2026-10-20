@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { BeltProgress } from "@/components/BeltProgress";
+import { StudentPhoto, StudentPhotoControls } from "@/components/StudentPhoto";
 import { Button, Card, Empty, Field, Input, SectionTitle } from "@/components/ui-kit";
 import { BELT_DOT, type StudentRow } from "@/lib/data";
 
@@ -89,6 +90,7 @@ function ProfilePage() {
       {studentQ.isLoading ? null : student ? (
         <Card>
           <div className="flex items-center gap-3">
+            <StudentPhoto studentId={student.id} path={student.photo_url} size={44} />
             <span className={`size-3 shrink-0 rounded-full ${BELT_DOT[student.belt]}`} />
             <div className="min-w-0 flex-1">
               <p className="label-mono">{t("profile.belt")}</p>
@@ -96,6 +98,12 @@ function ProfilePage() {
                 {student.full_name} · {t(`belt.${student.belt}`)}
               </p>
             </div>
+            <StudentPhotoControls
+              studentId={student.id}
+              path={student.photo_url}
+              compact
+              onChanged={() => queryClient.invalidateQueries({ queryKey: ["my-student", uid] })}
+            />
             <Link to="/students/$id" params={{ id: student.id }} className="label-mono shrink-0">
               {t("students.qr")} →
             </Link>

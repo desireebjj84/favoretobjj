@@ -271,6 +271,13 @@ const en: Dict = {
   "classes.instructor": "Instructor",
   "classes.remove": "Remove",
   "classes.confirmRemove": "Remove this class from the schedule?",
+  "classes.minAge": "Min age", "classes.maxAge": "Max age", "classes.ageAny": "Any age",
+  "common.years": "yrs",
+  "nav.admin": "Administration",
+  "admin.tabClasses": "Classes", "admin.tabSchedule": "Schedule", "admin.tabStudents": "Students",
+  "admin.scheduleHint": "Weekly grid of all active classes.",
+  "photo.add": "Add photo", "photo.change": "Change photo", "photo.saved": "Photo updated!",
+  "photo.error": "Couldn't save the photo (JPG/PNG, up to 5 MB).", "photo.remove": "Remove photo",
 
   "auth.embedNote":
     "You are on the academy website. Sign in here with email and password — to use Google, open the portal in a new tab.",
@@ -539,6 +546,13 @@ const pt: Dict = {
   "classes.instructor": "Professor",
   "classes.remove": "Remover",
   "classes.confirmRemove": "Remover esta aula da grade?",
+  "classes.minAge": "Idade mínima", "classes.maxAge": "Idade máxima", "classes.ageAny": "Qualquer idade",
+  "common.years": "anos",
+  "nav.admin": "Administração",
+  "admin.tabClasses": "Turmas", "admin.tabSchedule": "Horários", "admin.tabStudents": "Alunos",
+  "admin.scheduleHint": "Grade semanal de todas as turmas ativas.",
+  "photo.add": "Adicionar foto", "photo.change": "Mudar foto", "photo.saved": "Foto atualizada!",
+  "photo.error": "Não foi possível salvar a foto (JPG/PNG, até 5 MB).", "photo.remove": "Remover foto",
 
   "auth.embedNote":
     "Você está no site da academia. Entre aqui com e-mail e senha — para usar o Google, abra o portal em nova aba.",
@@ -807,6 +821,13 @@ const es: Dict = {
   "classes.instructor": "Profesor",
   "classes.remove": "Eliminar",
   "classes.confirmRemove": "¿Eliminar esta clase del horario?",
+  "classes.minAge": "Edad mínima", "classes.maxAge": "Edad máxima", "classes.ageAny": "Cualquier edad",
+  "common.years": "años",
+  "nav.admin": "Administración",
+  "admin.tabClasses": "Clases", "admin.tabSchedule": "Horarios", "admin.tabStudents": "Alumnos",
+  "admin.scheduleHint": "Cuadrícula semanal de todas las clases activas.",
+  "photo.add": "Añadir foto", "photo.change": "Cambiar foto", "photo.saved": "¡Foto actualizada!",
+  "photo.error": "No se pudo guardar la foto (JPG/PNG, hasta 5 MB).", "photo.remove": "Eliminar foto",
 
   "auth.embedNote":
     "Está en el sitio de la academia. Inicie sesión aquí con correo y contraseña — para usar Google, abra el portal en una pestaña nueva.",

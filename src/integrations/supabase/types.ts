@@ -168,6 +168,8 @@ export type Database = {
           instructor_name: string | null
           kind: Database["public"]["Enums"]["class_kind"]
           location_id: string
+          max_age: number | null
+          min_age: number | null
           name: string
           start_time: string
           updated_at: string
@@ -183,6 +185,8 @@ export type Database = {
           instructor_name?: string | null
           kind?: Database["public"]["Enums"]["class_kind"]
           location_id: string
+          max_age?: number | null
+          min_age?: number | null
           name: string
           start_time: string
           updated_at?: string
@@ -198,6 +202,8 @@ export type Database = {
           instructor_name?: string | null
           kind?: Database["public"]["Enums"]["class_kind"]
           location_id?: string
+          max_age?: number | null
+          min_age?: number | null
           name?: string
           start_time?: string
           updated_at?: string
@@ -310,6 +316,27 @@ export type Database = {
           language?: string
           phone?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      push_tokens: {
+        Row: {
+          created_at: string
+          token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          token?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -467,6 +494,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_manage_student_photo: { Args: { _name: string }; Returns: boolean }
       can_view_student: { Args: { _student_id: string }; Returns: boolean }
       ensure_sessions: {
         Args: { _from: string; _to: string }
