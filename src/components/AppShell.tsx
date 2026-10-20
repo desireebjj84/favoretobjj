@@ -220,7 +220,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 />
                 <span
                   className={cn(
-                    "text-[10px]",
+                    "whitespace-nowrap text-[10px]",
                     active ? "font-semibold text-paper" : "font-medium text-paper/60",
                   )}
                 >
