@@ -16,6 +16,7 @@ const NAV = [
   { to: "/students", key: "nav.students" },
   { to: "/my-students", key: "nav.myStudents" },
   { to: "/profile", key: "nav.profile" },
+  { to: "/stripe-forms", key: "nav.forms" },
   { to: "/reports", key: "nav.reports" },
 ] as const;
 
@@ -34,7 +35,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     (n) =>
       (n.to !== "/reports" || isStaff) &&
       (n.to !== "/students" || isStaff) &&
-      (n.to !== "/bookings" || isStaff),
+      (n.to !== "/bookings" || isStaff) &&
+      (n.to !== "/stripe-forms" || !isStaff || isAdmin),
   );
 
   // No rodapé do celular a equipe não precisa de "Meus alunos" — já tem "Alunos".
@@ -204,14 +206,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Celular: menu no rodapé */}
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-gold/20 bg-noir/95 backdrop-blur-md md:hidden">
-        <div className={cn("mx-auto grid max-w-3xl", bottomNav.length === 6 ? "grid-cols-6" : bottomNav.length === 5 ? "grid-cols-5" : bottomNav.length === 4 ? "grid-cols-4" : "grid-cols-3")}>
+        <div className="mx-auto flex max-w-3xl overflow-x-auto">
           {bottomNav.map((item) => {
             const active = pathname.startsWith(item.to);
             return (
               <Link
                 key={item.to}
                 to={item.to}
-                className="flex flex-col items-center gap-1 py-3"
+                className="flex min-w-16 flex-1 flex-col items-center gap-1 px-1 py-3"
               >
                 <span
                   className={cn("size-1.5 rounded-full", active ? "bg-gold" : "bg-paper/25")}
