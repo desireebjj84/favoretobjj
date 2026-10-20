@@ -39,6 +39,7 @@ export function BeltProgress({ student }: { student: StudentRow }) {
   }
   const reqsQ = useQuery({ queryKey: ["belt-requirements"], queryFn: fetchBeltRequirements });
   const per = classesPerStripeFor(student, reqsQ.data ?? [], settings.classes_per_stripe || 20);
+  const yearsReq = yearsPerStripeFor(student, reqsQ.data ?? []);
   const doneQ = useQuery({
     queryKey: ["classes-since", student.id, student.rank_since],
     queryFn: () => countClassesSince(student.id, student.rank_since),
@@ -47,6 +48,16 @@ export function BeltProgress({ student }: { student: StudentRow }) {
   const isBlack = student.belt === "black";
   const left = Math.max(0, per - done);
   const nextBelt = nextBeltFor(student);
+  const yearsOn =
+    isBlack && yearsReq
+      ? (Date.now() - new Date(student.rank_since).getTime()) / (365.25 * 24 * 3600 * 1000)
+      : 0;
+  const yearsNeeded = yearsReq ? yearsReq * (student.stripes + 1) : 0;
+  const monthsLeft = Math.max(0, Math.round((yearsNeeded - yearsOn) * 12));
+  const timeLeft =
+    monthsLeft >= 12
+      ? `${(monthsLeft / 12).toFixed(1)} ${t("common.years")}`
+      : `${monthsLeft} ${t("belt.months")}`;
   const nextLabel = student.stripes < 4 ? `${student.stripes + 1}º ${t("belt.stripes")}` : t(`belt.${nextBelt}`);
 
   async function change(belt: typeof student.belt, stripes: number) {
