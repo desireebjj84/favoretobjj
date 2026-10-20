@@ -41,6 +41,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   // No rodapé do celular a equipe não precisa de "Meus alunos" — já tem "Alunos".
   const bottomNav = isStaff ? nav.filter((n) => n.to !== "/my-students") : nav;
+  // "Color Stripe Forms" é longo demais para caber em uma linha no rodapé do celular.
+  const bottomLines: Record<string, string[]> = { "/stripe-forms": ["Color Stripe", "Forms"] };
 
   async function signOut() {
     await queryClient.cancelQueries();
@@ -213,18 +215,22 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Link
                 key={item.to}
                 to={item.to}
-                className="flex min-w-16 flex-1 flex-col items-center gap-1 px-1 py-3"
+                className="flex min-w-[70px] flex-1 flex-col items-center gap-1 px-1 py-3"
               >
                 <span
                   className={cn("size-1.5 rounded-full", active ? "bg-gold" : "bg-paper/25")}
                 />
                 <span
                   className={cn(
-                    "text-[10px]",
+                    "whitespace-nowrap text-center text-[10px] leading-tight",
                     active ? "font-semibold text-paper" : "font-medium text-paper/60",
                   )}
                 >
-                  {t(item.key)}
+                  {(bottomLines[item.to] ?? [t(item.key)]).map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
                 </span>
               </Link>
             );
