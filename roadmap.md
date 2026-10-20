@@ -38,6 +38,7 @@
 - [~] Aulas por faixa (adulto/criança): tabela belt_requirements criada; faixa azul adulto = 65 aulas/grau cadastrada — aguardando os números das demais faixas
 
 ## Backlog
+- [ ] Foto no perfil do aluno: responsável/aluno escolhe a própria foto no perfil (e no cadastro)
 - [ ] Tela única de administração: gerenciar turmas, horários e alunos num só lugar, sem depender de cada tela
 - [ ] Análise de frequência com IA: admin escolhe unidade + período, modelo identifica padrões e sugere horários para novas turmas (AI Gateway)
 - [ ] Notificações push: lembretes das próximas aulas e avisos de mudança de horário para alunos e responsáveis
