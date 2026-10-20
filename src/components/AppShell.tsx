@@ -202,37 +202,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       ) : null}
 
-      {/* Celular: menu no rodapé */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-gold/20 bg-noir/95 backdrop-blur-md md:hidden">
-        <div className="mx-auto flex max-w-3xl overflow-x-auto">
-          {bottomNav.map((item) => {
-            const active = pathname.startsWith(item.to);
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="flex flex-1 flex-col items-center gap-1 px-1 py-3"
-              >
-                <span
-                  className={cn("size-1.5 rounded-full", active ? "bg-gold" : "bg-paper/25")}
-                />
-                <span
-                  className={cn(
-                    "whitespace-nowrap text-center text-[10px] leading-tight",
-                    active ? "font-semibold text-paper" : "font-medium text-paper/60",
-                  )}
-                >
-                  {(bottomLines[t(item.key)] ?? [t(item.key)]).map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+      {/* Celular: botão flutuante que abre o menu lateral */}
+      <button
+        onClick={() => setDrawerOpen(true)}
+        className="fixed bottom-5 right-5 z-20 grid size-14 place-items-center rounded-full bg-gold text-2xl text-noir shadow-xl shadow-noir/60 md:hidden"
+        aria-label="Menu"
+      >
+        ☰
+      </button>
     </div>
   );
 }
