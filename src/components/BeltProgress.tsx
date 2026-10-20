@@ -67,6 +67,10 @@ export function BeltProgress({ student }: { student: StudentRow }) {
   }
 
   const timeBased = isBlack && !!yearsReq;
+  // Overall progress in the belt: stripes earned so far plus progress toward the next one (or elapsed time for black belt).
+  const overall = timeBased
+    ? Math.min(1, yearsOn / yearsNeeded)
+    : Math.min(1, (student.stripes * per + done) / (4 * per));
 
   return (
     <Card>
