@@ -167,6 +167,9 @@ function CalendarPage() {
                         {left === 0 ? L.full : `${left} ${t("common.left")}`}
                       </p>
                     ) : null}
+                    {c.kind === "adult" ? (
+                      <p className="mt-1.5 text-[10px] leading-snug text-muted-foreground">{t("adult.checkinNote")}</p>
+                    ) : null}
                   </>
                 );
                 const bookable = !isStaff && s && dateStr >= todayStr && myStudents.length > 0;
@@ -205,8 +208,15 @@ function CalendarPage() {
                                 {myStudents.length > 1 ? ` · ${st.full_name.split(" ")[0]}` : ""}
                               </Button>
                             );
-                          })}
+                        })}
                       </div>
+                    ) : null}
+                    {c.kind === "adult" &&
+                    bookable &&
+                    (myBookingsQ.data ?? []).some(
+                      (b) => b.session_id === s!.id && myStudents.some((st) => st.id === b.student_id),
+                    ) ? (
+                      <p className="w-full text-[10px] font-semibold text-clay">{t("adult.checkinArrive")}</p>
                     ) : null}
                   </div>
                 );
