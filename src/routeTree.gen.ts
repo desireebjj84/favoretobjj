@@ -17,6 +17,7 @@ import { Route as AuthenticatedBookingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedCalendarRouteImport } from './routes/_authenticated/calendar'
 import { Route as AuthenticatedCheckinRouteImport } from './routes/_authenticated/checkin'
 import { Route as AuthenticatedClassesRouteImport } from './routes/_authenticated/classes'
+import { Route as AuthenticatedInsightsRouteImport } from './routes/_authenticated/insights'
 import { Route as AuthenticatedMyStudentsRouteImport } from './routes/_authenticated/my-students'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
@@ -64,6 +65,11 @@ const AuthenticatedCheckinRoute = AuthenticatedCheckinRouteImport.update({
 const AuthenticatedClassesRoute = AuthenticatedClassesRouteImport.update({
   id: '/classes',
   path: '/classes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedInsightsRoute = AuthenticatedInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMyStudentsRoute = AuthenticatedMyStudentsRouteImport.update({
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/calendar': typeof AuthenticatedCalendarRoute
   '/checkin': typeof AuthenticatedCheckinRoute
   '/classes': typeof AuthenticatedClassesRoute
+  '/insights': typeof AuthenticatedInsightsRoute
   '/my-students': typeof AuthenticatedMyStudentsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -140,6 +147,7 @@ export interface FileRoutesByTo {
   '/calendar': typeof AuthenticatedCalendarRoute
   '/checkin': typeof AuthenticatedCheckinRoute
   '/classes': typeof AuthenticatedClassesRoute
+  '/insights': typeof AuthenticatedInsightsRoute
   '/my-students': typeof AuthenticatedMyStudentsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/_authenticated/calendar': typeof AuthenticatedCalendarRoute
   '/_authenticated/checkin': typeof AuthenticatedCheckinRoute
   '/_authenticated/classes': typeof AuthenticatedClassesRoute
+  '/_authenticated/insights': typeof AuthenticatedInsightsRoute
   '/_authenticated/my-students': typeof AuthenticatedMyStudentsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
@@ -180,6 +189,7 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/checkin'
     | '/classes'
+    | '/insights'
     | '/my-students'
     | '/profile'
     | '/reports'
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/checkin'
     | '/classes'
+    | '/insights'
     | '/my-students'
     | '/profile'
     | '/reports'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/_authenticated/calendar'
     | '/_authenticated/checkin'
     | '/_authenticated/classes'
+    | '/_authenticated/insights'
     | '/_authenticated/my-students'
     | '/_authenticated/profile'
     | '/_authenticated/reports'
@@ -293,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedClassesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/insights': {
+      id: '/_authenticated/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof AuthenticatedInsightsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/my-students': {
       id: '/_authenticated/my-students'
       path: '/my-students'
@@ -364,6 +383,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCalendarRoute: typeof AuthenticatedCalendarRoute
   AuthenticatedCheckinRoute: typeof AuthenticatedCheckinRoute
   AuthenticatedClassesRoute: typeof AuthenticatedClassesRoute
+  AuthenticatedInsightsRoute: typeof AuthenticatedInsightsRoute
   AuthenticatedMyStudentsRoute: typeof AuthenticatedMyStudentsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
@@ -380,6 +400,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCalendarRoute: AuthenticatedCalendarRoute,
   AuthenticatedCheckinRoute: AuthenticatedCheckinRoute,
   AuthenticatedClassesRoute: AuthenticatedClassesRoute,
+  AuthenticatedInsightsRoute: AuthenticatedInsightsRoute,
   AuthenticatedMyStudentsRoute: AuthenticatedMyStudentsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
