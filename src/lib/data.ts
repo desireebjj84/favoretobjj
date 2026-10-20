@@ -452,7 +452,7 @@ export function classesPerStripeFor(
   fallback: number,
 ): number {
   // The under-15 rule is distinct from the under-16 kids belt sequence.
-  const ageRequirement = under15StripeClasses(student);
+  const ageRequirement = under16StripeClasses(student);
   if (ageRequirement !== null) return ageRequirement;
   const age = student.birth_date
     ? (Date.now() - new Date(student.birth_date).getTime()) / (365.25 * 24 * 3600 * 1000)
