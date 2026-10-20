@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Send, Check, X, FileText } from "lucide-react";
 import { Button, Field, Input, Select, SectionTitle, Tag, Empty } from "@/components/ui-kit";
 import { useApp } from "@/lib/app-context";
@@ -17,6 +17,7 @@ export const Route = createFileRoute("/_authenticated/stripe-forms")({
 
 function StripeFormsPage() {
  const {t,lang}=useI18n(); const {isAdmin,isStaff}=useApp(); const qc=useQueryClient();
+ useEffect(() => { document.title = lang === "pt" ? "Graus Coloridos — Favoreto BJJ" : lang === "es" ? "Grados de Color — Favoreto BJJ" : "Color Stripe Forms — Favoreto BJJ"; }, [lang]);
  const {data:forms}=useSuspenseQuery(stripeFormsOptions); const {data:children}=useSuspenseQuery(stripeChildrenOptions);
  const [adding,setAdding]=useState(false); const [active,setActive]=useState<Submission|null>(null); const [tab,setTab]=useState("pending");
  const [busy,setBusy]=useState(false); const [error,setError]=useState(""); const [notice,setNotice]=useState(""); const [note,setNote]=useState("");

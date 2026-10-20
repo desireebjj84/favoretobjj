@@ -790,10 +790,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     const param = new URLSearchParams(window.location.search).get("lang");
     if (param === "en" || param === "pt" || param === "es") {
       setLangState(param);
-      window.localStorage.setItem("favoreto-lang", param);
+      try { window.localStorage.setItem("favoreto-lang", param); } catch { /* storage unavailable (e.g. embedded iframe) */ }
       return;
     }
-    const stored = window.localStorage.getItem("favoreto-lang") as Lang | null;
+    let stored: Lang | null = null;
+    try { stored = window.localStorage.getItem("favoreto-lang") as Lang | null; } catch { /* storage unavailable */ }
     if (stored && stored in DICTS) {
       setLangState(stored);
       return;
@@ -804,7 +805,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
-    window.localStorage.setItem("favoreto-lang", l);
+    try { window.localStorage.setItem("favoreto-lang", l); } catch { /* storage unavailable */ }
   }, []);
 
   const t = useCallback((key: string) => DICTS[lang][key] ?? en[key] ?? key, [lang]);
