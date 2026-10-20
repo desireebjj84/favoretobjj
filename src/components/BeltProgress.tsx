@@ -65,6 +65,8 @@ export function BeltProgress({ student }: { student: StudentRow }) {
     await qc.invalidateQueries({ queryKey: ["students"] });
   }
 
+  const timeBased = isBlack && !!yearsReq;
+
   return (
     <Card>
       <SectionTitle right={`${student.stripes}/4 ${t("belt.stripes")}`}>{t("belt.progress")}</SectionTitle>
@@ -105,16 +107,16 @@ export function BeltProgress({ student }: { student: StudentRow }) {
       )}
       {isBlack && student.stripes >= 4 ? (
         <p className="mt-2 text-xs text-muted-foreground">{t("belt.blackNote")}</p>
-      ) : (
+      ) : timeBased ? (
         <>
           <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-            <div className="rounded-xl bg-foreground/5 p-2"><p className="label-mono">{t("belt.done")}</p><p className="stat-num text-xl">{done}</p></div>
-            <div className="rounded-xl bg-foreground/5 p-2"><p className="label-mono">{t("belt.left")}</p><p className="stat-num text-xl">{left}</p></div>
+            <div className="rounded-xl bg-foreground/5 p-2"><p className="label-mono">{t("belt.yearsOnBelt")}</p><p className="stat-num text-xl">{yearsOn.toFixed(1)}</p></div>
+            <div className="rounded-xl bg-foreground/5 p-2"><p className="label-mono">{t("belt.nextIn")}</p><p className="stat-num text-xl">{timeLeft}</p></div>
             <div className="rounded-xl bg-foreground/5 p-2"><p className="label-mono">{t("belt.next")}</p><p className="text-sm font-semibold">{nextLabel}</p></div>
           </div>
-          <Bar ratio={Math.min(1, done / per)} tone="bg-green" />
+          <Bar ratio={Math.min(1, yearsOn / yearsNeeded)} tone="bg-green" />
         </>
-      )}
+      ) : (
       {isStaff ? (
         <div className="mt-3 space-y-2">
           <div className="flex gap-2">
