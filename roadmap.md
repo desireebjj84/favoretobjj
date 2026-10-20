@@ -40,3 +40,5 @@
 ## Backlog
 - [ ] Análise de frequência com IA: admin escolhe unidade + período, modelo identifica padrões e sugere horários para novas turmas (AI Gateway)
 - [ ] Notificações push: lembretes das próximas aulas e avisos de mudança de horário para alunos e responsáveis
+- [x] Análise de frequência com IA (AI Insights): testada com Brickell/30d — resumo, padrões e sugestões de turmas (cron 0.31 créditos)
+- [ ] Mover este projeto para a pasta "Grove Brickell Hialeah" (@project:6a825798)
