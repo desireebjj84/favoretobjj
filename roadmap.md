@@ -38,6 +38,7 @@
 - [~] Aulas por faixa (adulto/criança): tabela belt_requirements criada; faixa azul adulto = 65 aulas/grau cadastrada — aguardando os números das demais faixas
 
 ## Backlog
+- [ ] Push notifications: aviso de aula próxima e mudança de horário, com o app instalado no celular (conector FCM + service worker + job agendado)
 - [ ] Tela de turmas: criar, editar e excluir turmas com horário, dia e idade; aparece no Calendário
 - [ ] Foto no perfil do aluno: responsável/aluno escolhe a própria foto no perfil (e no cadastro)
 - [ ] Tela única de administração: gerenciar turmas, horários e alunos num só lugar, sem depender de cada tela
