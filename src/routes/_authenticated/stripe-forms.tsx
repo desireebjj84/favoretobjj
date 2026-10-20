@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Send, Check, X, FileText } from "lucide-react";
 import { Button, Field, Input, Select, SectionTitle, Tag, Empty } from "@/components/ui-kit";
 import { useApp } from "@/lib/app-context";
