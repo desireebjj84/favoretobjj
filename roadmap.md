@@ -36,3 +36,9 @@
 - [x] Contador de vagas: cada aula mostra reservas/vagas restantes (ex. 2/13) no calendário, hoje e reservas
 - [x] Confirmar presença após check-in (Veio/Não veio); só confirmadas contam para a faixa
 - [~] Aulas por faixa (adulto/criança): tabela belt_requirements criada; faixa azul adulto = 65 aulas/grau cadastrada — aguardando os números das demais faixas
+
+## Backlog
+- [ ] Análise de frequência com IA: admin escolhe unidade + período, modelo identifica padrões e sugere horários para novas turmas (AI Gateway)
+- [ ] Notificações push: lembretes das próximas aulas e avisos de mudança de horário para alunos e responsáveis
+- [x] Análise de frequência com IA (AI Insights): testada com Brickell/30d — resumo, padrões e sugestões de turmas (cron 0.31 créditos)
+- [ ] Mover este projeto para a pasta "Grove Brickell Hialeah" (@project:6a825798)

@@ -18,6 +18,7 @@ const NAV = [
   { to: "/profile", key: "nav.profile" },
   { to: "/stripe-forms", key: "nav.forms" },
   { to: "/reports", key: "nav.reports" },
+  { to: "/insights", key: "nav.insights" },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -34,6 +35,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const nav = NAV.filter(
     (n) =>
       (n.to !== "/reports" || isStaff) &&
+      (n.to !== "/insights" || isAdmin) &&
       (n.to !== "/students" || isStaff) &&
       (n.to !== "/bookings" || isStaff) &&
       (n.to !== "/stripe-forms" || !isStaff || isAdmin),
