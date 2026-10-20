@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { validStripeColors, type StripeColor } from "./colored-stripes";
+import { under15StripeClasses } from "./belt-age-rule";
 
 export type Belt =
   | "white"
@@ -427,11 +428,8 @@ export function classesPerStripeFor(
   fallback: number,
 ): number {
   // The under-15 rule is distinct from the under-16 kids belt sequence.
-  if (student.birth_date && (student.belt === "white" || student.belt === "grey")) {
-    const birth = new Date(`${student.birth_date}T00:00:00`);
-    const fifteenthBirthday = new Date(birth.getFullYear() + 15, birth.getMonth(), birth.getDate());
-    if (new Date() < fifteenthBirthday) return 15;
-  }
+  const ageRequirement = under15StripeClasses(student);
+  if (ageRequirement !== null) return ageRequirement;
   const age = student.birth_date
     ? (Date.now() - new Date(student.birth_date).getTime()) / (365.25 * 24 * 3600 * 1000)
     : null;
