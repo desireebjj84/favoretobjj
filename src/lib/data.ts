@@ -142,6 +142,7 @@ export type BookingRow = {
   end_time: string;
   location_id: string;
   capacity: number;
+  kind: "adult" | "kids";
   full_name: string;
   belt: Belt;
 };
@@ -153,7 +154,7 @@ type BookingRaw = {
   class_sessions: {
     session_date: string;
     class_id: string;
-    classes: { name: string; start_time: string; end_time: string; location_id: string; capacity: number };
+    classes: { name: string; start_time: string; end_time: string; location_id: string; capacity: number; kind: string };
   };
   students: { full_name: string; belt: Belt };
 };
@@ -163,7 +164,7 @@ export async function fetchBookings(from: string, to: string): Promise<BookingRo
   const { data, error } = await supabase
     .from("bookings")
     .select(
-      "id, session_id, student_id, class_sessions!inner(session_date, class_id, classes!inner(name, start_time, end_time, location_id, capacity)), students!inner(full_name, belt)",
+      "id, session_id, student_id, class_sessions!inner(session_date, class_id, classes!inner(name, start_time, end_time, location_id, capacity, kind)), students!inner(full_name, belt)",
     )
     .gte("class_sessions.session_date", from)
     .lte("class_sessions.session_date", to);
@@ -181,6 +182,7 @@ export async function fetchBookings(from: string, to: string): Promise<BookingRo
       end_time: r.class_sessions.classes.end_time,
       location_id: r.class_sessions.classes.location_id,
       capacity: r.class_sessions.classes.capacity,
+      kind: r.class_sessions.classes.kind as "adult" | "kids",
       full_name: r.students.full_name,
       belt: r.students.belt,
     }))
