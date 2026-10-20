@@ -57,6 +57,13 @@
       "when": 1792449063413,
       "tag": "0007_belt_requirements",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792455572805,
+      "tag": "0008_student_colored_stripes",
+      "breakpoints": true
     }
   ]
 }
