@@ -128,7 +128,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-4 pb-36 pt-3 md:ml-56 md:max-w-4xl md:pb-8">{children}</main>
+      <main className="mx-auto max-w-3xl px-4 pb-28 pt-3 md:ml-56 md:max-w-4xl md:pb-8">{children}</main>
 
       {/* Desktop: menu lateral esquerdo */}
       <nav className="fixed inset-y-0 left-0 z-10 hidden w-56 flex-col border-r border-gold/20 bg-noir/95 pt-40 backdrop-blur-md md:flex">
