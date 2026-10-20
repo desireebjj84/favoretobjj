@@ -423,15 +423,26 @@ export type BeltRequirement = {
   belt: Belt;
   is_kids: boolean;
   classes_per_stripe: number;
+  years_per_degree: number | null;
 };
 
 /** Quantas aulas cada faixa exige por grau (adulto e criança podem diferir). */
 export async function fetchBeltRequirements(): Promise<BeltRequirement[]> {
   const { data, error } = await supabase
     .from("belt_requirements")
-    .select("belt, is_kids, classes_per_stripe");
+    .select("belt, is_kids, classes_per_stripe, years_per_degree");
   if (error) throw error;
   return (data ?? []) as BeltRequirement[];
+}
+
+/** Anos na faixa por grau quando a regra é por tempo (faixa preta = 3); null = por aulas. */
+export function yearsPerStripeFor(
+  student: { belt: Belt },
+  reqs: BeltRequirement[],
+): number | null {
+  if (student.belt !== "black") return null;
+  const req = reqs.find((r) => r.belt === "black");
+  return req?.years_per_degree ?? null;
 }
 
 /** Aulas por grau para a faixa do aluno; cai no padrão das configurações se não houver regra. */
