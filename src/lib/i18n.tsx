@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { STRIPE_FORM_COPY } from "./stripe-form-copy";
 
 export type Lang = "en" | "pt" | "es";
 
@@ -757,7 +758,7 @@ const es: Dict = {
   "common.openPortal": "Abrir portal en una pestaña nueva",
 };
 
-const DICTS: Record<Lang, Dict> = { en, pt, es };
+const DICTS: Record<Lang, Dict> = { en: { ...en, ...STRIPE_FORM_COPY.en }, pt: { ...pt, ...STRIPE_FORM_COPY.pt }, es: { ...es, ...STRIPE_FORM_COPY.es } };
 
 type I18nValue = {
   lang: Lang;

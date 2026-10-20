@@ -9,3 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 Colored stripes are stored separately on students, protected by a database trigger, and rendered through BeltProgress; changes never reset regular stripe attendance progress.
+Colored stripe forms use versioned question definitions and validated database RPCs; only administrators can atomically review a submission and award its stripe, preserving attendance progress.
