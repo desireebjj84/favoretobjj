@@ -9,6 +9,7 @@ import { Bar, Button, Card, Empty, SectionTitle, Tag } from "@/components/ui-kit
 import {
   TONE_BAR,
   addDays,
+  ageLabel,
   ensureSessions,
   fetchClasses,
   fetchLocations,
@@ -161,6 +162,11 @@ function CalendarPage() {
                     <p className="mt-1 font-mono text-[11px] text-muted-foreground">
                       {fmtTime(c.start_time)}–{fmtTime(c.end_time)}
                     </p>
+                    {ageLabel(c.min_age, c.max_age, t("common.years")) ? (
+                      <p className="mt-1 font-mono text-[10px] text-muted-foreground">
+                        {ageLabel(c.min_age, c.max_age, t("common.years"))}
+                      </p>
+                    ) : null}
                     <Bar ratio={ratio} tone={TONE_BAR[occupancyTone(ratio)]!} />
                     {booked > 0 ? (
                       <p className={cn("mt-1 font-mono text-[10px]", left === 0 ? "text-clay" : "text-muted-foreground")}>

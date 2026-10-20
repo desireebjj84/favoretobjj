@@ -46,7 +46,7 @@ type Draft = {
 
 function AdminPage() {
   const { t } = useI18n();
-  const { isAdmin, locationId } = useApp();
+  const { isAdmin } = useApp();
   const [tab, setTab] = useState<Tab>("classes");
 
   if (!isAdmin) return <Empty label={t("settings.roleHint")} />;
@@ -70,7 +70,6 @@ function AdminPage() {
       {tab === "classes" ? <ClassesTab /> : null}
       {tab === "schedule" ? <ScheduleTab /> : null}
       {tab === "students" ? <StudentsTab /> : null}
-      {locationId ? null : null}
     </div>
   );
 }

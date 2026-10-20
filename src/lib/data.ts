@@ -117,6 +117,14 @@ export function fmtTime(t: string) {
   return t.slice(0, 5);
 }
 
+/** "5–8 anos", "18+ anos", "≤12 anos" — null when the class has no age range. */
+export function ageLabel(min: number | null, max: number | null, years: string): string | null {
+  if (min == null && max == null) return null;
+  if (min != null && max != null) return `${min}–${max} ${years}`;
+  if (min != null) return `${min}+ ${years}`;
+  return `≤${max} ${years}`;
+}
+
 export async function fetchLocations(): Promise<Location[]> {
   const { data, error } = await supabase.from("locations").select("*").order("sort_order");
   if (error) throw error;

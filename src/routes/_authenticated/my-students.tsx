@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useI18n } from "@/lib/i18n";
 import { Button, Card, Empty, Field, Input, SectionTitle, Select } from "@/components/ui-kit";
+import { StudentPhoto } from "@/components/StudentPhoto";
 import { BELT_DOT, BELTS, fetchLocations, type StudentRow } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/my-students")({
@@ -69,6 +70,7 @@ function MyStudentsPage() {
         {students.map((s) => (
           <Link key={s.id} to="/students/$id" params={{ id: s.id }} className="block">
             <Card className="flex items-center gap-3 px-3 py-2.5">
+              <StudentPhoto studentId={s.id} path={s.photo_url} size={36} />
               <span className={`size-2 shrink-0 rounded-full ${BELT_DOT[s.belt]}`} />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold">{s.full_name}</p>
