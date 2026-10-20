@@ -219,7 +219,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Link
                 key={item.to}
                 to={item.to}
-                className="flex min-w-[70px] flex-1 flex-col items-center gap-1 px-1 py-3"
+                className="flex flex-1 flex-col items-center gap-1 px-1 py-3"
               >
                 <span
                   className={cn("size-1.5 rounded-full", active ? "bg-gold" : "bg-paper/25")}
